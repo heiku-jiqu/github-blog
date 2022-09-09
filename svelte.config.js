@@ -1,4 +1,4 @@
-import { msdvex } from 'mdsvex';
+import { mdsvex } from 'mdsvex';
 import sveltePreprocess from 'svelte-preprocess';
 import adapter from '@sveltejs/adapter-static';
 
@@ -8,7 +8,7 @@ const config = {
 		adapter: adapter()
 	},
 	extensions: ['.svelte', '.svx'],
-	preprocess: [sveltePreprocess(), msdvex()]
+	preprocess: [sveltePreprocess(), mdsvex()]
 };
 
 export default config;
