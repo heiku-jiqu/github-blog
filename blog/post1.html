@@ -6,7 +6,6 @@
 		<meta name="viewport" content="width=device-width" />
 		<meta http-equiv="content-security-policy" content="">
 	<link href="/github-blog/_app/immutable/assets/_layout-30079b5a.css" rel="stylesheet">
-	<link href="/github-blog/_app/immutable/assets/_page-ec0df3b5.css" rel="stylesheet">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/start-4cbeb1f6.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-3d0fa062.js">
@@ -15,9 +14,9 @@
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-01878d0f.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-7b9cbfbc.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-8d2a742b.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_page.svelte-cfb507c8.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_page.js-30d0bb94.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-2d705b58.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-92ba40c9.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-eeab04ae.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-56fa29c5.js">
 	</head>
 	<body>
 		<div>
@@ -28,19 +27,11 @@
 	<nav><ul class="svelte-qm05bo"><li><a href="/github-blog/blog" class="svelte-qm05bo">Blog</a></li>
 			<li><a href="/github-blog/about" class="svelte-qm05bo">About</a></li></ul></nav>
 </header>
-<h1>blogposts</h1>
-
-<ul class="svelte-jm43uh"><li><h2><a href="/github-blog/blog/post1">Post One
-				</a></h2>
-			Published 2022-01-01
-		</li><li><h2><a href="/github-blog/blog/post2">Post Two
-				</a></h2>
-			Published 2022-09-09
-		</li>
-</ul>
+<p>Hello, I am <em>Post One.</em></p>
+<p><strong>Nice to meet you!</strong></p>
 
 
-		<script type="module" data-sveltekit-hydrate="113tn5x">
+		<script type="module" data-sveltekit-hydrate="10gmjhh">
 		import { start } from "/github-blog/_app/immutable/start-4cbeb1f6.js";
 
 		start({
@@ -48,17 +39,17 @@
 			hydrate: {
 				status: 200,
 				error: null,
-				node_ids: [0, 4],
-				params: {},
-				routeId: "blog",
+				node_ids: [0, 5],
+				params: {blogpost:"post1"},
+				routeId: "blog/[blogpost]",
 				data: (function(a){return [a,a]}(null)),
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="113tn5x"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="10gmjhh"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
-	<script type="application/json" data-sveltekit-fetched data-url="/github-blog/api/posts">{"status":200,"statusText":"","headers":{},"body":"[{\"meta\":{\"title\":\"Post One\",\"date\":\"2022-01-01\"},\"path\":\"/blog/post1\"},{\"meta\":{\"title\":\"Post Two\",\"date\":\"2022-09-09\"},\"path\":\"/blog/post2\"}]"}</script></div>
+	</div>
 	</body>
 </html>
