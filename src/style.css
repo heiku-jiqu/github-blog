@@ -11,6 +11,7 @@ body {
     background: #f4f1deff;
     color: #3d405bff;
     font-family: Monaco, monospace;
+    text-align: center
 }
 
 a:link {
