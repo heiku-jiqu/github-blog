@@ -13,7 +13,12 @@ const config = {
 			base: dev ? '' : '/github-blog'
 		}
 	},
-	extensions: ['.svelte', '.svx'],
-	preprocess: [sveltePreprocess(), mdsvex()]
+	extensions: ['.svelte', '.md'],
+	preprocess: [
+		sveltePreprocess(),
+		mdsvex({
+			extensions: ['.md']
+		})
+	]
 };
 export default config;
