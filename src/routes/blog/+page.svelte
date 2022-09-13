@@ -23,6 +23,11 @@
 		margin: 0;
 		padding: 0;
 		list-style-type: none;
-		gap: 1rem;
+	}
+	li {
+		margin: 1rem;
+	}
+	h2 {
+		margin: 0;
 	}
 </style>
