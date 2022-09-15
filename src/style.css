@@ -1,11 +1,12 @@
 
-	/* CSS HEX 
---eggshell: #f4f1deff;
---terra-cotta: #e07a5fff;
---independence: #3d405bff;
---green-sheen: #81b29aff;
---deep-champagne: #f2cc8fff;
-*/
+:root {
+	--eggshell: #f4f1deff;
+	--terra-cotta: #e07a5fff;
+	--independence: #3d405bff;
+	--green-sheen: #81b29aff;
+	--deep-champagne: #f2cc8fff;
+}
+
 *,
 *::before,
 *::after {
@@ -14,20 +15,20 @@
 
 body {
 	margin: 0;
-	background: #f4f1deff;
-	color: #3d405bff;
+	background: var(--eggshell);
+	color: var(--independence);
 	font-family: Monaco, monospace;
 	text-align: center;
 }
 
 a:link {
-	color: #3d405bff;
+	color: var(--independence);
 }
 a:hover {
-	color: #f2cc8fff;
+	color: var(--deep-champagne);
 }
 a:visited {
-	color: #81b29aff;
+	color: var(--green-sheen);
 }
 main {
 	padding: 1rem;
@@ -36,5 +37,5 @@ main {
 }
 code{
 	font-size: 1.1rem;
-	color: #e07a5fff;
+	color: var(--terra-cotta);
 }
