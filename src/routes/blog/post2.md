@@ -1,6 +1,6 @@
 ---
 title: CSS Horizontal Scrolling Items With Grid
-date: '2022-09-09'
+date: '2022-09-19'
 ---
 
 <script>
