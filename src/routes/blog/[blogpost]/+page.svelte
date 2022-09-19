@@ -3,13 +3,17 @@
 	//console.log(data);
 </script>
 
-<div class="grid-container">
-	<div class="sides" />
-	<div class="article">
-		<svelte:component this={data.content} />
+{#if data.metadata.no_format}
+	<svelte:component this={data.content} />
+{:else}
+	<div class="grid-container">
+		<div class="sides" />
+		<div class="article">
+			<svelte:component this={data.content} />
+		</div>
+		<div class="sides" />
 	</div>
-	<div class="sides" />
-</div>
+{/if}
 
 <style>
 	.grid-container {
