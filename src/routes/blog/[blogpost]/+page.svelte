@@ -20,6 +20,4 @@
 		padding: 2rem;
 		text-align: justify;
 	}
-	code {
-	}
 </style>
