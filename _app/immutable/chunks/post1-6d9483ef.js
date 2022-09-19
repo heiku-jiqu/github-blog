@@ -1,4 +1,4 @@
-import{S as vl,i as El,s as yl,k as r,q as o,a as m,l as p,m as n,r as i,h as t,c as f,n as _l,b as s,B as l,A as zt}from"./index-3d0fa062.js";function xl(dl){let E,We,se,d,He,A,Me,qe,N,Ie,Be,re,O,ze,pe,S,Fe,ne,x,ul=`<code class="language-undefined">.grid-container &#123;
+import{S as vl,i as El,s as yl,k as r,q as o,a as m,l as p,m as n,r as i,h as t,c as f,n as _l,b as s,B as l,A as zt}from"./index-51f62b25.js";function xl(dl){let E,We,se,d,He,A,Me,qe,N,Ie,Be,re,O,ze,pe,S,Fe,ne,x,ul=`<code class="language-undefined">.grid-container &#123;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr))
 &#125;</code>`,me,T,Le,fe,c,Re,G,Ae,Ne,j,Ge,je,J,Je,Ke,K,Qe,Ue,ce,W,Ve,he,b,Q,Xe,Ye,de,v,Ze,U,$e,ge,V,et,ue,H,tt,we,C,lt,X,ot,ve,P,Y,it,at,Ee,M,st,ye,h,rt,Z,pt,nt,$,mt,ft,g,ct,ht,_e,q,dt,xe,k,ut,ee,wt,be,I,vt,Ce,u,Et,te,yt,_t,le,xt,bt,Pe,D,Ct,oe,Pt,ke,y,kt,ie,Dt,Ot,De,B,St,Oe,z,Tt,Se,F,Wt;return{c(){E=r("h1"),We=o(hl),se=m(),d=r("p"),He=o(`There are two main ways to customise the layout of html elements / components:
