@@ -1,22 +1,14 @@
-# create-svelte
+# Blog
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+Writing things I learn and come across.
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+Created using svelte, sveltekit and mdsvex.
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Install dependencies: `npm install`
+
+Start dev server:
 
 ```bash
 npm run dev
@@ -27,16 +19,15 @@ npm run dev -- --open
 
 ## Building
 
-To create a production version of your app:
+Build project: `npm run build`
 
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+Preview production build: `npm run preview`
 
 ## Create gh-pages branch
 
 `git subtree push --prefix build origin gh-pages`
+
+# TODO:
+
+- Create chart of GovtBalance
+- Implement mdsvex layout (can force no layout also with layout:false in front matter)
