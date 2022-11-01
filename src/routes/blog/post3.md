@@ -83,6 +83,8 @@ runAsyncCode()
     })
 ```
 
+You will need to handle the state of `data` by yourself, and make the DOM show what you want it to show when `data` is `null` and also when `data` is the value of resolved promise.
+
 ## Svelte way
 
 Svelte abstracts away this complexity by using its await blocks
@@ -94,5 +96,3 @@ Svelte abstracts away this complexity by using its await blocks
     <p>The inner value is {inner_value}<p>
 {/await}
 ```
-
-# Error handling
