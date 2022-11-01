@@ -8,18 +8,18 @@
 	<link href="/github-blog/_app/immutable/assets/_layout-1a2dd942.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-fdf745fd.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-634d18b4.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-174477ec.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-5c66da16.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-67ec3149.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-b5d6de32.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-929c9fdb.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-cd54725b.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-94f7e982.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-c904887d.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-b138734d.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-4376d651.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-321e95c0.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-b4ffc038.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-6ef75dfa.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-67788015.js">
 	</head>
 	<body>
 		<div>
@@ -31,10 +31,7 @@
 			<li><a href="/github-blog/about" class="svelte-qm05bo">About</a></li></ul></nav>
 </header>
 <div><div class="grid-container svelte-14l03dd"><div class="sides"></div>
-		<div class="article svelte-14l03dd"><h1>Govt Fiscal Position</h1>
-<div>
-		<p>loading..</p>
-	</div>
+		<div class="article svelte-14l03dd"><h1>Javascript Async</h1>
 <h1>async</h1>
 <p>Normal code is <em>synchronous</em>, i.e. it will run sequentially line by line, waiting for code to finish executing before going to the next code.</p>
 <p>Sometimes code has to wait for non-CPU intensive tasks (e.g. calling API), and we want to process other things whilst waiting for these tasks to finish in the background.</p>
@@ -70,7 +67,7 @@ Within the <code>async function</code>, use <code>await</code> before any async 
     console.log(output_as_json)
     return output_as_json
 &#125;</code><!-- HTML_TAG_END --></pre>
-<h1>How to assign value inside promise to a variable?</h1>
+<h1>how to assign value inside promise to a variable?</h1>
 <p>Notice that <code>async</code> functions implicitly wraps its output in a Promise.
 Notice also that you can only use <code>await</code>, which unwraps a Promise, <em>inside</em> <code>async</code> functions.
 How then, do you assign the value inside Promise into a variable?</p>
@@ -83,18 +80,22 @@ runAsyncCode()
         data = inner_value
     &#125;)</code><!-- HTML_TAG_END --></pre>
 <p>You will need to handle the state of <code>data</code> by yourself, and make the DOM show what you want it to show when <code>data</code> is <code>null</code> and also when <code>data</code> is the value of resolved promise.</p>
-<h2>Svelte way</h2>
+<h2>svelte way</h2>
 <p>Svelte abstracts away this complexity by using its await blocks</p>
 <pre class="language-undefined"><!-- HTML_TAG_START --><code class="language-undefined">&#123;#await runAsyncCode()&#125;
     &lt;p&gt;...loading...&lt;p&gt;
 &#123;:then inner_value&#125;
     &lt;p&gt;The inner value is &#123;inner_value&#125;&lt;p&gt;
-&#123;/await&#125;</code><!-- HTML_TAG_END --></pre></div>
+&#123;/await&#125;</code><!-- HTML_TAG_END --></pre>
+<h1>retrieving data from API</h1>
+<div>
+		<p>loading..</p>
+	</div></div>
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="7cujj6">
-		import { start } from "/github-blog/_app/immutable/start-fdf745fd.js";
+		<script type="module" data-sveltekit-hydrate="767qee">
+		import { start } from "/github-blog/_app/immutable/start-634d18b4.js";
 
 		start({
 			env: {},
@@ -108,7 +109,7 @@ runAsyncCode()
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="7cujj6"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="767qee"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>

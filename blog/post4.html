@@ -6,6 +6,8 @@
 		<meta name="viewport" content="width=device-width" />
 		<meta http-equiv="content-security-policy" content="">
 	<link href="/github-blog/_app/immutable/assets/_layout-1a2dd942.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/start-634d18b4.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-67ec3149.js">
@@ -15,7 +17,9 @@
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-c904887d.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/about/_page.svelte-138f7c4d.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-b4ffc038.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-6ef75dfa.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-67788015.js">
 	</head>
 	<body>
 		<div>
@@ -26,11 +30,19 @@
 	<nav><ul class="svelte-qm05bo"><li><a href="/github-blog/blog" class="svelte-qm05bo">Blog</a></li>
 			<li><a href="/github-blog/about" class="svelte-qm05bo">About</a></li></ul></nav>
 </header>
-<div><h1>about</h1>
-<p>solidify learning through writing</p></div>
+<div><div class="grid-container svelte-14l03dd"><div class="sides"></div>
+		<div class="article svelte-14l03dd"><h1>SVG Fundamentals</h1>
+<p>SVG provides elements that describe shapes / curves, similar to how HTML provides elements that describe headers, paragraphs.</p>
+<p>SVG document starts with <code>&lt;svg&gt;</code> root element, and within it you can put various shape elements, and group those together using <code>&lt;g&gt;</code> element.</p>
+<p>SVG is actually an XML language, and therefore:</p>
+<ul><li>elements and attributes are case sensitive</li>
+<li>attribute values must be inside quotes even if they are numbers.</li></ul>
+<p>false</p>
+<svg height="500" width="2000" overflow="auto"></svg></div>
+		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="1apjtqb">
+		<script type="module" data-sveltekit-hydrate="vex6l4">
 		import { start } from "/github-blog/_app/immutable/start-634d18b4.js";
 
 		start({
@@ -38,14 +50,14 @@
 			hydrate: {
 				status: 200,
 				error: null,
-				node_ids: [0, 3],
-				params: {},
-				routeId: "about",
+				node_ids: [0, 5],
+				params: {blogpost:"post4"},
+				routeId: "blog/[blogpost]",
 				data: (function(a){return [a,a]}(null)),
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="1apjtqb"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="vex6l4"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
