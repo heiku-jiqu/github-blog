@@ -1,5 +1,6 @@
 <script>
 	import { xlink_attr } from 'svelte/internal';
+	import { fade } from 'svelte/transition';
 
 	async function fetch_govt_balance_data() {
 		const data_gov_url = 'https://data.gov.sg/api/action/datastore_search';
@@ -23,8 +24,8 @@
 	{#await govt_balance_data_promise}
 		<p>loading..</p>
 	{:then govt_balance_data}
-		{#each govt_balance_data as r}
-			<section>
+		{#each govt_balance_data as r, i}
+			<section in:fade={{ delay: i * 50 }}>
 				Year: {r.year_of_balance} | Balance: {r.amount} | Type: {r.actual_revised_estimated} | Item:
 				{r.item}
 			</section>
