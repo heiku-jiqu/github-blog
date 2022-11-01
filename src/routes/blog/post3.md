@@ -9,8 +9,6 @@ date: '2022-10-13'
 
 # {title}
 
-<GovtBalance/>
-
 # async
 
 Normal code is _synchronous_, i.e. it will run sequentially line by line, waiting for code to finish executing before going to the next code.
@@ -64,7 +62,7 @@ async function runAsyncCode() {
 }
 ```
 
-# How to assign value inside promise to a variable?
+# how to assign value inside promise to a variable?
 
 Notice that `async` functions implicitly wraps its output in a Promise.
 Notice also that you can only use `await`, which unwraps a Promise, _inside_ `async` functions.
@@ -85,7 +83,7 @@ runAsyncCode()
 
 You will need to handle the state of `data` by yourself, and make the DOM show what you want it to show when `data` is `null` and also when `data` is the value of resolved promise.
 
-## Svelte way
+## svelte way
 
 Svelte abstracts away this complexity by using its await blocks
 
@@ -96,3 +94,7 @@ Svelte abstracts away this complexity by using its await blocks
     <p>The inner value is {inner_value}<p>
 {/await}
 ```
+
+# retrieving data from API
+
+<GovtBalance/>
