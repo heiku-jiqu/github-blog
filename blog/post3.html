@@ -8,18 +8,18 @@
 	<link href="/github-blog/_app/immutable/assets/_layout-1a2dd942.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-5b8c00ca.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-8b583aa1.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-174477ec.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-035e3656.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-a08ffd6e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-929c9fdb.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-cd54725b.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-b138734d.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-193acd11.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-1a75c42f.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-fd23c43f.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-ed0ae30f.js">
 	</head>
 	<body>
 		<div>
@@ -34,12 +34,67 @@
 		<div class="article svelte-14l03dd"><h1>Govt Fiscal Position</h1>
 <div>
 		<p>loading..</p>
-	</div></div>
+	</div>
+<h1>async</h1>
+<p>Normal code is <em>synchronous</em>, i.e. it will run sequentially line by line, waiting for code to finish executing before going to the next code.</p>
+<p>Sometimes code has to wait for non-CPU intensive tasks (e.g. calling API), and we want to process other things whilst waiting for these tasks to finish in the background.</p>
+<p>This is where asynchronous programming comes in to help us run things is parallel.</p>
+<h1>async in Javascript</h1>
+<p>Implementations of async programming defers in different programming language, but in Javascript, the most fundamental async type is the <em>Promise</em>.</p>
+<p>A promise short circuits the waiting time by returning a container immediately, allowing the subsequent code to run whilst it wait in the background.
+This container wraps the actual value that the async task will eventually return.</p>
+<p>How do to use the value inside the Promise then?</p>
+<p>Promises have a <code>.then()</code> method that takes a function as an argument.
+This function will be executed once the value has been successfully fulfilled by the Promise, and the value inside the promise will be passed into this function as an argument.</p>
+<pre class="language-undefined"><!-- HTML_TAG_START --><code class="language-undefined">const promise = new Promise((resolve, reject) =&gt; &#123;
+    setTimeout(() =&gt; &#123;
+        resolve(123);
+    &#125;, 300);
+&#125;);
+promise
+    .then((value_in_promise) =&gt; &#123;
+        value_in_promise.json() // this is also an async method that returns Promise!
+    &#125;)
+    .then((value_as_json) =&gt; &#123;
+        console.log(value_as_json)
+    &#125;)</code><!-- HTML_TAG_END --></pre>
+<h1>using async/await</h1>
+<p>Chaining a lot of <code>.then()</code> closures looks ugly.
+Instead, using the <code>async</code> and <code>await</code> syntax helps make it look cleaner, as it lets you write code that is more like normal synchronous code.</p>
+<p><code>async</code> keyword is used to define an <code>async function</code>, which will automatically make the function return a <code>Promise</code>.
+Within the <code>async function</code>, use <code>await</code> before any async expression (i.e. code that returns Promises) to force the code to wait for that expression to finish and <strong>unwrap</strong> the value inside the Promise.
+<code>await</code> can only be used within an <code>async</code> function.</p>
+<pre class="language-undefined"><!-- HTML_TAG_START --><code class="language-undefined">async function runAsyncCode() &#123;
+    let output = await callAsyncApi(); //
+    let output_as_json = await output.json();
+    console.log(output_as_json)
+    return output_as_json
+&#125;</code><!-- HTML_TAG_END --></pre>
+<h1>How to assign value inside promise to a variable?</h1>
+<p>Notice that <code>async</code> functions implicitly wraps its output in a Promise.
+Notice also that you can only use <code>await</code>, which unwraps a Promise, <em>inside</em> <code>async</code> functions.
+How then, do you assign the value inside Promise into a variable?</p>
+<p>You will need to first instantiate a variable, and then assign the Promise’s value once it has been resolved.
+To do this, we can do the assignment within the <code>.then()</code> closure.</p>
+<p>So at the end, <code>async</code>/<code>await</code> is only able to abstract away all the middle <code>.then()</code> closures, but ultimately <code>.then()</code> is still needed in the final step to assign the value to a variable.</p>
+<pre class="language-undefined"><!-- HTML_TAG_START --><code class="language-undefined">let data = null;
+runAsyncCode()
+    .then((inner_value) =&gt; &#123;
+        data = inner_value
+    &#125;)</code><!-- HTML_TAG_END --></pre>
+<h2>Svelte way</h2>
+<p>Svelte abstracts away this complexity by using its await blocks</p>
+<pre class="language-undefined"><!-- HTML_TAG_START --><code class="language-undefined">&#123;#await runAsyncCode()&#125;
+    &lt;p&gt;...loading...&lt;p&gt;
+&#123;:then inner_value&#125;
+    &lt;p&gt;The inner value is &#123;inner_value&#125;&lt;p&gt;
+&#123;/await&#125;</code><!-- HTML_TAG_END --></pre>
+<h1>Error handling</h1></div>
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="lxsrk5">
-		import { start } from "/github-blog/_app/immutable/start-5b8c00ca.js";
+		<script type="module" data-sveltekit-hydrate="76m8kw">
+		import { start } from "/github-blog/_app/immutable/start-8b583aa1.js";
 
 		start({
 			env: {},
@@ -53,7 +108,7 @@
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="lxsrk5"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="76m8kw"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
