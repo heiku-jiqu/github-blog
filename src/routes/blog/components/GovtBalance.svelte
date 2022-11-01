@@ -13,7 +13,7 @@
 
 		const response = await fetch(`${data_gov_url}?${url_search_params}`);
 		const response_json = await response.json();
-		console.log(response_json);
+		// console.log(response_json);
 		return response_json.result.records;
 	}
 
