@@ -26,8 +26,8 @@
 </script>
 
 <p>{rect_hover}</p>
-<svg height="500" width="2000" overflow="auto">
-	{#await filtered_data_promise then filtered_data}
+{#await filtered_data_promise then filtered_data}
+	<svg viewBox="0 0 {filtered_data.length * 50} 500">
 		{#each filtered_data as r, i}
 			<rect
 				in:fade={{ delay: i * 50 }}
@@ -64,5 +64,5 @@
 				</text>
 			{/if}
 		{/each}
-	{/await}
-</svg>
+	</svg>
+{/await}
