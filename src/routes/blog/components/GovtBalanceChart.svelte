@@ -1,6 +1,7 @@
 <script>
 	import { loop_guard, xlink_attr } from 'svelte/internal';
 	import { fade } from 'svelte/transition';
+	import { scaleLinear } from 'd3-scale';
 
 	async function fetch_govt_balance_data() {
 		const data_gov_url = 'https://data.gov.sg/api/action/datastore_search';
@@ -20,8 +21,17 @@
 		let data = await promise;
 		return data.filter((r) => r.item == 'Overall Balance');
 	}
+
+	let yScale = scaleLinear();
+
 	let govt_balance_data_promise = fetch_govt_balance_data();
-	let filtered_data_promise = filter_data(govt_balance_data_promise);
+	let filtered_data_promise = filter_data(govt_balance_data_promise).then((data) => {
+		let yDomain = data.map((r) => r.amount);
+		yScale.domain([Math.min(...yDomain), Math.max(...yDomain)]).range([500, 0]);
+		console.log(Math.max(...yDomain));
+		console.log(data.map((r) => yScale(r.amount)));
+		return data;
+	});
 	let rect_hover = false;
 </script>
 
@@ -31,19 +41,17 @@
 		{#each filtered_data as r, i}
 			<rect
 				in:fade={{ delay: i * 50 }}
-				y="0"
+				y={yScale(Math.max(0, r.amount))}
 				x={0 + i * 50}
 				width="30"
-				height={Math.abs(r.amount) / 100}
+				height={Math.abs(yScale(r.amount) - yScale(0))}
 				on:mouseenter={() => {
-					console.log('before: ', rect_hover);
 					rect_hover = true;
-					console.log(rect_hover);
 				}}
 				on:mouseleave={() => {
 					rect_hover = false;
-					console.log(rect_hover);
 				}}
+				fill={r.amount < 0 ? 'brown' : 'steelblue'}
 			/>
 			{#if rect_hover}
 				<text x={i * 50} y={Math.abs(r.amount) / 100 + 20}>
@@ -57,10 +65,6 @@
 				</text>
 				<text x={i * 50} y={Math.abs(r.amount) / 100 + 50}>
 					Item: {r.item}
-				</text>
-				<text x={i * 50} y={Math.abs(r.amount) / 100 + 60}>
-					Year: {r.year_of_balance} Balance: {r.amount} Type: {r.actual_revised_estimated} Item:
-					{r.item}
 				</text>
 			{/if}
 		{/each}
