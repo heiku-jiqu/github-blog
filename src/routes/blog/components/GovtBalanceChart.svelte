@@ -24,15 +24,17 @@
 
 	let yScale = scaleLinear();
 
+	let rect_hover = null;
+
 	let govt_balance_data_promise = fetch_govt_balance_data();
 	let filtered_data_promise = filter_data(govt_balance_data_promise).then((data) => {
 		let yDomain = data.map((r) => r.amount);
 		yScale.domain([Math.min(...yDomain), Math.max(...yDomain)]).range([500, 0]);
+		rect_hover = yDomain.map(() => false);
 		console.log(Math.max(...yDomain));
 		console.log(data.map((r) => yScale(r.amount)));
 		return data;
 	});
-	let rect_hover = false;
 </script>
 
 <p>{rect_hover}</p>
@@ -46,14 +48,14 @@
 				width="30"
 				height={Math.abs(yScale(r.amount) - yScale(0))}
 				on:mouseenter={() => {
-					rect_hover = true;
+					rect_hover[i] = true;
 				}}
 				on:mouseleave={() => {
-					rect_hover = false;
+					rect_hover[i] = false;
 				}}
 				fill={r.amount < 0 ? 'brown' : 'steelblue'}
 			/>
-			{#if rect_hover}
+			{#if rect_hover[i]}
 				<text x={i * 50} y={Math.abs(r.amount) / 100 + 20}>
 					Year: {r.year_of_balance}
 				</text>
