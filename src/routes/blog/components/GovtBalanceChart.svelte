@@ -22,6 +22,7 @@
 		return data.filter((r) => r.item == 'Overall Balance');
 	}
 
+	let plotMargin = 100;
 	let yScale = scaleLinear();
 
 	let rect_hover = null;
@@ -39,7 +40,10 @@
 
 <p>{rect_hover}</p>
 {#await filtered_data_promise then filtered_data}
-	<svg viewBox="0 0 {filtered_data.length * 50} 500">
+	<svg
+		viewBox="{0 - plotMargin} {0 - plotMargin} {filtered_data.length * 50 + plotMargin} {500 +
+			2 * plotMargin}"
+	>
 		{#each filtered_data as r, i}
 			<rect
 				in:fade={{ delay: i * 50 }}
