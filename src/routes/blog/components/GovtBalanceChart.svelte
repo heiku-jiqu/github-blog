@@ -14,7 +14,6 @@
 
 		const response = await fetch(`${data_gov_url}?${url_search_params}`);
 		const response_json = await response.json();
-		// console.log(response_json);
 		return response_json.result.records;
 	}
 	async function filter_data(promise) {
@@ -37,8 +36,6 @@
 		yScale.domain([Math.min(...yDomain), Math.max(...yDomain)]).range([chartHeight, 0]);
 		xScale.domain(xDomain).range([0, chartWidth]).paddingInner(0.1);
 		rect_hover = yDomain.map(() => false);
-		console.log(Math.max(...yDomain));
-		console.log(data.map((r) => yScale(r.amount)));
 		return data;
 	});
 </script>
@@ -49,6 +46,12 @@
 		viewBox="{0 - plotMargin} {0 - plotMargin} {chartWidth + 2 * plotMargin} {chartHeight +
 			2 * plotMargin}"
 	>
+		{#each yScale.ticks() as tick}
+			<line x2={chartWidth} y1={yScale(tick)} y2={yScale(tick)} stroke="grey" />
+			<text text-anchor="end" dominant-baseline="middle" dx="-10" y={yScale(tick)}>
+				{tick}
+			</text>
+		{/each}
 		{#each filtered_data as r, i}
 			<rect
 				in:fade={{ delay: i * 50 }}
