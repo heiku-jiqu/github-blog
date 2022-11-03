@@ -40,7 +40,6 @@
 	});
 </script>
 
-<p>{rect_hover}</p>
 {#await filtered_data_promise then filtered_data}
 	<svg
 		viewBox="{0 - plotMargin} {0 - plotMargin} {chartWidth + 2 * plotMargin} {chartHeight +
