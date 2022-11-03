@@ -44,7 +44,7 @@
 			<rect
 				in:fade={{ delay: i * 50 }}
 				y={yScale(Math.max(0, r.amount))}
-				x={0 + i * 50}
+				x={i * 50}
 				width="30"
 				height={Math.abs(yScale(r.amount) - yScale(0))}
 				on:mouseenter={() => {
@@ -55,17 +55,35 @@
 				}}
 				fill={r.amount < 0 ? 'brown' : 'steelblue'}
 			/>
+		{/each}
+		{#each filtered_data as r, i}
 			{#if rect_hover[i]}
-				<text x={i * 50} y={Math.abs(r.amount) / 100 + 20}>
+				<text
+					x={i * 50}
+					y={r.amount > 0 ? yScale(r.amount) - 10 : yScale(r.amount) + 10}
+					dominant-baseline={r.amount > 0 ? 'baseline' : 'hanging'}
+				>
 					Year: {r.year_of_balance}
 				</text>
-				<text x={i * 50} y={Math.abs(r.amount) / 100 + 30}>
+				<text
+					x={i * 50}
+					y={r.amount > 0 ? yScale(r.amount) - 24 : yScale(r.amount) + 24}
+					dominant-baseline={r.amount > 0 ? 'baseline' : 'hanging'}
+				>
 					Balance: {r.amount}
 				</text>
-				<text x={i * 50} y={Math.abs(r.amount) / 100 + 40}>
+				<text
+					x={i * 50}
+					y={r.amount > 0 ? yScale(r.amount) - 38 : yScale(r.amount) + 38}
+					dominant-baseline={r.amount > 0 ? 'baseline' : 'hanging'}
+				>
 					Type: {r.actual_revised_estimated}
 				</text>
-				<text x={i * 50} y={Math.abs(r.amount) / 100 + 50}>
+				<text
+					x={i * 50}
+					y={r.amount > 0 ? yScale(r.amount) - 52 : yScale(r.amount) + 52}
+					dominant-baseline={r.amount > 0 ? 'baseline' : 'hanging'}
+				>
 					Item: {r.item}
 				</text>
 			{/if}
