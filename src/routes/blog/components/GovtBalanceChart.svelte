@@ -23,6 +23,7 @@
 	}
 
 	let plotMargin = 100;
+	let chartHeight = 600;
 	let yScale = scaleLinear();
 
 	let rect_hover = null;
@@ -30,7 +31,7 @@
 	let govt_balance_data_promise = fetch_govt_balance_data();
 	let filtered_data_promise = filter_data(govt_balance_data_promise).then((data) => {
 		let yDomain = data.map((r) => r.amount);
-		yScale.domain([Math.min(...yDomain), Math.max(...yDomain)]).range([500, 0]);
+		yScale.domain([Math.min(...yDomain), Math.max(...yDomain)]).range([chartHeight, 0]);
 		rect_hover = yDomain.map(() => false);
 		console.log(Math.max(...yDomain));
 		console.log(data.map((r) => yScale(r.amount)));
