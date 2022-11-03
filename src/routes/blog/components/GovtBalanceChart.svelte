@@ -41,8 +41,8 @@
 <p>{rect_hover}</p>
 {#await filtered_data_promise then filtered_data}
 	<svg
-		viewBox="{0 - plotMargin} {0 - plotMargin} {filtered_data.length * 50 + plotMargin} {500 +
-			2 * plotMargin}"
+		viewBox="{0 - plotMargin} {0 - plotMargin} {filtered_data.length * 50 +
+			2 * plotMargin} {chartHeight + 2 * plotMargin}"
 	>
 		{#each filtered_data as r, i}
 			<rect
