@@ -1,6 +1,6 @@
 <script>
 	import { loop_guard, xlink_attr } from 'svelte/internal';
-	import { fade } from 'svelte/transition';
+	import { fade, fly } from 'svelte/transition';
 	import { scaleLinear, scaleBand } from 'd3-scale';
 
 	async function fetch_govt_balance_data() {
@@ -40,20 +40,42 @@
 	});
 </script>
 
-{#await filtered_data_promise then filtered_data}
+{#await filtered_data_promise}
+	<svg
+		viewBox="{0 - plotMargin} {0 - plotMargin} {chartWidth + 2 * plotMargin} {chartHeight +
+			2 * plotMargin}"
+	>
+		<path
+			fill="black"
+			d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50"
+		>
+			<animateTransform
+				attributeName="transform"
+				attributeType="XML"
+				type="rotate"
+				dur="1s"
+				from="0 50 50"
+				to="360 50 50"
+				repeatCount="indefinite"
+			/>
+		</path>
+	</svg>
+{:then filtered_data}
 	<svg
 		viewBox="{0 - plotMargin} {0 - plotMargin} {chartWidth + 2 * plotMargin} {chartHeight +
 			2 * plotMargin}"
 	>
 		{#each yScale.ticks() as tick}
-			<line x2={chartWidth} y1={yScale(tick)} y2={yScale(tick)} stroke="grey" />
-			<text text-anchor="end" dominant-baseline="middle" dx="-10" y={yScale(tick)}>
-				{tick}
-			</text>
+			<g in:fly={{ x: -200, duration: 1000 }}>
+				<line x2={chartWidth} y1={yScale(tick)} y2={yScale(tick)} stroke="grey" />
+				<text text-anchor="end" dominant-baseline="middle" dx="-10" y={yScale(tick)}>
+					{tick}
+				</text>
+			</g>
 		{/each}
 		{#each filtered_data as r, i}
 			<rect
-				in:fade={{ delay: i * 50 }}
+				in:fade={{ delay: i * 80 }}
 				y={yScale(Math.max(0, r.amount))}
 				x={xScale(r.year_of_balance)}
 				width={xScale.bandwidth()}
