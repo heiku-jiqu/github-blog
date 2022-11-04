@@ -8,18 +8,18 @@
 	<link href="/github-blog/_app/immutable/assets/_layout-1a2dd942.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-0f1acfe6.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-e632dd95.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-67ec3149.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-8fffccec.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-cff0a457.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-94f7e982.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-c904887d.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-4d468433.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-60abbcb6.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-b4ffc038.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-99a3927c.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-2fd83430.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-a70e519b.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-e71a607a.js">
 	</head>
 	<body>
 		<div>
@@ -31,18 +31,79 @@
 			<li><a href="/github-blog/about" class="svelte-qm05bo">About</a></li></ul></nav>
 </header>
 <div><div class="grid-container svelte-14l03dd"><div class="sides"></div>
-		<div class="article svelte-14l03dd"><h1>SVG Fundamentals</h1>
+		<div class="article svelte-14l03dd"><h1>Drawing a Bar Chart</h1>
+<h2>SVG fundamentals</h2>
 <p>SVG provides elements that describe shapes / curves, similar to how HTML provides elements that describe headers, paragraphs.</p>
 <p>SVG document starts with <code>&lt;svg&gt;</code> root element, and within it you can put various shape elements, and group those together using <code>&lt;g&gt;</code> element.</p>
 <p>SVG is actually an XML language, and therefore:</p>
 <ul><li>elements and attributes are case sensitive</li>
 <li>attribute values must be inside quotes even if they are numbers.</li></ul>
+<h3>SVG coordinate system</h3>
+<p>The origin(0,0) starts at the <strong>top left</strong></p>
+<p>The horizontal axis runs from left to right</p>
+<p>The vertical axis runs from <strong>top to bottom</strong></p>
+<h3>SVG viewbox</h3>
+<p>The unit of measurement in the SVG coordinates is by default 1unit = 1px of the device’s screen.
+However, since SVG is scalable, we can change the <em>viewbox</em> attribute of <code>&lt;svg&gt;</code> to (automatically) map SVG’s 1 unit to however big the screen size is.</p>
+<p>For example, defining a SVG canvas: <code>&lt;svg viewBox=&quot;0 0 200 200&quot;&gt;</code>. This translates to setting canvas top left corner to (0,0) and the canvas width and height to be 200. Say the canvas is displayed in a 1000px by 1000px screen, then 1 unit in SVG = 5 px on screen.</p>
+<p>This is useful because you can fix the coordinates of the viewBox, allowing the SVG element sizes to be <em>relative</em> to the viewBox you defined, letting it scale to any screen size.</p>
+<h3>mapping data values to SVG unit values</h3>
+<p>Now we need a way to map the values in our data to the SVG’s coordinate system.
+For example, say our data consists of numbers from 0 to 10, and our SVG’s coordinate system is defined as 0 to 200 pixels. We will need to map the 0 in our data to 0 pixel in SVG, and 5 in our data to 100 pixel in SVG, etc.</p>
+<p>To do this, <code>d3-scale</code> library has a lot of helper functions that can help us generate this mapping function. Specifically, <code>scaleLinear</code> helps returns a linearly interpolating function that maps values between our data and the SVG coordinate.</p>
+<pre class="language-undefined"><!-- HTML_TAG_START --><code class="language-undefined">const interpolateFunction = scaleLinear() // returns a interpolating function
+    .domain([0, 10]) // provide the min and max of our data
+    .range([0, 200]) // provide the min and max of our SVG coords
+
+interpolateFunction(0) // returns 0
+interpolateFunction(5) // returns 100
+interpolateFunction(10) // returns 200</code><!-- HTML_TAG_END --></pre>
+<h3>vertical axis: inverted</h3>
+<p>Above works fine for horizontal axis, but vertical axis is inverted in SVG.
+In other words, the <strong>larger</strong> the y value, the <strong>lower</strong> the point will be shown inside the SVG.
+This is not how normal charts work.
+Luckily there is an easy trick to solve this using <code>scaleLinear()</code>: reverse arguments in <code>.range()</code> method!</p>
+<pre class="language-undefined"><!-- HTML_TAG_START --><code class="language-undefined">const reverseInterpolate = scaleLinear()
+    .domain([0, 10])
+    .range([200, 0]) // Note: elements in array has been swapped!
+
+reverseInterpolate(0) // returns 200
+reverseInterpolate(5) // returns 100
+reverseInterpolate(10) // returns 0</code><!-- HTML_TAG_END --></pre>
+<p>By just swapping the elements in the <code>.range()</code> method, the returned <code>reverseInerpolate</code> function now maps <strong>larger</strong> y value to a <strong>higher</strong> point inside the SVG.</p>
+<h3>horizontal axis: cateogories</h3>
+<p>Horizontal axis for bar charts are usually categorical variables. This means using <code>scaleLinear()</code> does not make sense.
+<code>d3-scale</code> provides another helper function, <code>scaleBand()</code> that will help us interpolate the horizontal positions of the bars.
+The returned function will give us the horizontal position of the <em>left</em> side of the bar (i.e. the start of the bar)</p>
+<pre class="language-undefined"><!-- HTML_TAG_START --><code class="language-undefined">const categoricalInterpolate = scaleBand()
+    .domain([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]) // provide array of your categories
+    .range([0, 200]) // provide min and max of your SVG coords
+    // optionally set the gaps between bars
+    // as a proportion of width of bar, 0 to 1
+    reverseInterpolate(yData) - reverseInterpolate(0)
+    // optionally set the gaps to the left and right of the first and last bar
+    // as a proportion of width of bar, 0 to 1
+    .paddingOuter(0.5)
+
+categoricalInterpolate(&#39;a&#39;) // returns position of left side of the &#39;a&#39; bar
+categoricalInterpolate.step() // returns the length between start of 2 consecutive bars
+categoricalInterpoalte.bandwidth() // returns the width of the bar</code><!-- HTML_TAG_END --></pre>
+<h3>drawing bars</h3>
+<p>We can draw bars with <code>&lt;rect&gt;</code> svg element.
+This element requires us to specify the rectangle’s top left position <code>x</code> and <code>y</code>, the <code>height</code> (how far down), and the <code>width</code> (how far right).</p>
+<p>We can determine the 4 properties for each data point <code>(xData, yData)</code> with the two <code>d3-scale</code> interpolating functions we have created:</p>
+<ul><li><code>x</code> = <code>categoricalInterpolate(xData)</code></li>
+<li><code>width</code> = <code>categoricalInterpolate.bandwidth()</code></li>
+<li><code>y</code> = <code>reverseInterpolate(yData)</code><ul><li>to handle negative <code>yData</code>, use <code>reverseInterpolate(Math.max(0, yData))</code> to get the yData position if its positive, or the x-axis position if yData is negative</li></ul></li>
+<li><code>height</code> = <code>reverseInterpolate(yData) - reverseInterpolate(0)</code><ul><li>to handle negative <code>yData</code>, use <code>Math.abs(reverseInterpolate(yData) - reverseInterpolate(0))</code> to get distance between tip of bar and x-axis</li></ul></li></ul>
+
+	<svg viewBox="-100 -100 1000 800"><path fill="black" d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50"><animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s" from="0 50 50" to="360 50 50" repeatCount="indefinite"></animateTransform></path></svg>
 </div>
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="jmqcwf">
-		import { start } from "/github-blog/_app/immutable/start-0f1acfe6.js";
+		<script type="module" data-sveltekit-hydrate="adoxva">
+		import { start } from "/github-blog/_app/immutable/start-e632dd95.js";
 
 		start({
 			env: {},
@@ -56,7 +117,7 @@
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="jmqcwf"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="adoxva"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
