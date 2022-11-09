@@ -1,5 +1,4 @@
 <script>
-	import { loop_guard, xlink_attr } from 'svelte/internal';
 	import { fade, fly } from 'svelte/transition';
 	import { scaleLinear, scaleBand } from 'd3-scale';
 
