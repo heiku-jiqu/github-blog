@@ -1,0 +1,1 @@
+async function c(){const a="https://data.gov.sg/api/action/datastore_search",s={resource_id:"98856a60-33cd-482a-9dc4-1ed52e562d5d",q:"balance"};let e=new URLSearchParams(s);return(await(await fetch(`${a}?${e}`)).json()).result.records}export{c as f};
