@@ -25,8 +25,19 @@
 		rect_hover = yDomain.map(() => false);
 		return data;
 	});
+
+	// get mouse position in svg coordinate
+	let svg;
+	let svg_point;
+	function toSVGPoint(svg, screenX, screenY) {
+		let p = new DOMPoint();
+		p.x = screenX;
+		p.y = screenY;
+		return p.matrixTransform(svg.getScreenCTM().inverse());
+	}
 </script>
 
+<svelte:window />
 {#await filtered_data_promise}
 	<svg
 		viewBox="{0 - plotMargin} {0 - plotMargin} {chartWidth + 2 * plotMargin} {chartHeight +
@@ -51,6 +62,12 @@
 	<svg
 		viewBox="{0 - plotMargin} {0 - plotMargin} {chartWidth + 2 * plotMargin} {chartHeight +
 			2 * plotMargin}"
+		bind:this={svg}
+		on:mousemove={(e) => {
+			if (svg) {
+				svg_point = toSVGPoint(svg, e.clientX, e.clientY);
+			}
+		}}
 	>
 		{#each yScale.ticks() as tick}
 			<g in:fly={{ x: -200, duration: 1000 }}>
@@ -79,34 +96,39 @@
 		{#each filtered_data as r, i}
 			{#if rect_hover[i]}
 				<text
-					x={xScale(r.year_of_balance)}
-					y={r.amount > 0 ? yScale(r.amount) - 10 : yScale(r.amount) + 10}
+					x={Math.min(svg_point.x, chartWidth - 120)}
+					y={r.amount > 0 ? svg_point.y - 10 : svg_point.y + 20}
 					dominant-baseline={r.amount > 0 ? 'baseline' : 'hanging'}
 				>
 					Year: {r.year_of_balance}
 				</text>
 				<text
-					x={xScale(r.year_of_balance)}
-					y={r.amount > 0 ? yScale(r.amount) - 24 : yScale(r.amount) + 24}
+					x={Math.min(svg_point.x, chartWidth - 120)}
+					y={r.amount > 0 ? svg_point.y - 24 : svg_point.y + 34}
 					dominant-baseline={r.amount > 0 ? 'baseline' : 'hanging'}
 				>
 					Balance: {r.amount}
 				</text>
 				<text
-					x={xScale(r.year_of_balance)}
-					y={r.amount > 0 ? yScale(r.amount) - 38 : yScale(r.amount) + 38}
+					x={Math.min(svg_point.x, chartWidth - 120)}
+					y={r.amount > 0 ? svg_point.y - 38 : svg_point.y + 48}
 					dominant-baseline={r.amount > 0 ? 'baseline' : 'hanging'}
 				>
 					Type: {r.actual_revised_estimated}
 				</text>
 				<text
-					x={xScale(r.year_of_balance)}
-					y={r.amount > 0 ? yScale(r.amount) - 52 : yScale(r.amount) + 52}
+					x={Math.min(svg_point.x, chartWidth - 120)}
+					y={r.amount > 0 ? svg_point.y - 52 : svg_point.y + 62}
 					dominant-baseline={r.amount > 0 ? 'baseline' : 'hanging'}
 				>
 					Item: {r.item}
 				</text>
 			{/if}
 		{/each}
+		<!--{#if svg_point}
+			{console.log(svg_point)}
+			<circle cx={svg_point.x} cy={svg_point.y} r="50" fill="red" />
+		{/if}
+		-->
 	</svg>
 {/await}
