@@ -128,10 +128,5 @@
 				</text>
 			{/if}
 		{/each}
-		<!--{#if svg_point}
-			{console.log(svg_point)}
-			<circle cx={svg_point.x} cy={svg_point.y} r="50" fill="red" />
-		{/if}
-		-->
 	</svg>
 {/await}
