@@ -29,11 +29,11 @@
 	// get mouse position in svg coordinate
 	let svg;
 	let svg_point;
-	function toSVGPoint(svg, screenX, screenY) {
+	function toSVGPoint(svg, clientX, clientY) {
 		let p = new DOMPoint(); // use DOMPoint for matrixTransform method
 		// set where the point is currently at
-		p.x = screenX;
-		p.y = screenY;
+		p.x = clientX;
+		p.y = clientY;
 		// svg object has a method getScreenCTM() to returns a matrix that can transform from SVG coords Screen coords
 		// this matrix can then be inversed to transform Screen coords to SVG coords
 		return p.matrixTransform(svg.getScreenCTM().inverse());
