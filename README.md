@@ -29,5 +29,5 @@ Preview production build: `npm run preview`
 
 # TODO:
 
-- Create chart of GovtBalance
+- Create line chart
 - Implement mdsvex layout (can force no layout also with layout:false in front matter)
