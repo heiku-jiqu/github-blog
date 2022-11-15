@@ -1,12 +1,16 @@
 <script>
 	export let data;
 	import { base } from '$app/paths';
+
+	let posts_earliest_first = data.posts.sort((a, b) => {
+		return new Date(b.meta.date) - new Date(a.meta.date);
+	});
 </script>
 
 <h1>blogposts</h1>
 
 <ul>
-	{#each data.posts as post}
+	{#each posts_earliest_first as post}
 		<li>
 			<h2>
 				<a href={base + post.path}>
