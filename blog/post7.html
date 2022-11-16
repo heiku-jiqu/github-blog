@@ -31,27 +31,11 @@
 			<li><a href="/github-blog/about" class="svelte-qm05bo">About</a></li></ul></nav>
 </header>
 <div><div class="grid-container svelte-14l03dd"><div class="sides"></div>
-		<div class="article svelte-14l03dd"><h1>Converting Coordinates to Different Coordinate System</h1>
-<h2>Motivation</h2>
-<p>Javascript DOM events lets you capture mouse position relative to top left corner of your viewport through <code>clientX</code>/<code>clientY</code> event properties.</p>
-<p>If you are drawing SVGs and need to position SVG elements in on the mouse pointer, you will need to convert the coordinates given by <code>clientX</code>/<code>clientY</code> into the SVG’s coordinates.</p>
-<h2>Solution</h2>
-<p>You will need 3 things: - The <code>clientX</code> and <code>clientY</code> properties from the <code>MouseEvent</code> - A <code>DOMPoint</code> object created using <code>DOMPoint()</code>, or <code>SVGPoint</code> object - Reference to the <code>&lt;svg&gt;</code> node</p>
-<pre class="language-undefined"><!-- HTML_TAG_START --><code class="language-undefined">// Create a new DOMPoint object with clientX and clientY as its x and y coordinate
-let p = DOMPoint(event.clientX, event.clientY)
-
-// Create a DOMMatrix that transforms screen coordinates to SVG coordinates
-let transform_matrix = svg.getScreenCTM().inverse()
-
-// Use the matrix in DOMPoint.matrixTransform()
-let new_point = p.matrixTransform(transform_matrix)
-
-console.log(new_point.x, new_point.y)</code><!-- HTML_TAG_END --></pre>
-<p><code>CTM</code> stands for Current Transformation Matrix, and maps the local coordinate system into the viewport coordinate system. However, since we want the opposite, we have to call <code>.inverse()</code> to inverse the matrix to get the opposite effect.</p></div>
+		<div class="article svelte-14l03dd"><h1>Drawing a Line Chart</h1></div>
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="1f57g78">
+		<script type="module" data-sveltekit-hydrate="182rszm">
 		import { start } from "/github-blog/_app/immutable/start-a9d1ef42.js";
 
 		start({
@@ -60,13 +44,13 @@ console.log(new_point.x, new_point.y)</code><!-- HTML_TAG_END --></pre>
 				status: 200,
 				error: null,
 				node_ids: [0, 5],
-				params: {blogpost:"post6"},
+				params: {blogpost:"post7"},
 				routeId: "blog/[blogpost]",
 				data: (function(a){return [a,a]}(null)),
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="1f57g78"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="182rszm"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
