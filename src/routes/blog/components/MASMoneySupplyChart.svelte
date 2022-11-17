@@ -42,6 +42,8 @@
 	$: if (yAxis) {
 		select(yAxis).call(axisLeft(yScale));
 	}
+
+	let linehover = false;
 </script>
 
 <h1>Line Chart</h1>
@@ -50,9 +52,23 @@
 	loading...
 {:then value}
 	<svg viewBox="0 0 {plotWidth} {plotHeight}">
-		<path d={drawn_line(value)} stroke="steelblue" stroke-width="2" fill="none" />
+		<path
+			d={drawn_line(value)}
+			stroke="steelblue"
+			stroke-width="2"
+			fill="none"
+			on:mouseenter={() => (linehover = true)}
+			on:mouseleave={() => (linehover = false)}
+			class:linehover
+		/>
 		<g bind:this={xAxis} transform="translate(0, {plotHeight - plotMargin + 10})" />
 		<g bind:this={yAxis} transform="translate({plotMargin - 10}, 0)" />
 	</svg>
 	{value.map((x) => JSON.stringify(x))}
 {/await}
+
+<style>
+	.linehover {
+		stroke-width: 4;
+	}
+</style>
