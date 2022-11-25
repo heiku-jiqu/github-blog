@@ -7,6 +7,9 @@ date: '2022-11-16'
 
 <script>
     import MASMoneySupplyChart from './components/MASMoneySupplyChart.svelte';
+    import MASMoneySupplyChartMultiLine from './components/MASMoneySupplyChartMultiLine.svelte';
 </script>
 
 <MASMoneySupplyChart/>
+
+<MASMoneySupplyChartMultiLine/>
