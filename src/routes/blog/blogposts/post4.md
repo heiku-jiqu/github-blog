@@ -81,13 +81,12 @@ The returned function will give us the horizontal position of the _left_ side of
 const categoricalInterpolate = scaleBand()
 	.domain(['a', 'b', 'c']) // provide array of your categories
 	.range([0, 200]); // provide min and max of your SVG coords
-// optionally set the gaps between bars
-// as a proportion of width of bar, 0 to 1
-reverseInterpolate(yData) -
-	reverseInterpolate(0)
-		// optionally set the gaps to the left and right of the first and last bar
-		// as a proportion of width of bar, 0 to 1
-		.paddingOuter(0.5);
+    // optionally set the gaps between bars
+    // as a proportion of width of bar, 0 to 1
+    .paddingInner(0)
+	// optionally set the gaps to the left and right of the first and last bar
+	// as a proportion of width of bar, 0 to 1
+	.paddingOuter(0.5);
 
 categoricalInterpolate('a'); // returns position of left side of the 'a' bar
 categoricalInterpolate.step(); // returns the length between start of 2 consecutive bars
