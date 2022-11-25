@@ -30,7 +30,4 @@ Preview production build: `npm run preview`
 # TODO:
 
 - Create line chart
-- Move `post*.md` files to `routes/blog/[blogpost]/blogposts/`
-  - Change `routes/api/posts/+server.js`
-  - Change `routes/blog/[blogpost]/+page.js`
 - Implement mdsvex layout (can force no layout also with layout:false in front matter)
