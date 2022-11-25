@@ -4,26 +4,28 @@
 		<meta charset="utf-8" />
 		<link rel="icon" href="/github-blog/favicon.png" />
 		<meta name="viewport" content="width=device-width" />
-		<meta http-equiv="content-security-policy" content="">
-	<link href="/github-blog/_app/immutable/assets/_layout-1a2dd942.css" rel="stylesheet">
+		<meta http-equiv="content-security-policy" content=""><link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-gruvbox-light.min.css" rel="stylesheet" data-svelte="svelte-uyunbu">
+	<link href="/github-blog/_app/immutable/assets/_layout-43f8ec53.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-a4591204.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-09d4ff73.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-69568d41.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-01ed1eb7.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-c25d92bb.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-aaa6db14.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-c292c457.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-b55a96ef.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-b6d2e42e.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-351449dc.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-6016180f.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-2cc0148b.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-65c508bb.js">
 	</head>
 	<body>
 		<div>
+
+
 
 
 <header class="svelte-qm05bo"><a href="/github-blog/" class="svelte-qm05bo">Home</a>
@@ -44,30 +46,30 @@ This container wraps the actual value that the async task will eventually return
 <p>How do to use the value inside the Promise then?</p>
 <p>Promises have a <code>.then()</code> method that takes a function as an argument.
 This function will be executed once the value has been successfully fulfilled by the Promise, and the value inside the promise will be passed into this function as an argument.</p>
-<pre class="language-undefined"><!-- HTML_TAG_START --><code class="language-undefined">const promise = new Promise((resolve, reject) =&gt; &#123;
-    setTimeout(() =&gt; &#123;
-        resolve(123);
-    &#125;, 300);
-&#125;);
+<pre class="language-js"><!-- HTML_TAG_START --><code class="language-js"><span class="token keyword">const</span> promise <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">resolve<span class="token punctuation">,</span> reject</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+	<span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+		<span class="token function">resolve</span><span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token number">300</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 promise
-    .then((value_in_promise) =&gt; &#123;
-        value_in_promise.json() // this is also an async method that returns Promise!
-    &#125;)
-    .then((value_as_json) =&gt; &#123;
-        console.log(value_as_json)
-    &#125;)</code><!-- HTML_TAG_END --></pre>
+	<span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">value_in_promise</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+		value_in_promise<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// this is also an async method that returns Promise!</span>
+	<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+	<span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">value_as_json</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+		console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>value_as_json<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code><!-- HTML_TAG_END --></pre>
 <h1>using async/await</h1>
 <p>Chaining a lot of <code>.then()</code> closures looks ugly.
 Instead, using the <code>async</code> and <code>await</code> syntax helps make it look cleaner, as it lets you write code that is more like normal synchronous code.</p>
 <p><code>async</code> keyword is used to define an <code>async function</code>, which will automatically make the function return a <code>Promise</code>.
 Within the <code>async function</code>, use <code>await</code> before any async expression (i.e. code that returns Promises) to force the code to wait for that expression to finish and <strong>unwrap</strong> the value inside the Promise.
 <code>await</code> can only be used within an <code>async</code> function.</p>
-<pre class="language-undefined"><!-- HTML_TAG_START --><code class="language-undefined">async function runAsyncCode() &#123;
-    let output = await callAsyncApi(); //
-    let output_as_json = await output.json();
-    console.log(output_as_json)
-    return output_as_json
-&#125;</code><!-- HTML_TAG_END --></pre>
+<pre class="language-js"><!-- HTML_TAG_START --><code class="language-js"><span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">runAsyncCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">let</span> output <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">callAsyncApi</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//</span>
+	<span class="token keyword">let</span> output_as_json <span class="token operator">=</span> <span class="token keyword">await</span> output<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>output_as_json<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> output_as_json<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code><!-- HTML_TAG_END --></pre>
 <h1>how to assign value inside promise to a variable?</h1>
 <p>Notice that <code>async</code> functions implicitly wraps its output in a Promise.
 Notice also that you can only use <code>await</code>, which unwraps a Promise, <em>inside</em> <code>async</code> functions.
@@ -75,19 +77,18 @@ How then, do you assign the value inside Promise into a variable?</p>
 <p>You will need to first instantiate a variable, and then assign the Promise’s value once it has been resolved.
 To do this, we can do the assignment within the <code>.then()</code> closure.</p>
 <p>So at the end, <code>async</code>/<code>await</code> is only able to abstract away all the middle <code>.then()</code> closures, but ultimately <code>.then()</code> is still needed in the final step to assign the value to a variable.</p>
-<pre class="language-undefined"><!-- HTML_TAG_START --><code class="language-undefined">let data = null;
-runAsyncCode()
-    .then((inner_value) =&gt; &#123;
-        data = inner_value
-    &#125;)</code><!-- HTML_TAG_END --></pre>
+<pre class="language-js"><!-- HTML_TAG_START --><code class="language-js"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+<span class="token function">runAsyncCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">inner_value</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+	data <span class="token operator">=</span> inner_value<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code><!-- HTML_TAG_END --></pre>
 <p>You will need to handle the state of <code>data</code> by yourself, and make the DOM show what you want it to show when <code>data</code> is <code>null</code> and also when <code>data</code> is the value of resolved promise.</p>
 <h2>svelte way</h2>
 <p>Svelte abstracts away this complexity by using its await blocks</p>
-<pre class="language-undefined"><!-- HTML_TAG_START --><code class="language-undefined">&#123;#await runAsyncCode()&#125;
-    &lt;p&gt;...loading...&lt;p&gt;
-&#123;:then inner_value&#125;
-    &lt;p&gt;The inner value is &#123;inner_value&#125;&lt;p&gt;
-&#123;/await&#125;</code><!-- HTML_TAG_END --></pre>
+<pre class="language-js"><!-- HTML_TAG_START --><code class="language-js"><span class="token punctuation">&#123;</span>#<span class="token keyword">await</span> <span class="token function">runAsyncCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span>
+    <span class="token operator">&lt;</span>p<span class="token operator">></span><span class="token operator">...</span>loading<span class="token operator">...</span><span class="token operator">&lt;</span>p<span class="token operator">></span>
+<span class="token punctuation">&#123;</span><span class="token operator">:</span>then inner_value<span class="token punctuation">&#125;</span>
+    <span class="token operator">&lt;</span>p<span class="token operator">></span>The inner value is <span class="token punctuation">&#123;</span>inner_value<span class="token punctuation">&#125;</span><span class="token operator">&lt;</span>p<span class="token operator">></span>
+<span class="token punctuation">&#123;</span><span class="token operator">/</span><span class="token keyword">await</span><span class="token punctuation">&#125;</span></code><!-- HTML_TAG_END --></pre>
 <h1>retrieving data from API</h1>
 <div>
 		<p>loading..</p>
@@ -95,8 +96,8 @@ runAsyncCode()
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="767qee">
-		import { start } from "/github-blog/_app/immutable/start-09d4ff73.js";
+		<script type="module" data-sveltekit-hydrate="1bj29x2">
+		import { start } from "/github-blog/_app/immutable/start-69568d41.js";
 
 		start({
 			env: {},
@@ -110,7 +111,7 @@ runAsyncCode()
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="767qee"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="1bj29x2"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>

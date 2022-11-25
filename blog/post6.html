@@ -4,26 +4,28 @@
 		<meta charset="utf-8" />
 		<link rel="icon" href="/github-blog/favicon.png" />
 		<meta name="viewport" content="width=device-width" />
-		<meta http-equiv="content-security-policy" content="">
-	<link href="/github-blog/_app/immutable/assets/_layout-1a2dd942.css" rel="stylesheet">
+		<meta http-equiv="content-security-policy" content=""><link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-gruvbox-light.min.css" rel="stylesheet" data-svelte="svelte-uyunbu">
+	<link href="/github-blog/_app/immutable/assets/_layout-43f8ec53.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-a4591204.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-09d4ff73.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-69568d41.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-01ed1eb7.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-c25d92bb.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-aaa6db14.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-c292c457.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-b55a96ef.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-b6d2e42e.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-351449dc.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-6016180f.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-2cc0148b.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-65c508bb.js">
 	</head>
 	<body>
 		<div>
+
+
 
 
 <header class="svelte-qm05bo"><a href="/github-blog/" class="svelte-qm05bo">Home</a>
@@ -38,22 +40,22 @@
 <p>If you are drawing SVGs and need to position SVG elements in on the mouse pointer, you will need to convert the coordinates given by <code>clientX</code>/<code>clientY</code> into the SVG’s coordinates.</p>
 <h2>Solution</h2>
 <p>You will need 3 things: - The <code>clientX</code> and <code>clientY</code> properties from the <code>MouseEvent</code> - A <code>DOMPoint</code> object created using <code>DOMPoint()</code>, or <code>SVGPoint</code> object - Reference to the <code>&lt;svg&gt;</code> node</p>
-<pre class="language-undefined"><!-- HTML_TAG_START --><code class="language-undefined">// Create a new DOMPoint object with clientX and clientY as its x and y coordinate
-let p = DOMPoint(event.clientX, event.clientY)
+<pre class="language-js"><!-- HTML_TAG_START --><code class="language-js"><span class="token comment">// Create a new DOMPoint object with clientX and clientY as its x and y coordinate</span>
+<span class="token keyword">let</span> p <span class="token operator">=</span> <span class="token function">DOMPoint</span><span class="token punctuation">(</span>event<span class="token punctuation">.</span>clientX<span class="token punctuation">,</span> event<span class="token punctuation">.</span>clientY<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-// Create a DOMMatrix that transforms screen coordinates to SVG coordinates
-let transform_matrix = svg.getScreenCTM().inverse()
+<span class="token comment">// Create a DOMMatrix that transforms screen coordinates to SVG coordinates</span>
+<span class="token keyword">let</span> transform_matrix <span class="token operator">=</span> svg<span class="token punctuation">.</span><span class="token function">getScreenCTM</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">inverse</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-// Use the matrix in DOMPoint.matrixTransform()
-let new_point = p.matrixTransform(transform_matrix)
+<span class="token comment">// Use the matrix in DOMPoint.matrixTransform()</span>
+<span class="token keyword">let</span> new_point <span class="token operator">=</span> p<span class="token punctuation">.</span><span class="token function">matrixTransform</span><span class="token punctuation">(</span>transform_matrix<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-console.log(new_point.x, new_point.y)</code><!-- HTML_TAG_END --></pre>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>new_point<span class="token punctuation">.</span>x<span class="token punctuation">,</span> new_point<span class="token punctuation">.</span>y<span class="token punctuation">)</span><span class="token punctuation">;</span></code><!-- HTML_TAG_END --></pre>
 <p><code>CTM</code> stands for Current Transformation Matrix, and maps the local coordinate system into the viewport coordinate system. However, since we want the opposite, we have to call <code>.inverse()</code> to inverse the matrix to get the opposite effect.</p></div>
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="1f57g78">
-		import { start } from "/github-blog/_app/immutable/start-09d4ff73.js";
+		<script type="module" data-sveltekit-hydrate="17np7e4">
+		import { start } from "/github-blog/_app/immutable/start-69568d41.js";
 
 		start({
 			env: {},
@@ -67,7 +69,7 @@ console.log(new_point.x, new_point.y)</code><!-- HTML_TAG_END --></pre>
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="1f57g78"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="17np7e4"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>

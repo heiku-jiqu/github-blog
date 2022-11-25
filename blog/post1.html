@@ -4,26 +4,28 @@
 		<meta charset="utf-8" />
 		<link rel="icon" href="/github-blog/favicon.png" />
 		<meta name="viewport" content="width=device-width" />
-		<meta http-equiv="content-security-policy" content="">
-	<link href="/github-blog/_app/immutable/assets/_layout-1a2dd942.css" rel="stylesheet">
+		<meta http-equiv="content-security-policy" content=""><link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-gruvbox-light.min.css" rel="stylesheet" data-svelte="svelte-uyunbu">
+	<link href="/github-blog/_app/immutable/assets/_layout-43f8ec53.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-a4591204.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-09d4ff73.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-69568d41.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-01ed1eb7.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-c25d92bb.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-aaa6db14.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-c292c457.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-b55a96ef.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-b6d2e42e.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-351449dc.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-6016180f.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-2cc0148b.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-65c508bb.js">
 	</head>
 	<body>
 		<div>
+
+
 
 
 <header class="svelte-qm05bo"><a href="/github-blog/" class="svelte-qm05bo">Home</a>
@@ -37,10 +39,10 @@
 <code>display: grid</code> and <code>display: flex</code>.</p>
 <p>This post describes how to achieve a responsive layout that will automatically populate components into a parent component such that the number of columns is dynamic. For example, when viewed on larger screens, there will be 5 columns, but when viewed on narrower screens, it will shrink to one column.</p>
 <p>TL;DR:</p>
-<pre class="language-undefined"><!-- HTML_TAG_START --><code class="language-undefined">.grid-container &#123;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr))
-&#125;</code><!-- HTML_TAG_END --></pre>
+<pre class="language-css"><!-- HTML_TAG_START --><code class="language-css"><span class="token selector">.grid-container</span> <span class="token punctuation">&#123;</span>
+	<span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span>
+	<span class="token property">grid-template-columns</span><span class="token punctuation">:</span> <span class="token function">repeat</span><span class="token punctuation">(</span>auto-fill<span class="token punctuation">,</span> <span class="token function">minmax</span><span class="token punctuation">(</span><span class="token function">min</span><span class="token punctuation">(</span>200px<span class="token punctuation">,</span> 100%<span class="token punctuation">)</span><span class="token punctuation">,</span> 1fr<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code><!-- HTML_TAG_END --></pre>
 <h2>display: grid</h2>
 <p>By setting the <em>parent</em> component’s CSS property to <code>display: grid</code>, we are able to control how the <em>child</em> components are arranged. This property itself does not do anything, you will need to specify <em>how</em> the components should be arranged.</p>
 <h2>grid-template-columns</h2>
@@ -64,8 +66,8 @@
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="15t8yqw">
-		import { start } from "/github-blog/_app/immutable/start-09d4ff73.js";
+		<script type="module" data-sveltekit-hydrate="1fbp2vr">
+		import { start } from "/github-blog/_app/immutable/start-69568d41.js";
 
 		start({
 			env: {},
@@ -79,7 +81,7 @@
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="15t8yqw"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="1fbp2vr"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
