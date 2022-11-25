@@ -44,14 +44,14 @@ For example, say our data consists of numbers from 0 to 10, and our SVG's coordi
 
 To do this, `d3-scale` library has a lot of helper functions that can help us generate this mapping function. Specifically, `scaleLinear` helps returns a linearly interpolating function that maps values between our data and the SVG coordinate.
 
-```
+```js
 const interpolateFunction = scaleLinear() // returns a interpolating function
-    .domain([0, 10]) // provide the min and max of our data
-    .range([0, 200]) // provide the min and max of our SVG coords
+	.domain([0, 10]) // provide the min and max of our data
+	.range([0, 200]); // provide the min and max of our SVG coords
 
-interpolateFunction(0) // returns 0
-interpolateFunction(5) // returns 100
-interpolateFunction(10) // returns 200
+interpolateFunction(0); // returns 0
+interpolateFunction(5); // returns 100
+interpolateFunction(10); // returns 200
 ```
 
 ### vertical axis: inverted
@@ -61,14 +61,12 @@ In other words, the **larger** the y value, the **lower** the point will be show
 This is not how normal charts work.
 Luckily there is an easy trick to solve this using `scaleLinear()`: reverse arguments in `.range()` method!
 
-```
-const reverseInterpolate = scaleLinear()
-    .domain([0, 10])
-    .range([200, 0]) // Note: elements in array has been swapped!
+```js
+const reverseInterpolate = scaleLinear().domain([0, 10]).range([200, 0]); // Note: elements in array has been swapped!
 
-reverseInterpolate(0) // returns 200
-reverseInterpolate(5) // returns 100
-reverseInterpolate(10) // returns 0
+reverseInterpolate(0); // returns 200
+reverseInterpolate(5); // returns 100
+reverseInterpolate(10); // returns 0
 ```
 
 By just swapping the elements in the `.range()` method, the returned `reverseInerpolate` function now maps **larger** y value to a **higher** point inside the SVG.
@@ -79,20 +77,21 @@ Horizontal axis for bar charts are usually categorical variables. This means usi
 `d3-scale` provides another helper function, `scaleBand()` that will help us interpolate the horizontal positions of the bars.
 The returned function will give us the horizontal position of the _left_ side of the bar (i.e. the start of the bar)
 
-```
+```js
 const categoricalInterpolate = scaleBand()
-    .domain(['a', 'b', 'c']) // provide array of your categories
-    .range([0, 200]) // provide min and max of your SVG coords
-    // optionally set the gaps between bars
-    // as a proportion of width of bar, 0 to 1
-    reverseInterpolate(yData) - reverseInterpolate(0)
-    // optionally set the gaps to the left and right of the first and last bar
-    // as a proportion of width of bar, 0 to 1
-    .paddingOuter(0.5)
+	.domain(['a', 'b', 'c']) // provide array of your categories
+	.range([0, 200]); // provide min and max of your SVG coords
+// optionally set the gaps between bars
+// as a proportion of width of bar, 0 to 1
+reverseInterpolate(yData) -
+	reverseInterpolate(0)
+		// optionally set the gaps to the left and right of the first and last bar
+		// as a proportion of width of bar, 0 to 1
+		.paddingOuter(0.5);
 
-categoricalInterpolate('a') // returns position of left side of the 'a' bar
-categoricalInterpolate.step() // returns the length between start of 2 consecutive bars
-categoricalInterpoalte.bandwidth() // returns the width of the bar
+categoricalInterpolate('a'); // returns position of left side of the 'a' bar
+categoricalInterpolate.step(); // returns the length between start of 2 consecutive bars
+categoricalInterpoalte.bandwidth(); // returns the width of the bar
 ```
 
 ### drawing bars

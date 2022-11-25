@@ -12,10 +12,10 @@ This post describes how to achieve a responsive layout that will automatically p
 
 TL;DR:
 
-```
+```css
 .grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr))
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
 }
 ```
 

@@ -29,19 +29,19 @@ How do to use the value inside the Promise then?
 Promises have a `.then()` method that takes a function as an argument.
 This function will be executed once the value has been successfully fulfilled by the Promise, and the value inside the promise will be passed into this function as an argument.
 
-```
+```js
 const promise = new Promise((resolve, reject) => {
-    setTimeout(() => {
-        resolve(123);
-    }, 300);
+	setTimeout(() => {
+		resolve(123);
+	}, 300);
 });
 promise
-    .then((value_in_promise) => {
-        value_in_promise.json() // this is also an async method that returns Promise!
-    })
-    .then((value_as_json) => {
-        console.log(value_as_json)
-    })
+	.then((value_in_promise) => {
+		value_in_promise.json(); // this is also an async method that returns Promise!
+	})
+	.then((value_as_json) => {
+		console.log(value_as_json);
+	});
 ```
 
 # using async/await
@@ -53,12 +53,12 @@ Instead, using the `async` and `await` syntax helps make it look cleaner, as it 
 Within the `async function`, use `await` before any async expression (i.e. code that returns Promises) to force the code to wait for that expression to finish and **unwrap** the value inside the Promise.
 `await` can only be used within an `async` function.
 
-```
+```js
 async function runAsyncCode() {
-    let output = await callAsyncApi(); //
-    let output_as_json = await output.json();
-    console.log(output_as_json)
-    return output_as_json
+	let output = await callAsyncApi(); //
+	let output_as_json = await output.json();
+	console.log(output_as_json);
+	return output_as_json;
 }
 ```
 
@@ -73,12 +73,11 @@ To do this, we can do the assignment within the `.then()` closure.
 
 So at the end, `async`/`await` is only able to abstract away all the middle `.then()` closures, but ultimately `.then()` is still needed in the final step to assign the value to a variable.
 
-```
+```js
 let data = null;
-runAsyncCode()
-    .then((inner_value) => {
-        data = inner_value
-    })
+runAsyncCode().then((inner_value) => {
+	data = inner_value;
+});
 ```
 
 You will need to handle the state of `data` by yourself, and make the DOM show what you want it to show when `data` is `null` and also when `data` is the value of resolved promise.
@@ -87,7 +86,7 @@ You will need to handle the state of `data` by yourself, and make the DOM show w
 
 Svelte abstracts away this complexity by using its await blocks
 
-```
+```js
 {#await runAsyncCode()}
     <p>...loading...<p>
 {:then inner_value}

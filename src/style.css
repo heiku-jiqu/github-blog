@@ -35,6 +35,9 @@ main {
 	margin: 2rem auto;
 	max-width: 40rem;
 }
+pre {
+	overflow-x: auto
+}
 code{
 	font-size: 1.1rem;
 	color: var(--terra-cotta);

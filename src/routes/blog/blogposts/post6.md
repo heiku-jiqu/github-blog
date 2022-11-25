@@ -15,17 +15,17 @@ If you are drawing SVGs and need to position SVG elements in on the mouse pointe
 
 You will need 3 things: - The `clientX` and `clientY` properties from the `MouseEvent` - A `DOMPoint` object created using `DOMPoint()`, or `SVGPoint` object - Reference to the `<svg>` node
 
-```
+```js
 // Create a new DOMPoint object with clientX and clientY as its x and y coordinate
-let p = DOMPoint(event.clientX, event.clientY)
+let p = DOMPoint(event.clientX, event.clientY);
 
 // Create a DOMMatrix that transforms screen coordinates to SVG coordinates
-let transform_matrix = svg.getScreenCTM().inverse()
+let transform_matrix = svg.getScreenCTM().inverse();
 
 // Use the matrix in DOMPoint.matrixTransform()
-let new_point = p.matrixTransform(transform_matrix)
+let new_point = p.matrixTransform(transform_matrix);
 
-console.log(new_point.x, new_point.y)
+console.log(new_point.x, new_point.y);
 ```
 
 `CTM` stands for Current Transformation Matrix, and maps the local coordinate system into the viewport coordinate system. However, since we want the opposite, we have to call `.inverse()` to inverse the matrix to get the opposite effect.
