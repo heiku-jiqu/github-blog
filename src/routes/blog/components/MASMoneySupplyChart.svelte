@@ -48,10 +48,13 @@
 
 <h1>Line Chart</h1>
 
-{#await data_promise}
-	loading...
-{:then value}
-	<svg viewBox="0 0 {plotWidth} {plotHeight}">
+<svg viewBox="0 0 {plotWidth} {plotHeight}">
+	<text x={plotMargin / 2} y={plotMargin - 20}>Plot of a line chart</text>
+	{#await data_promise}
+		<text x={(plotWidth - plotMargin) / 2} y={plotHeight / 2} font-size="60" text-anchor="middle"
+			>loading...</text
+		>
+	{:then value}
 		<path
 			d={drawn_line(value)}
 			stroke="steelblue"
@@ -63,9 +66,8 @@
 		/>
 		<g bind:this={xAxis} transform="translate(0, {plotHeight - plotMargin + 10})" />
 		<g bind:this={yAxis} transform="translate({plotMargin - 10}, 0)" />
-	</svg>
-	{value.map((x) => JSON.stringify(x))}
-{/await}
+	{/await}
+</svg>
 
 <style>
 	.linehover {
