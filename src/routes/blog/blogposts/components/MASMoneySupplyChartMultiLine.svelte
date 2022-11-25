@@ -4,6 +4,7 @@
 	import { line } from 'd3-shape';
 	import { axisBottom, axisLeft } from 'd3-axis';
 	import { select } from 'd3-selection';
+	import { loop_guard } from 'svelte/internal';
 
 	let plotWidth = 600;
 	let plotHeight = 800;
@@ -23,9 +24,7 @@
 		xScale
 			.domain([Math.min(...xValues), Math.max(...xValues)])
 			.range([plotMargin, plotWidth - plotMargin]);
-		yScale
-			.domain([Math.min(...yValues), Math.max(...yValues)])
-			.range([plotHeight - plotMargin, plotMargin]);
+		yScale.domain([10000, Math.max(...yValues)]).range([plotHeight - plotMargin, plotMargin]);
 
 		drawn_line = line()
 			.x((d) => xScale(new Date(d.end_of_month)))
@@ -54,15 +53,18 @@
 			>loading...</text
 		>
 	{:then value}
-		<path
-			d={drawn_line(value)}
-			stroke="steelblue"
-			stroke-width="2"
-			fill="none"
-			on:mouseenter={() => (linehover = true)}
-			on:mouseleave={() => (linehover = false)}
-			class:linehover
-		/>
+		{#each Object.keys(value[0]).filter((d) => ['m1', 'm2', 'm3'].includes(d)) as category}
+			{console.log(category)}
+			<path
+				d={drawn_line.y((d) => yScale(d[category]))(value)}
+				stroke="steelblue"
+				stroke-width="2"
+				fill="none"
+				on:mouseenter={() => (linehover = true)}
+				on:mouseleave={() => (linehover = false)}
+				class:linehover
+			/>
+		{/each}
 		<g bind:this={xAxis} transform="translate(0, {plotHeight - plotMargin + 10})" />
 		<g bind:this={yAxis} transform="translate({plotMargin - 10}, 0)" />
 	{/await}
