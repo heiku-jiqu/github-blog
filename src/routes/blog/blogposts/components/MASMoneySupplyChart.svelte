@@ -46,7 +46,7 @@
 	let linehover = false;
 </script>
 
-<h1>Line Chart</h1>
+<h2>Line Chart</h2>
 
 <svg viewBox="0 0 {plotWidth} {plotHeight}">
 	<text x={plotMargin / 2} y={plotMargin - 20}>Plot of a line chart</text>
