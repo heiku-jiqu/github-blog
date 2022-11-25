@@ -3,7 +3,6 @@
 	import { scaleLog, scaleTime } from 'd3-scale';
 	import { line } from 'd3-shape';
 	import { axisBottom, axisLeft } from 'd3-axis';
-	import { select_multiple_value } from 'svelte/internal';
 	import { select } from 'd3-selection';
 
 	let plotWidth = 600;
