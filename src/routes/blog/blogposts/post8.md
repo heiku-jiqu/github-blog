@@ -67,25 +67,90 @@ Think of docker compose as a tool for Proof-of-concepts as it does not help you 
 
 #### FROM
 
+All dockerfile starts with the `FROM` command. It pulls the base image from Dockerhub to start to build your image.
+
+```{dockerfile}
+FROM apache/spark
+
+# to specify a tag
+FROM apache/spark:3.3.1
+```
+
 #### RUN
+
+Runs a command or executable. It has two forms
+
+```{dockerfile}
+# Shell form (defaults to /bin/sh -c on Linux or cmd /S /C on Windows)
+RUN <command>
+
+# Exec form
+RUN ["executable", "param1", "param2"]
+```
 
 #### CMD
 
+Provides defaults for an executing container
+
+```
+CMD ["executable", "param1", "param2"] # exec form
+CMD ["param1", "param2"] # default parameters to ENTRYPOINT
+CMD command param1 param2 # shell form
+```
+
 #### ENTRYPOINT
+
+Configures a container that will run as an executable.
+CMD will append its commands after ENTRYPOINT.
+Setting ENTRYPOINT in your image will reset CMD from base image, so you need to redefine the CMD again.
 
 #### COPY
 
+Copies file from your native host into the container image.
+
+```
+COPY <src> <dest>
+COPY ["<src>", ... "<dest>"] # used when there are spaces in path
+```
+
+`<src>` path must be inside context of the build!
+
 #### ADD
+
+Copies file from your native host into the container image.
+It has added utilities like being able to download files from URLs, and extracting contents of `.tar` files before copying into image.
+
+**tip: use COPY as default, unless you need additional features of ADD**
 
 #### ENV
 
+Sets an environment variable
+
+```
+ENV <key>=<value>
+```
+
 #### EXPOSE
+
+```
+EXPOSE <port> [<port>/<protocol>]
+```
+
+Instructs Docker that container should listen on specified network ports at runtime.
+Ports are not automatically published, and is intended to serve as a type of documentation between image builder and image runner.
+To publish port on run time, use `-P` flag, or `-p` to explicitly map ports from containers to your localhost.
 
 #### VOLUME
 
+Creates a mount point at the directory specified and marks that directory as an external drive from native host (i.e. computer running the docker daemon) or other containers.
+
 #### WORKDIR
 
+Sets working directory for any `RUN`, `CMD`, `ENTRYPOINT`, `COPY`, `ADD` instructions.
+
 #### ARG
+
+Defines a variable that users can pass at during `docker build`
 
 #### ONBUILD
 
@@ -97,4 +162,17 @@ Think of docker compose as a tool for Proof-of-concepts as it does not help you 
 
 #### USER
 
+```
+USER <user>
+USER <UID>
+```
+
+Sets the username/UID to use for the remainder of the Docker build stage.
+This is important for security as Docker by default runs the container in root user if not specified by your image nor parent image.
+Root user has UID=0.
+
 #### LABEL
+
+```
+
+```
