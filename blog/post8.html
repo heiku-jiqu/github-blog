@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="/github-blog/favicon.png" />
+		<meta name="viewport" content="width=device-width" />
+		<meta http-equiv="content-security-policy" content=""><link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-gruvbox-light.min.css" rel="stylesheet" data-svelte="svelte-uyunbu">
+	<link href="/github-blog/_app/immutable/assets/_layout-43f8ec53.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/post7-a4591204.css" rel="stylesheet">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-63716f19.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-e076e56c.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-626bb875.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-088da14f.js">
+	</head>
+	<body>
+		<div>
+
+
+
+
+<header class="svelte-qm05bo"><a href="/github-blog/" class="svelte-qm05bo">Home</a>
+
+	<nav><ul class="svelte-qm05bo"><li><a href="/github-blog/blog" class="svelte-qm05bo">Blog</a></li>
+			<li><a href="/github-blog/about" class="svelte-qm05bo">About</a></li></ul></nav>
+</header>
+<div><div class="grid-container svelte-14l03dd"><div class="sides"></div>
+		<div class="article svelte-14l03dd"><h1>Docker Intro</h1>
+<p>Docker is a platform that containerizes applications, and runs those containers. This allows developers to decouple applications from infrastructure.</p>
+<p>For example, if you were building an app that requires a specific OS and/or external dependencies that are required to run your app (e.g. PostgreSQL, nginx, etc.), you can bundle it all up into a container.
+This allows different people/environments to run the app (container) with just Docker as its dependency, instead of having to deal with having the correct OS, correct external dependencies, etc.</p>
+<h2>key concepts</h2>
+<h3>Docker images</h3>
+<p>Images are templates with instructions for creating containers.
+These instructions include what dependencies to install, setting environment and config variables, running any setup scripts, etc.</p>
+<p>Images are often build on top of one another</p>
+<ul><li>e.g. you start with <code>ubuntu</code> image, install <code>python</code> in that ubuntu image, install <code>pytorch</code> package, install pretrained models.</li>
+<li>or you can start with a published <code>python</code> image, and install your packages there.</li></ul>
+<p>Published images are available for download in Docker registries.</p>
+<h4>Dockerfile</h4>
+<p><code>Dockerfile</code>s are text files that describe the instructions needed to build the image. It uses its own syntax to define every instruction to be executed to build the image.</p>
+<h3>Docker containers</h3>
+<p>Containers are runnable instance of an image, and are created from an image. You can then start/stop/delete or manage the container however you like.
+You can run multiple containers using the same image, and you can specify different configurations when running containers (on top of what is already specified in your image!).
+For example, you can run two different node web server containers from the same <code>nodejs</code> image, but one exposes port 8888 and another exposes port 8899.</p>
+<h3>Docker registries</h3>
+<p>Docker registries are where you find published docker images, akin to pypi / CRAN / crates.io.</p>
+<h3>Docker daemon</h3>
+<p>This is the underlying <code>dockerd</code> process that helps you build images and run containers. It will listen for Docker API requests</p>
+<h3>Docker client</h3>
+<p>The docker client <code>docker</code> is a “front-end” CLI that the user uses to interact with the Docker daemon. Running a <code>docker</code> command sends Docker API requests to <code>dockerd</code>.</p>
+<h3>Docker compose</h3>
+<p>Docker compose is a tool that helps with running <em>multi-container</em> Docker applications. You can specify how your multi-container app will need to be setup in a YAML file.</p>
+<p>For example, your app requires a web server container, postgres container and mongodb container. Instead of installing all of those dependencies into one giant container, you split them up and scaffold them in your YAML file. This allows you to isolate your environments, and independently scale each service.</p>
+<h4>Difference between Kubernetes</h4>
+<p>Both docker compose and kubernetes ‘bundles’ multi-container applications. However, the key difference is docker compose is run on a <em>single-node</em>, whereas Kubernetes is a full multi-node container manager.</p>
+<p>Think of docker compose as a tool for Proof-of-concepts as it does not help you solve the engineering and operational challenges of running a multi-container application in production environments. For example, what happens when one of your container goes down? Or if your entire node goes down? Kubernetes will automatically spin up a new one for you whilst docker compose will not.</p>
+<h2>Dockerfile</h2>
+<h3>Commands</h3>
+<h4>FROM</h4>
+<h4>RUN</h4>
+<h4>CMD</h4>
+<h4>ENTRYPOINT</h4>
+<h4>COPY</h4>
+<h4>ADD</h4>
+<h4>ENV</h4>
+<h4>EXPOSE</h4>
+<h4>VOLUME</h4>
+<h4>WORKDIR</h4>
+<h4>ARG</h4>
+<h4>ONBUILD</h4>
+<h4>STOPSIGNAL</h4>
+<h4>HEALTHCHECK</h4>
+<h4>SHELL</h4>
+<h4>USER</h4>
+<h4>LABEL</h4></div>
+		<div class="sides"></div></div></div>
+
+
+		<script type="module" data-sveltekit-hydrate="ud8311">
+		import { start } from "/github-blog/_app/immutable/start-63716f19.js";
+
+		start({
+			env: {},
+			hydrate: {
+				status: 200,
+				error: null,
+				node_ids: [0, 5],
+				params: {blogpost:"post8"},
+				routeId: "blog/[blogpost]",
+				data: (function(a){return [a,a]}(null)),
+				form: null
+			},
+			paths: {"base":"/github-blog","assets":"/github-blog"},
+			target: document.querySelector('[data-sveltekit-hydrate="ud8311"]').parentNode,
+			trailing_slash: "never"
+		});
+	</script>
+	</div>
+	</body>
+</html>
