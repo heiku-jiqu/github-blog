@@ -69,7 +69,7 @@ Think of docker compose as a tool for Proof-of-concepts as it does not help you 
 
 All dockerfile starts with the `FROM` command. It pulls the base image from Dockerhub to start to build your image.
 
-```{dockerfile}
+```dockerfile
 FROM apache/spark
 
 # to specify a tag
@@ -80,7 +80,7 @@ FROM apache/spark:3.3.1
 
 Runs a command or executable. It has two forms
 
-```{dockerfile}
+```dockerfile
 # Shell form (defaults to /bin/sh -c on Linux or cmd /S /C on Windows)
 RUN <command>
 
@@ -92,7 +92,7 @@ RUN ["executable", "param1", "param2"]
 
 Provides defaults for an executing container
 
-```
+```dockerfile
 CMD ["executable", "param1", "param2"] # exec form
 CMD ["param1", "param2"] # default parameters to ENTRYPOINT
 CMD command param1 param2 # shell form
@@ -108,7 +108,7 @@ Setting ENTRYPOINT in your image will reset CMD from base image, so you need to 
 
 Copies file from your native host into the container image.
 
-```
+```dockerfile
 COPY <src> <dest>
 COPY ["<src>", ... "<dest>"] # used when there are spaces in path
 ```
@@ -126,13 +126,13 @@ It has added utilities like being able to download files from URLs, and extracti
 
 Sets an environment variable
 
-```
+```dockerfile
 ENV <key>=<value>
 ```
 
 #### EXPOSE
 
-```
+```dockerfile
 EXPOSE <port> [<port>/<protocol>]
 ```
 
@@ -162,7 +162,7 @@ Defines a variable that users can pass at during `docker build`
 
 #### USER
 
-```
+```dockerfile
 USER <user>
 USER <UID>
 ```
