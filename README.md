@@ -30,4 +30,6 @@ Preview production build: `npm run preview`
 # TODO:
 
 - Create line chart
+  - Add color groupings
 - Implement mdsvex layout (can force no layout also with layout:false in front matter)
+- Implement pop out info textbox component
