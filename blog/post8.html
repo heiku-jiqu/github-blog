@@ -5,22 +5,22 @@
 		<link rel="icon" href="/github-blog/favicon.png" />
 		<meta name="viewport" content="width=device-width" />
 		<meta http-equiv="content-security-policy" content=""><link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-gruvbox-light.min.css" rel="stylesheet" data-svelte="svelte-uyunbu">
-	<link href="/github-blog/_app/immutable/assets/_layout-43f8ec53.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/_layout-ea247da7.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-a4591204.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-63716f19.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-04c0bc0e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-e076e56c.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-5bd27c3e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-626bb875.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-088da14f.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-2590c36a.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-841a5baa.js">
 	</head>
 	<body>
 		<div>
@@ -67,27 +67,67 @@ For example, you can run two different node web server containers from the same 
 <h2>Dockerfile</h2>
 <h3>Commands</h3>
 <h4>FROM</h4>
+<p>All dockerfile starts with the <code>FROM</code> command. It pulls the base image from Dockerhub to start to build your image.</p>
+<pre class="language-dockerfile"><!-- HTML_TAG_START --><code class="language-dockerfile"><span class="token instruction"><span class="token keyword">FROM</span> apache/spark</span>
+
+<span class="token comment"># to specify a tag</span>
+<span class="token instruction"><span class="token keyword">FROM</span> apache/spark:3.3.1</span></code><!-- HTML_TAG_END --></pre>
 <h4>RUN</h4>
+<p>Runs a command or executable. It has two forms</p>
+<pre class="language-dockerfile"><!-- HTML_TAG_START --><code class="language-dockerfile"><span class="token comment"># Shell form (defaults to /bin/sh -c on Linux or cmd /S /C on Windows)</span>
+<span class="token instruction"><span class="token keyword">RUN</span> &lt;command></span>
+
+<span class="token comment"># Exec form</span>
+<span class="token instruction"><span class="token keyword">RUN</span> [<span class="token string">"executable"</span>, <span class="token string">"param1"</span>, <span class="token string">"param2"</span>]</span></code><!-- HTML_TAG_END --></pre>
 <h4>CMD</h4>
+<p>Provides defaults for an executing container</p>
+<pre class="language-dockerfile"><!-- HTML_TAG_START --><code class="language-dockerfile"><span class="token instruction"><span class="token keyword">CMD</span> [<span class="token string">"executable"</span>, <span class="token string">"param1"</span>, <span class="token string">"param2"</span>] # exec form</span>
+<span class="token instruction"><span class="token keyword">CMD</span> [<span class="token string">"param1"</span>, <span class="token string">"param2"</span>] # default parameters to ENTRYPOINT</span>
+<span class="token instruction"><span class="token keyword">CMD</span> command param1 param2 # shell form</span></code><!-- HTML_TAG_END --></pre>
 <h4>ENTRYPOINT</h4>
+<p>Configures a container that will run as an executable.
+CMD will append its commands after ENTRYPOINT.
+Setting ENTRYPOINT in your image will reset CMD from base image, so you need to redefine the CMD again.</p>
 <h4>COPY</h4>
+<p>Copies file from your native host into the container image.</p>
+<pre class="language-dockerfile"><!-- HTML_TAG_START --><code class="language-dockerfile"><span class="token instruction"><span class="token keyword">COPY</span> &lt;src> &lt;dest></span>
+<span class="token instruction"><span class="token keyword">COPY</span> [<span class="token string">"&lt;src>"</span>, ... <span class="token string">"&lt;dest>"</span>] # used when there are spaces in path</span></code><!-- HTML_TAG_END --></pre>
+<p><code>&lt;src&gt;</code> path must be inside context of the build!</p>
 <h4>ADD</h4>
+<p>Copies file from your native host into the container image.
+It has added utilities like being able to download files from URLs, and extracting contents of <code>.tar</code> files before copying into image.</p>
+<p><strong>tip: use COPY as default, unless you need additional features of ADD</strong></p>
 <h4>ENV</h4>
+<p>Sets an environment variable</p>
+<pre class="language-dockerfile"><!-- HTML_TAG_START --><code class="language-dockerfile"><span class="token instruction"><span class="token keyword">ENV</span> &lt;key>=&lt;value></span></code><!-- HTML_TAG_END --></pre>
 <h4>EXPOSE</h4>
+<pre class="language-dockerfile"><!-- HTML_TAG_START --><code class="language-dockerfile"><span class="token instruction"><span class="token keyword">EXPOSE</span> &lt;port> [&lt;port>/&lt;protocol>]</span></code><!-- HTML_TAG_END --></pre>
+<p>Instructs Docker that container should listen on specified network ports at runtime.
+Ports are not automatically published, and is intended to serve as a type of documentation between image builder and image runner.
+To publish port on run time, use <code>-P</code> flag, or <code>-p</code> to explicitly map ports from containers to your localhost.</p>
 <h4>VOLUME</h4>
+<p>Creates a mount point at the directory specified and marks that directory as an external drive from native host (i.e. computer running the docker daemon) or other containers.</p>
 <h4>WORKDIR</h4>
+<p>Sets working directory for any <code>RUN</code>, <code>CMD</code>, <code>ENTRYPOINT</code>, <code>COPY</code>, <code>ADD</code> instructions.</p>
 <h4>ARG</h4>
+<p>Defines a variable that users can pass at during <code>docker build</code></p>
 <h4>ONBUILD</h4>
 <h4>STOPSIGNAL</h4>
 <h4>HEALTHCHECK</h4>
 <h4>SHELL</h4>
 <h4>USER</h4>
-<h4>LABEL</h4></div>
+<pre class="language-dockerfile"><!-- HTML_TAG_START --><code class="language-dockerfile"><span class="token instruction"><span class="token keyword">USER</span> &lt;user></span>
+<span class="token instruction"><span class="token keyword">USER</span> &lt;UID></span></code><!-- HTML_TAG_END --></pre>
+<p>Sets the username/UID to use for the remainder of the Docker build stage.
+This is important for security as Docker by default runs the container in root user if not specified by your image nor parent image.
+Root user has UID=0.</p>
+<h4>LABEL</h4>
+<pre class="language-undefined"><!-- HTML_TAG_START --><code class="language-undefined"></code><!-- HTML_TAG_END --></pre></div>
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="ud8311">
-		import { start } from "/github-blog/_app/immutable/start-63716f19.js";
+		<script type="module" data-sveltekit-hydrate="8d26ji">
+		import { start } from "/github-blog/_app/immutable/start-04c0bc0e.js";
 
 		start({
 			env: {},
@@ -101,7 +141,7 @@ For example, you can run two different node web server containers from the same 
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="ud8311"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="8d26ji"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
