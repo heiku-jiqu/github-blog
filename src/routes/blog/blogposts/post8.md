@@ -176,3 +176,25 @@ Root user has UID=0.
 ```
 
 ```
+
+## useful docker CLI commands
+
+### docker run
+
+### docker build
+
+### docker logs
+
+### docker image
+
+### docker container
+
+### docker network
+
+### docker volume
+
+### docker inspect
+
+## networking
+
+## disks
