@@ -126,6 +126,11 @@ All `<src>` relative paths must be inside context of the build!
 
 Copies file from your native host into the container image.
 
+```dockerfile
+ADD <src>... <dest>
+ADD ["<src>",... "<dest>"] # used when there are spaces in path
+```
+
 Compared to COPY, `ADD` has added utilities like:
 
 - being able to download files from URLs then copying them into the image
@@ -133,11 +138,6 @@ Compared to COPY, `ADD` has added utilities like:
 - adding contents from a git repo
 
 **tip: use COPY as default, unless you need the additional features of ADD.** This is to prevent unwanted side effects!
-
-```dockerfile
-ADD <src>... <dest>
-ADD ["<src>",... "<dest>"] # used when there are spaces in path
-```
 
 Multiple `<src>` can be specified, and the last argument will be treated as the `<dest>`.
 
@@ -153,50 +153,130 @@ ENV <key>=<value>
 
 #### EXPOSE
 
+Instructs Docker that container should listen on specified network ports at runtime.
+
 ```dockerfile
 EXPOSE <port> [<port>/<protocol>]
 ```
 
-Instructs Docker that container should listen on specified network ports at runtime.
-Ports are not automatically published, and is intended to serve as a type of documentation between image builder and image runner.
+**Ports are not automatically published**, and this command is intended to serve as a type of documentation between image builder and image runner.
 To publish port on run time, use `-P` flag (which maps exposed ports in container to random ports in native host machine), or `-p` to explicitly map ports from containers to your localhost.
 
 #### VOLUME
+
+Marks the directory(s) within the container as an external drive from native host or other containers.
+This allows files to be accessed from outside the containers.
 
 ```dockerfile
 VOLUME <path/to/container/dir> <path/to/container/dir2> # space separated paths
 VOLUME ["</path/to/dir1>", "</path/to/dir2>"] #json array
 ```
 
-Marks the directory(s) within the container as an external drive from native host or other containers.
-This allows files to be accessed from outside the containers.
-
 Note that where this (container) directory maps to in your native host is **specified when you build or run the container**.
 
 #### WORKDIR
 
-Sets working directory for any `RUN`, `CMD`, `ENTRYPOINT`, `COPY`, `ADD` instructions.
+Sets working directory for any `RUN`, `CMD`, `ENTRYPOINT`, `COPY`, `ADD` instructions that follows.
+
+```dockerfile
+WORKDIR /path/to/workdir # absolute paths, i.e. starts with /
+WORKDIR path/to/child/dir # relative path, i.e. does not start with /
+```
+
+Multiple `WORKDIR` can be used in a dockerfile.
+
+If not specified, default directory is `/`.
+But if you are pulling from an image, chances are `WORKDIR` already been set in your base image and it will be brought over.
+
+**tip: explicitly set `WORKDIR` to prevent unintended operations in unknown dirs**
+
+It is also possible to resolve env variables previously set by `ENV`, e.g. `WORKDIR $DIRPATH_ENV_VAR`.
 
 #### ARG
 
-Defines a variable that users can pass at during `docker build`
+Defines a variable that users can pass values into during `docker build` by using `--build-arg <argname>=<value>` flag.
+
+```dockerfile
+ARG <name>[=<default value>]
+```
+
+`ENV` variables will overwrite `ARG` variables if they are the same name (at the point where the `ENV` variable is defined).
 
 #### ONBUILD
 
+Adds a trigger to the image that will execute dockerfile instructions when the current image is used as the base for another build.
+
+```dockerfile
+ONBUILD <INSTRUCTION>
+```
+
+This command is usful when when you are building a base image that will be distributed to other people, and instructions that depend on other people's files needs to be run. Example, you could add:
+
+```dockerfile
+# copy host files to /contents in the container
+ONBUILD ADD . /contents
+
+# tar all files in the /contents directory in the container to archive.tar in the container
+ONBUILD RUN tar -cfv archive.tar /contents
+```
+
+The instructions specified are triggered _immediately_ after the `FROM` instruction in the child image.
+
+`ONBUILD` triggers are not inherited by children images.
+
 #### STOPSIGNAL
+
+Sets the system call signal that will cause the container to exit.
+
+```dockerfile
+STOPSIGNAL signal
+```
+
+- Default is `SIGTERM`
+- Can be in `SIG<NAME>` format (e.g. `SIGKILL`)
+- Can be an unassigned number in kernel's syscall table (e.g. `9`)
 
 #### HEALTHCHECK
 
+Specifies a command to be run inside the container to check container's health.
+
+```dockerfile
+HEALTHCHECK [OPTIONS] CMD command
+HEALTHCHECK NONE # disable any healthcheck from base image
+```
+
+`OPTIONS` include:
+
+- `--interval=DURATION` (default `30s`)
+- `--timeout=DURATION` (default `30s`)
+- `--retries=N` (default `3`)
+- `--start-period=DURATION` (default `0s`)
+
+A container that has `HEALTHCHECK` specified will have a _health status_ that can take 3 possible states: `starting` | `healthy` | `unhealthy`.
+
+Whenever a health check passes, health status changes to `healthy`. After a number of consecutive failures, health status changes to `unhealthy`.
+
+Health checks are run after every interval.
+Health checks are considered failed when commands runs for longer than timeout.
+When consecutive failures reaches max retries, or command exits with non zero status code `0`, _health status_ will change to unhealthy.
+
 #### SHELL
 
+Specifies the default shell used for shell form of commands. Default is set to `["/bin/sh", "-c"]` for Linux containers and `["cmd", "/S", "/C"]` for Windows containers.
+
+```dockerfile
+SHELL ["executable", "parameters"]
+```
+
 #### USER
+
+Sets the username/UID to use for the remainder of the Docker build stage.
 
 ```dockerfile
 USER <user>
 USER <UID>
 ```
 
-Sets the username/UID to use for the remainder of the Docker build stage.
 This is important for security as Docker by default runs the container in root user if not specified by your image nor parent image.
 Root user has UID=0.
 
@@ -205,6 +285,10 @@ Root user has UID=0.
 ```
 
 ```
+
+### Environment Replacement
+
+### `dockerignore`
 
 ## useful docker CLI commands
 
@@ -223,6 +307,8 @@ Root user has UID=0.
 ### docker volume
 
 ### docker inspect
+
+### docker ps
 
 ## networking
 
