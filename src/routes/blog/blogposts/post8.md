@@ -90,7 +90,7 @@ RUN ["executable", "param1", "param2"]
 
 #### CMD
 
-Provides defaults for an executing container
+Provides defaults for an executing container. The arguments will be appended to ENTRYPOINT.
 
 ```dockerfile
 CMD ["executable", "param1", "param2"] # exec form
@@ -104,23 +104,44 @@ Configures a container that will run as an executable.
 CMD will append its commands after ENTRYPOINT.
 Setting ENTRYPOINT in your image will reset CMD from base image, so you need to redefine the CMD again.
 
+```dockerfile
+ENTRYPOINT ["executable", "param1", "param2"] # exec form
+ENTRYPOINT command param1 param2 # shell form
+```
+
 #### COPY
 
 Copies file from your native host into the container image.
 
 ```dockerfile
-COPY <src> <dest>
-COPY ["<src>", ... "<dest>"] # used when there are spaces in path
+COPY <src>... <dest>
+COPY ["<src>",... "<dest>"] # used when there are spaces in path
 ```
 
-`<src>` path must be inside context of the build!
+Multiple `<src>` can be specified, and the last argument will be treated as the `<dest>`.
+
+All `<src>` relative paths must be inside context of the build!
 
 #### ADD
 
 Copies file from your native host into the container image.
-It has added utilities like being able to download files from URLs, and extracting contents of `.tar` files before copying into image.
 
-**tip: use COPY as default, unless you need additional features of ADD**
+Compared to COPY, `ADD` has added utilities like:
+
+- being able to download files from URLs then copying them into the image
+- extracting contents of `.tar` files before copying into image
+- adding contents from a git repo
+
+**tip: use COPY as default, unless you need the additional features of ADD.** This is to prevent unwanted side effects!
+
+```dockerfile
+ADD <src>... <dest>
+ADD ["<src>",... "<dest>"] # used when there are spaces in path
+```
+
+Multiple `<src>` can be specified, and the last argument will be treated as the `<dest>`.
+
+All `<src>` relative paths must be inside context of the build!
 
 #### ENV
 
@@ -138,11 +159,19 @@ EXPOSE <port> [<port>/<protocol>]
 
 Instructs Docker that container should listen on specified network ports at runtime.
 Ports are not automatically published, and is intended to serve as a type of documentation between image builder and image runner.
-To publish port on run time, use `-P` flag, or `-p` to explicitly map ports from containers to your localhost.
+To publish port on run time, use `-P` flag (which maps exposed ports in container to random ports in native host machine), or `-p` to explicitly map ports from containers to your localhost.
 
 #### VOLUME
 
-Creates a mount point at the directory specified and marks that directory as an external drive from native host (i.e. computer running the docker daemon) or other containers.
+```dockerfile
+VOLUME <path/to/container/dir> <path/to/container/dir2> # space separated paths
+VOLUME ["</path/to/dir1>", "</path/to/dir2>"] #json array
+```
+
+Marks the directory(s) within the container as an external drive from native host or other containers.
+This allows files to be accessed from outside the containers.
+
+Note that where this (container) directory maps to in your native host is **specified when you build or run the container**.
 
 #### WORKDIR
 
