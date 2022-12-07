@@ -9,18 +9,18 @@
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-a4591204.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-7e97169d.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-dec74c30.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-00b5d740.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-95ab8e60.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-6b8b4e2a.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-c0d2423c.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-be9b1667.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-9456bd3b.js">
 	</head>
 	<body>
 		<div>
@@ -80,7 +80,7 @@ For example, you can run two different node web server containers from the same 
 <span class="token comment"># Exec form</span>
 <span class="token instruction"><span class="token keyword">RUN</span> [<span class="token string">"executable"</span>, <span class="token string">"param1"</span>, <span class="token string">"param2"</span>]</span></code><!-- HTML_TAG_END --></pre>
 <h4>CMD</h4>
-<p>Provides defaults for an executing container</p>
+<p>Provides defaults for an executing container. The arguments will be appended to ENTRYPOINT.</p>
 <pre class="language-dockerfile"><!-- HTML_TAG_START --><code class="language-dockerfile"><span class="token instruction"><span class="token keyword">CMD</span> [<span class="token string">"executable"</span>, <span class="token string">"param1"</span>, <span class="token string">"param2"</span>] # exec form</span>
 <span class="token instruction"><span class="token keyword">CMD</span> [<span class="token string">"param1"</span>, <span class="token string">"param2"</span>] # default parameters to ENTRYPOINT</span>
 <span class="token instruction"><span class="token keyword">CMD</span> command param1 param2 # shell form</span></code><!-- HTML_TAG_END --></pre>
@@ -88,41 +88,96 @@ For example, you can run two different node web server containers from the same 
 <p>Configures a container that will run as an executable.
 CMD will append its commands after ENTRYPOINT.
 Setting ENTRYPOINT in your image will reset CMD from base image, so you need to redefine the CMD again.</p>
+<pre class="language-dockerfile"><!-- HTML_TAG_START --><code class="language-dockerfile"><span class="token instruction"><span class="token keyword">ENTRYPOINT</span> [<span class="token string">"executable"</span>, <span class="token string">"param1"</span>, <span class="token string">"param2"</span>] # exec form</span>
+<span class="token instruction"><span class="token keyword">ENTRYPOINT</span> command param1 param2 # shell form</span></code><!-- HTML_TAG_END --></pre>
 <h4>COPY</h4>
 <p>Copies file from your native host into the container image.</p>
-<pre class="language-dockerfile"><!-- HTML_TAG_START --><code class="language-dockerfile"><span class="token instruction"><span class="token keyword">COPY</span> &lt;src> &lt;dest></span>
-<span class="token instruction"><span class="token keyword">COPY</span> [<span class="token string">"&lt;src>"</span>, ... <span class="token string">"&lt;dest>"</span>] # used when there are spaces in path</span></code><!-- HTML_TAG_END --></pre>
-<p><code>&lt;src&gt;</code> path must be inside context of the build!</p>
+<pre class="language-dockerfile"><!-- HTML_TAG_START --><code class="language-dockerfile"><span class="token instruction"><span class="token keyword">COPY</span> &lt;src>... &lt;dest></span>
+<span class="token instruction"><span class="token keyword">COPY</span> [<span class="token string">"&lt;src>"</span>,... <span class="token string">"&lt;dest>"</span>] # used when there are spaces in path</span></code><!-- HTML_TAG_END --></pre>
+<p>Multiple <code>&lt;src&gt;</code> can be specified, and the last argument will be treated as the <code>&lt;dest&gt;</code>.</p>
+<p>All <code>&lt;src&gt;</code> relative paths must be inside context of the build!</p>
 <h4>ADD</h4>
-<p>Copies file from your native host into the container image.
-It has added utilities like being able to download files from URLs, and extracting contents of <code>.tar</code> files before copying into image.</p>
-<p><strong>tip: use COPY as default, unless you need additional features of ADD</strong></p>
+<p>Copies file from your native host into the container image.</p>
+<pre class="language-dockerfile"><!-- HTML_TAG_START --><code class="language-dockerfile"><span class="token instruction"><span class="token keyword">ADD</span> &lt;src>... &lt;dest></span>
+<span class="token instruction"><span class="token keyword">ADD</span> [<span class="token string">"&lt;src>"</span>,... <span class="token string">"&lt;dest>"</span>] # used when there are spaces in path</span></code><!-- HTML_TAG_END --></pre>
+<p>Compared to COPY, <code>ADD</code> has added utilities like:</p>
+<ul><li>being able to download files from URLs then copying them into the image</li>
+<li>extracting contents of <code>.tar</code> files before copying into image</li>
+<li>adding contents from a git repo</li></ul>
+<p><strong>tip: use COPY as default, unless you need the additional features of ADD.</strong> This is to prevent unwanted side effects!</p>
+<p>Multiple <code>&lt;src&gt;</code> can be specified, and the last argument will be treated as the <code>&lt;dest&gt;</code>.</p>
+<p>All <code>&lt;src&gt;</code> relative paths must be inside context of the build!</p>
 <h4>ENV</h4>
 <p>Sets an environment variable</p>
 <pre class="language-dockerfile"><!-- HTML_TAG_START --><code class="language-dockerfile"><span class="token instruction"><span class="token keyword">ENV</span> &lt;key>=&lt;value></span></code><!-- HTML_TAG_END --></pre>
 <h4>EXPOSE</h4>
+<p>Instructs Docker that container should listen on specified network ports at runtime.</p>
 <pre class="language-dockerfile"><!-- HTML_TAG_START --><code class="language-dockerfile"><span class="token instruction"><span class="token keyword">EXPOSE</span> &lt;port> [&lt;port>/&lt;protocol>]</span></code><!-- HTML_TAG_END --></pre>
-<p>Instructs Docker that container should listen on specified network ports at runtime.
-Ports are not automatically published, and is intended to serve as a type of documentation between image builder and image runner.
-To publish port on run time, use <code>-P</code> flag, or <code>-p</code> to explicitly map ports from containers to your localhost.</p>
+<p><strong>Ports are not automatically published</strong>, and this command is intended to serve as a type of documentation between image builder and image runner.
+To publish port on run time, use <code>-P</code> flag (which maps exposed ports in container to random ports in native host machine), or <code>-p</code> to explicitly map ports from containers to your localhost.</p>
 <h4>VOLUME</h4>
-<p>Creates a mount point at the directory specified and marks that directory as an external drive from native host (i.e. computer running the docker daemon) or other containers.</p>
+<p>Marks the directory(s) within the container as an external drive from native host or other containers.
+This allows files to be accessed from outside the containers.</p>
+<pre class="language-dockerfile"><!-- HTML_TAG_START --><code class="language-dockerfile"><span class="token instruction"><span class="token keyword">VOLUME</span> &lt;path/to/container/dir> &lt;path/to/container/dir2> # space separated paths</span>
+<span class="token instruction"><span class="token keyword">VOLUME</span> [<span class="token string">"&lt;/path/to/dir1>"</span>, <span class="token string">"&lt;/path/to/dir2>"</span>] #json array</span></code><!-- HTML_TAG_END --></pre>
+<p>Note that where this (container) directory maps to in your native host is <strong>specified when you build or run the container</strong>.</p>
 <h4>WORKDIR</h4>
-<p>Sets working directory for any <code>RUN</code>, <code>CMD</code>, <code>ENTRYPOINT</code>, <code>COPY</code>, <code>ADD</code> instructions.</p>
+<p>Sets working directory for any <code>RUN</code>, <code>CMD</code>, <code>ENTRYPOINT</code>, <code>COPY</code>, <code>ADD</code> instructions that follows.</p>
+<pre class="language-dockerfile"><!-- HTML_TAG_START --><code class="language-dockerfile"><span class="token instruction"><span class="token keyword">WORKDIR</span> /path/to/workdir # absolute paths, i.e. starts with /</span>
+<span class="token instruction"><span class="token keyword">WORKDIR</span> path/to/child/dir # relative path, i.e. does not start with /</span></code><!-- HTML_TAG_END --></pre>
+<p>Multiple <code>WORKDIR</code> can be used in a dockerfile.</p>
+<p>If not specified, default directory is <code>/</code>.
+But if you are pulling from an image, chances are <code>WORKDIR</code> already been set in your base image and it will be brought over.</p>
+<p><strong>tip: explicitly set <code>WORKDIR</code> to prevent unintended operations in unknown dirs</strong></p>
+<p>It is also possible to resolve env variables previously set by <code>ENV</code>, e.g. <code>WORKDIR $DIRPATH_ENV_VAR</code>.</p>
 <h4>ARG</h4>
-<p>Defines a variable that users can pass at during <code>docker build</code></p>
+<p>Defines a variable that users can pass values into during <code>docker build</code> by using <code>--build-arg &lt;argname&gt;=&lt;value&gt;</code> flag.</p>
+<pre class="language-dockerfile"><!-- HTML_TAG_START --><code class="language-dockerfile"><span class="token instruction"><span class="token keyword">ARG</span> &lt;name>[=&lt;default value>]</span></code><!-- HTML_TAG_END --></pre>
+<p><code>ENV</code> variables will overwrite <code>ARG</code> variables if they are the same name (at the point where the <code>ENV</code> variable is defined).</p>
 <h4>ONBUILD</h4>
+<p>Adds a trigger to the image that will execute dockerfile instructions when the current image is used as the base for another build.</p>
+<pre class="language-dockerfile"><!-- HTML_TAG_START --><code class="language-dockerfile"><span class="token instruction"><span class="token keyword">ONBUILD</span> &lt;INSTRUCTION></span></code><!-- HTML_TAG_END --></pre>
+<p>This command is usful when when you are building a base image that will be distributed to other people, and instructions that depend on other people’s files needs to be run. Example, you could add:</p>
+<pre class="language-dockerfile"><!-- HTML_TAG_START --><code class="language-dockerfile"><span class="token comment"># copy host files to /contents in the container</span>
+<span class="token instruction"><span class="token keyword">ONBUILD</span> <span class="token keyword">ADD</span> . /contents</span>
+
+<span class="token comment"># tar all files in the /contents directory in the container to archive.tar in the container</span>
+<span class="token instruction"><span class="token keyword">ONBUILD</span> <span class="token keyword">RUN</span> tar -cfv archive.tar /contents</span></code><!-- HTML_TAG_END --></pre>
+<p>The instructions specified are triggered <em>immediately</em> after the <code>FROM</code> instruction in the child image.</p>
+<p><code>ONBUILD</code> triggers are not inherited by children images.</p>
 <h4>STOPSIGNAL</h4>
+<p>Sets the system call signal that will cause the container to exit.</p>
+<pre class="language-dockerfile"><!-- HTML_TAG_START --><code class="language-dockerfile"><span class="token instruction"><span class="token keyword">STOPSIGNAL</span> signal</span></code><!-- HTML_TAG_END --></pre>
+<ul><li>Default is <code>SIGTERM</code></li>
+<li>Can be in <code>SIG&lt;NAME&gt;</code> format (e.g. <code>SIGKILL</code>)</li>
+<li>Can be an unassigned number in kernel’s syscall table (e.g. <code>9</code>)</li></ul>
 <h4>HEALTHCHECK</h4>
+<p>Specifies a command to be run inside the container to check container’s health.</p>
+<pre class="language-dockerfile"><!-- HTML_TAG_START --><code class="language-dockerfile"><span class="token instruction"><span class="token keyword">HEALTHCHECK</span> [OPTIONS] CMD command</span>
+<span class="token instruction"><span class="token keyword">HEALTHCHECK</span> <span class="token keyword">NONE</span> # disable any healthcheck from base image</span></code><!-- HTML_TAG_END --></pre>
+<p><code>OPTIONS</code> include:</p>
+<ul><li><code>--interval=DURATION</code> (default <code>30s</code>)</li>
+<li><code>--timeout=DURATION</code> (default <code>30s</code>)</li>
+<li><code>--retries=N</code> (default <code>3</code>)</li>
+<li><code>--start-period=DURATION</code> (default <code>0s</code>)</li></ul>
+<p>A container that has <code>HEALTHCHECK</code> specified will have a <em>health status</em> that can take 3 possible states: <code>starting</code> | <code>healthy</code> | <code>unhealthy</code>.</p>
+<p>Whenever a health check passes, health status changes to <code>healthy</code>. After a number of consecutive failures, health status changes to <code>unhealthy</code>.</p>
+<p>Health checks are run after every interval.
+Health checks are considered failed when commands runs for longer than timeout.
+When consecutive failures reaches max retries, or command exits with non zero status code <code>0</code>, <em>health status</em> will change to unhealthy.</p>
 <h4>SHELL</h4>
+<p>Specifies the default shell used for shell form of commands. Default is set to <code>[&quot;/bin/sh&quot;, &quot;-c&quot;]</code> for Linux containers and <code>[&quot;cmd&quot;, &quot;/S&quot;, &quot;/C&quot;]</code> for Windows containers.</p>
+<pre class="language-dockerfile"><!-- HTML_TAG_START --><code class="language-dockerfile"><span class="token instruction"><span class="token keyword">SHELL</span> [<span class="token string">"executable"</span>, <span class="token string">"parameters"</span>]</span></code><!-- HTML_TAG_END --></pre>
 <h4>USER</h4>
+<p>Sets the username/UID to use for the remainder of the Docker build stage.</p>
 <pre class="language-dockerfile"><!-- HTML_TAG_START --><code class="language-dockerfile"><span class="token instruction"><span class="token keyword">USER</span> &lt;user></span>
 <span class="token instruction"><span class="token keyword">USER</span> &lt;UID></span></code><!-- HTML_TAG_END --></pre>
-<p>Sets the username/UID to use for the remainder of the Docker build stage.
-This is important for security as Docker by default runs the container in root user if not specified by your image nor parent image.
+<p>This is important for security as Docker by default runs the container in root user if not specified by your image nor parent image.
 Root user has UID=0.</p>
 <h4>LABEL</h4>
 <pre class="language-undefined"><!-- HTML_TAG_START --><code class="language-undefined"></code><!-- HTML_TAG_END --></pre>
+<h3>Environment Replacement</h3>
+<h3><code>dockerignore</code></h3>
 <h2>useful docker CLI commands</h2>
 <h3>docker run</h3>
 <h3>docker build</h3>
@@ -132,13 +187,14 @@ Root user has UID=0.</p>
 <h3>docker network</h3>
 <h3>docker volume</h3>
 <h3>docker inspect</h3>
+<h3>docker ps</h3>
 <h2>networking</h2>
 <h2>disks</h2></div>
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="2x6jw1">
-		import { start } from "/github-blog/_app/immutable/start-7e97169d.js";
+		<script type="module" data-sveltekit-hydrate="1psryra">
+		import { start } from "/github-blog/_app/immutable/start-dec74c30.js";
 
 		start({
 			env: {},
@@ -152,7 +208,7 @@ Root user has UID=0.</p>
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="2x6jw1"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="1psryra"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
