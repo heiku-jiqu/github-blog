@@ -282,19 +282,41 @@ Root user has UID=0.
 
 #### LABEL
 
-```
+Adds metadata to an image and are inherited by child images. You can view an image's labels using `docker image inspect`.
 
+```dockerfile
+LABEL <key>=<value> <key>=<value> ...
 ```
 
 ### Environment Replacement
 
-### `dockerignore`
+Some Dockerfile instructions are able to read environment variables created by `ENV` commands, and replace them with the values that those environment variables hold.
+
+The syntax is `$variable_name` or `${variable_name}` within a Dockerfile.
+
+    - `${variable:-word}` to set `word` as default value when `variable` is not set
+    - `${variable:+word}` to set `word` as `variable` when `variable` has already been set, otherwise `variable` will be empty string.
+
+Dockerfile instructions that support environment variables are: `ADD`, `COPY`, `ENV`, `EXPOSE`, `FROM`, `LABEL`, `STOPSIGNAL`, `USER`, `VOLUME`, `WORKDIR`, `ONBUILD`.
+
+```dockerfile
+FROM example
+ENV var=/bar
+WORKDIR ${var} # WORKDIR /bar
+ADD . $FOO     # ADD . /bar
+```
+
+### `.dockerignore`
+
+Similar to `.gitignore`, this file contains a list of files and directories that docker should **exclude** from the _context_ of a docker build.
+
+This is useful for preventing sending of large or sensitive files to docker daemon.
 
 ## useful docker CLI commands
 
-### docker run
-
 ### docker build
+
+### docker run
 
 ### docker logs
 
