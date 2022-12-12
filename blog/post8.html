@@ -9,18 +9,18 @@
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-a4591204.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-dec74c30.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-003fe951.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-95ab8e60.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-01aba86d.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-be9b1667.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-9456bd3b.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-b13a3288.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-25844093.js">
 	</head>
 	<body>
 		<div>
@@ -175,11 +175,32 @@ When consecutive failures reaches max retries, or command exits with non zero st
 <p>This is important for security as Docker by default runs the container in root user if not specified by your image nor parent image.
 Root user has UID=0.</p>
 <h4>LABEL</h4>
-<pre class="language-undefined"><!-- HTML_TAG_START --><code class="language-undefined"></code><!-- HTML_TAG_END --></pre>
+<p>Adds metadata to an image and are inherited by child images. You can view an image’s labels using <code>docker image inspect</code>.</p>
+<pre class="language-dockerfile"><!-- HTML_TAG_START --><code class="language-dockerfile"><span class="token instruction"><span class="token keyword">LABEL</span> &lt;key>=&lt;value> &lt;key>=&lt;value> ...</span></code><!-- HTML_TAG_END --></pre>
 <h3>Environment Replacement</h3>
-<h3><code>dockerignore</code></h3>
+<p>Some Dockerfile instructions are able to read environment variables created by <code>ENV</code> commands, and replace them with the values that those environment variables hold.</p>
+<p>The syntax is <code>$variable_name</code> or <code>${variable_name}</code> within a Dockerfile.</p>
+<ul><li><code>${variable:-word}</code> to set <code>word</code> as default value when <code>variable</code> is not set</li>
+<li><code>${variable:+word}</code> to set <code>word</code> as <code>variable</code> when <code>variable</code> has already been set, otherwise <code>variable</code> will be empty string.</li></ul>
+<p>Dockerfile instructions that support environment variables are: <code>ADD</code>, <code>COPY</code>, <code>ENV</code>, <code>EXPOSE</code>, <code>FROM</code>, <code>LABEL</code>, <code>STOPSIGNAL</code>, <code>USER</code>, <code>VOLUME</code>, <code>WORKDIR</code>, <code>ONBUILD</code>.</p>
+<pre class="language-dockerfile"><!-- HTML_TAG_START --><code class="language-dockerfile"><span class="token instruction"><span class="token keyword">FROM</span> example</span>
+<span class="token instruction"><span class="token keyword">ENV</span> var=/bar</span>
+<span class="token instruction"><span class="token keyword">WORKDIR</span> <span class="token variable">$&#123;var&#125;</span> # WORKDIR /bar</span>
+<span class="token instruction"><span class="token keyword">ADD</span> . <span class="token variable">$FOO</span>     # ADD . /bar</span></code><!-- HTML_TAG_END --></pre>
+<h3><code>.dockerignore</code></h3>
+<p>Similar to <code>.gitignore</code>, this file contains a list of files and directories that docker should <strong>exclude</strong> from the <em>context</em> of a docker build.</p>
+<p>This is useful for preventing sending of large or sensitive files to docker daemon.</p>
 <h2>useful docker CLI commands</h2>
 <h3>docker run</h3>
+<p>Runs your images as isolated containers.</p>
+<p><code>docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...]</code></p>
+<p><em>note: <code>docker run</code>’s <code>[OPTIONS]</code> are specified <strong>before</strong> the image name, whilst arguments (<code>[ARG...]</code>) for the command to be executed within the container is <strong>AFTER</strong> the image name and command.</em></p>
+<p>Common options to specify:</p>
+<ul><li><code>-p</code></li>
+<li><code>-d</code></li>
+<li><code>-i</code></li>
+<li><code>-t</code></li>
+<li><code>--name</code></li></ul>
 <h3>docker build</h3>
 <h3>docker logs</h3>
 <h3>docker image</h3>
@@ -193,8 +214,8 @@ Root user has UID=0.</p>
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="1psryra">
-		import { start } from "/github-blog/_app/immutable/start-dec74c30.js";
+		<script type="module" data-sveltekit-hydrate="q1ewwo">
+		import { start } from "/github-blog/_app/immutable/start-003fe951.js";
 
 		start({
 			env: {},
@@ -208,7 +229,7 @@ Root user has UID=0.</p>
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="1psryra"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="q1ewwo"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
