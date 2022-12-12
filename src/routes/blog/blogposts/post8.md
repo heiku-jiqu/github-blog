@@ -314,9 +314,23 @@ This is useful for preventing sending of large or sensitive files to docker daem
 
 ## useful docker CLI commands
 
-### docker build
-
 ### docker run
+
+Runs your images as isolated containers.
+
+`docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...]`
+
+_note: `docker run`'s `[OPTIONS]` are specified **before** the image name, whilst arguments (`[ARG...]`) for the command to be executed within the container is **AFTER** the image name and command._
+
+Common options to specify:
+
+    - `-p`
+    - `-d`
+    - `-i`
+    - `-t`
+    - `--name`
+
+### docker build
 
 ### docker logs
 
