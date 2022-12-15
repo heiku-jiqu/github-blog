@@ -346,6 +346,25 @@ Common options to specify:
 
 ### docker ps
 
+List all containers and information about them (such as ID, image name, ports etc.)
+Defaults to listing running containers only.
+
+```
+docker ps [OPTIONS]
+```
+
+Useful options:
+
+- `--all` / `-a` : Lists all containers, including those that are not running
+- `--size` / `-s` : Include size of the container in output. Shows both size of container (i.e. writable layer), and `virtual` size of total disk-space used, i.e. container + image.
+- `--notrunc` : Prevent truncation in table output
+- `--filter` / `-f` : filters the output with key-value pairs. E.g. `docker ps -f "name=mysparkcontainer"`.
+- `--format` : formats the output using Go template. Placeholder information include `.ID`, `.Image`, `.Names` etc.
+  - `docker ps --format "{{.ID}}: {{.Name}}"` will print out `abcdef: name1` etc.
+  - `docker ps --format "table {{.ID}}\t{{.Name}}" will print the output in a table with header row.
+
+### docker stats
+
 ## networking
 
 ## disks
