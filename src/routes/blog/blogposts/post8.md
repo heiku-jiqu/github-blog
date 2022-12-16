@@ -355,15 +355,29 @@ docker ps [OPTIONS]
 
 Useful options:
 
-- `--all` / `-a` : Lists all containers, including those that are not running
-- `--size` / `-s` : Include size of the container in output. Shows both size of container (i.e. writable layer), and `virtual` size of total disk-space used, i.e. container + image.
-- `--notrunc` : Prevent truncation in table output
+- `--all` / `-a` : lists all containers, including those that are not running
+- `--size` / `-s` : include size of the container in output. Shows both size of container (i.e. writable layer), and `virtual` size of total disk-space used, i.e. container + image.
+- `--no-trunc` : prevent truncation in table output
 - `--filter` / `-f` : filters the output with key-value pairs. E.g. `docker ps -f "name=mysparkcontainer"`.
 - `--format` : formats the output using Go template. Placeholder information include `.ID`, `.Image`, `.Names` etc.
   - `docker ps --format "{{.ID}}: {{.Name}}"` will print out `abcdef: name1` etc.
   - `docker ps --format "table {{.ID}}\t{{.Name}}" will print the output in a table with header row.
 
 ### docker stats
+
+Display live info about containers' resource usage (kind of like Window's task manager).
+Defaults to only showing running containers.
+
+```
+docker stats [OPTIONS] [CONTAINER...]
+```
+
+- `--all` / `-a` : lists all containers, including those that are not running
+- `--no-trunc` : Prevent truncation in table output
+- `--no-stream` : get only a 'snapshot' of the current stats
+- `--format` : formats the output using Go template.
+
+Useful options:
 
 ## networking
 
