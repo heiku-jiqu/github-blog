@@ -386,12 +386,12 @@ Defaults to only showing running containers.
 docker stats [OPTIONS] [CONTAINER...]
 ```
 
+Useful options:
+
 - `--all` / `-a` : lists all containers, including those that are not running
 - `--no-trunc` : Prevent truncation in table output
 - `--no-stream` : get only a 'snapshot' of the current stats
 - `--format` : formats the output using Go template.
-
-Useful options:
 
 ## networking
 
