@@ -334,6 +334,20 @@ Common options to specify:
 
 ### docker logs
 
+Retrieves container's logs (to `STDOUT` and `STDERR`) to your CLI.
+
+```
+docker logs [OPTIONS] CONTAINER
+```
+
+Common options to specify:
+
+    - `--follow` / `-f` : continuously streams the log output
+    - `--timestamps` / `-t` : show timestamps of logs
+    - `--tail` / `-n` : number of lines to show from end of the log (defaults to `all`)
+    - `--since` : show logs _since_ timestamp (`2013-01-02T13:37:00Z`) or relative (`42m`)
+    - `--until` : show logs _before_ timestamp or relative
+
 ### docker image
 
 ### docker container
