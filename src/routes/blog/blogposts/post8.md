@@ -61,6 +61,8 @@ Both docker compose and kubernetes 'bundles' multi-container applications. Howev
 
 Think of docker compose as a tool for Proof-of-concepts as it does not help you solve the engineering and operational challenges of running a multi-container application in production environments. For example, what happens when one of your container goes down? Or if your entire node goes down? Kubernetes will automatically spin up a new one for you whilst docker compose will not.
 
+---
+
 ## Dockerfile
 
 ### Commands
@@ -312,6 +314,8 @@ Similar to `.gitignore`, this file contains a list of files and directories that
 
 This is useful for preventing sending of large or sensitive files to docker daemon.
 
+---
+
 ## useful docker CLI commands
 
 ### docker run
@@ -400,6 +404,10 @@ Useful options:
 - `--no-stream` : get only a 'snapshot' of the current stats
 - `--format` : formats the output using Go template.
 
+---
+
 ## networking
+
+---
 
 ## disks
