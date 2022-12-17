@@ -375,7 +375,7 @@ Useful options:
 - `--filter` / `-f` : filters the output with key-value pairs. E.g. `docker ps -f "name=mysparkcontainer"`.
 - `--format` : formats the output using Go template. Placeholder information include `.ID`, `.Image`, `.Names` etc.
   - `docker ps --format "{{.ID}}: {{.Name}}"` will print out `abcdef: name1` etc.
-  - `docker ps --format "table {{.ID}}\t{{.Name}}" will print the output in a table with header row.
+  - `docker ps --format "table {{.ID}}\t{{.Name}}"` will print the output in a table with header row.
 
 ### docker stats
 
