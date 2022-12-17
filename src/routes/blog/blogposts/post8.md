@@ -358,6 +358,13 @@ Common options to specify:
 
 ### docker inspect
 
+Returns detailed information about docker objects.
+Objects can be images, containers, networks, volumes, etc.
+
+```
+docker inspect [OPTIONS] NAME|ID
+```
+
 ### docker ps
 
 List all containers and information about them (such as ID, image name, ports etc.)
