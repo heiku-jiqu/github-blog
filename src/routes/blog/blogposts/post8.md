@@ -332,6 +332,14 @@ Common options to specify:
 
 ### docker build
 
+### docker image
+
+### docker container
+
+### docker network
+
+### docker volume
+
 ### docker logs
 
 Retrieves container's logs (to `STDOUT` and `STDERR`) to your CLI.
@@ -347,14 +355,6 @@ Common options to specify:
     - `--tail` / `-n` : number of lines to show from end of the log (defaults to `all`)
     - `--since` : show logs _since_ timestamp (`2013-01-02T13:37:00Z`) or relative (`42m`)
     - `--until` : show logs _before_ timestamp or relative
-
-### docker image
-
-### docker container
-
-### docker network
-
-### docker volume
 
 ### docker inspect
 
