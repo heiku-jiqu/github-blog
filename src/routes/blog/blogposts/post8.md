@@ -328,8 +328,8 @@ _note: `docker run`'s `[OPTIONS]` are specified **before** the image name, whils
 
 Common options to specify:
 
+    - `-d` : run in detached mode so the terminal of the machine does not continouously stream container's `stdout`
     - `-p`
-    - `-d`
     - `-i`
     - `-t`
     - `--name`
