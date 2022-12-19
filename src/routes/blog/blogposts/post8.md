@@ -324,20 +324,39 @@ Runs your images as isolated containers.
 
 `docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...]`
 
-<details size = 5>
+<details>
 <summary> details </summary>
 
 _`docker run`'s `[OPTIONS]` are specified **before** the image name, whilst arguments (`[ARG...]`) for the command to be executed within the container is **AFTER** the image name and command._
 
+for example: `docker run -ti ubuntu-image touch /path/to/file`
+
 </details>
+
+`docker run` is able to set many runtime options and override default settings defined by images, these include:
+
+    - running container in foreground or detached mode
+    - name of container
+    - network settings
+    - volume settings
+    - cpu / memory limits
 
 Common options to specify:
 
-    - `-d` : run in detached mode so the terminal of the machine does not continouously stream container's `stdout`
-    - `-p`
-    - `-i`
-    - `-t`
-    - `--name`
+    - `--name` : assign a name to container (defaults to randomly generated words)
+    - `--detach` / `-d` : run in detached mode so the terminal of the machine does not continouously stream container's `STDOUT` / `STDERR`
+    - `--interactive` / `-i` : keep `STDIN` open even if not attached (usually used with `-t`)
+    - `--tty` / `-t` : allocate pseudo-TTY to connect to container's `STDIN` (usually used with `-i`)
+    - `--expose` / `-p` : expose container's ports to other containers and/or the host machine.
+    - `--mount` : mount volumes or directories to container
+    - `--volume` / `-v` : mount volumes or directories to container (use of `--mount` is recommended, [see differences here](https://docs.docker.com/engine/reference/commandline/service_create/#differences-between---mount-and---volume))
+
+<details>
+<summary> note on docker run documentation </summary>
+
+there are two pages for docker run, a [generic one](https://docs.docker.com/engine/reference/commandline/run/) that lists all commands and [another one](https://docs.docker.com/engine/reference/run/) that provides more explanation
+
+</details>
 
 ### docker build
 
