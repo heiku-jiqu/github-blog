@@ -41,3 +41,14 @@ pre {
 code{
 	color: var(--terra-cotta);
 }
+details{
+	font-size: 0.75rem;
+	background-color: var(--deep-champagne)
+}
+details summary {
+	background: var(--eggshell);
+	cursor: pointer;
+}
+details summary:hover {
+	background-color: var(--deep-champagne)
+}

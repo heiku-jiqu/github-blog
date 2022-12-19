@@ -324,7 +324,12 @@ Runs your images as isolated containers.
 
 `docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...]`
 
-_note: `docker run`'s `[OPTIONS]` are specified **before** the image name, whilst arguments (`[ARG...]`) for the command to be executed within the container is **AFTER** the image name and command._
+<details size = 5>
+<summary> details </summary>
+
+_`docker run`'s `[OPTIONS]` are specified **before** the image name, whilst arguments (`[ARG...]`) for the command to be executed within the container is **AFTER** the image name and command._
+
+</details>
 
 Common options to specify:
 
