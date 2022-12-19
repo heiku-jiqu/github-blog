@@ -322,7 +322,9 @@ This is useful for preventing sending of large or sensitive files to docker daem
 
 Runs your images as isolated containers.
 
-`docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...]`
+```
+docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...]
+```
 
 <details>
 <summary> details </summary>
