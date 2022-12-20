@@ -436,4 +436,14 @@ Useful options:
 
 ---
 
-## disks
+## storage
+
+By default, Docker containers store data in the container's writable layer, using a storage driver, and is not persisted.
+
+5 types of storage in Docker to put container's data
+
+    - default container's writable layer : does not persist. optimized for space efficiency, so write speeds are lower than native.
+    - volumes : isolated, Docker managed, can store in remote drives, can share volumes with multiple containers
+    - bind mount : directly mount a specific directory on host machine to the container
+    - tmpfs mount (linux only) : store container data in memory, not persistent, but faster performance since its using RAM
+    - npipe mount (named pipes) (Windows only) : used to store data in memory for Windows
