@@ -434,6 +434,18 @@ Useful options:
 
 ## networking
 
+Docker containers can communicate with each other, and they can also communicate with non-Docker programs in your host machine network.
+
+There are several types of network drivers that help you connect your containers, programs, nodes:
+
+- `bridge` : (default) Docker managed network, isolated from host machine; used when connecting multiple containers on the _same Docker host_
+- `host` : (linux only) shares host networking (i.e. ip address) with the container; container which binds to port 80 will be accessible on port 80 on _host's_ IP address
+- `overlay` : connects multiple Docker daemons together; used when trying to connect containers running on separate Docker host machine
+- `ipvlan` : attaches your containers to the host machine's network, giving the containers their own IP address in the network; use when you want to connect to the container in network
+- `macvlan` : assigns a new mac address so it appears as a physical device in your network; use for linking with legacy applications that require containers to appear as physical device
+- `none` : disables all networking for the container
+- third party network plugins can also be intalled from Docker Hub / other vendors
+
 ---
 
 ## storage
