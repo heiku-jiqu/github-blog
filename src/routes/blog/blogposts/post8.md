@@ -368,6 +368,21 @@ there are two pages for docker run, a [generic one](https://docs.docker.com/engi
 
 ### docker network
 
+Manages Docker networks
+
+```
+docker network COMMAND
+```
+
+Common commands:
+
+- `create` : creates a docker network
+- `connect` / `disconnect` : connect / disconnect a container to a network
+- `inspect` : get detailed info about network(s)
+- `ls` : list docker networks
+- `rm` : removes docker network(s)
+- `prune` : removes all unused networks
+
 ### docker volume
 
 ### docker logs
