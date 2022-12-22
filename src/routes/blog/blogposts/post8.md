@@ -362,6 +362,33 @@ there are two pages for docker run, a [generic one](https://docs.docker.com/engi
 
 ### docker build
 
+Build Docker images from `dockerfile` and a _context_.
+
+```
+docker build [OPTIONS] PATH | URL |
+```
+
+A build's context is the (sub-)files and (sub-)directories located in the specified `PATH` or `URL`.
+By default, `docker build` will look for `.Dockerfile` in the root of the build context.
+
+Common options to specify:
+
+- `--file` / `-f` : specify location of `Dockerfile`, can be absolute path or relative path with respect to context.
+- `--tag` / `-t` : name and optionally tag the image in 'name:tag' format
+- `--build-arg` : sets the value of `ARG`s defined in `Dockerfile`
+
+**Examples**
+
+`docker build .`
+`docker build -f docker/Dockerfile .`
+`docker build --build-arg HTTP_PROXY=http://1.1.1.1:1111 .`
+`docker build -f ctx/Dockerfile github.com/user/project-repo`
+
+<details>
+<summary> note </summary>
+remember to specify options BEFORE the context path/url
+</details>
+
 ### docker image
 
 ### docker container
