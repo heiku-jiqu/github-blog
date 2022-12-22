@@ -391,11 +391,25 @@ remember to specify options BEFORE the context path/url
 
 ### docker image
 
+Manages Docker images.
+
+```
+docker image COMMAND
+```
+
+Common commands:
+
+- `pull` : pull an image or repo from a registry (ie Docker Hub)
+- `inspect` : get detailed info about image(s)
+- `ls` : list images
+- `prune` : remove unused images
+- `rm` : remove specific image(s)
+
 ### docker container
 
 ### docker network
 
-Manages Docker networks
+Manages Docker networks.
 
 ```
 docker network COMMAND
