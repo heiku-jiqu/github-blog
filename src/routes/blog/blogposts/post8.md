@@ -407,6 +407,31 @@ Common commands:
 
 ### docker container
 
+Manages Docker containers.
+
+```
+docker container COMMAND
+```
+
+Commond commands:
+
+- `create` : create a new container from image
+- `start` : start running the container
+- `stop` : stop the container (issues `SIGTERM` signal)
+- `kill` : kills the container (issues `SIGKILL` signal)
+- `restart` : restarts the container (will try to stop, if wait too long will kill)
+- `pause` : pause all process in container(s)
+- `unpause` : unpause all processes in container(s)
+- `attach` : attach local machine's STDIN, STDOUT, STDERR to the container's
+- `exec` : run a command in a running container
+- `logs` : retrieve container logs
+- `stats` : stream container resource usage
+- `top` : display running processes within the container
+- `rm` : remove container(s)
+- `prune` : remove unused containers
+- `export` : export container's filesystem as a tar archive
+- `cp` : copy files/folders between container and local filesystem
+
 ### docker network
 
 Manages Docker networks.
@@ -425,6 +450,20 @@ Common commands:
 - `prune` : removes all unused networks
 
 ### docker volume
+
+Manages Docker volumes.
+
+```
+docker volume COMMAND
+```
+
+Common commands:
+
+- `create` : creates a docker volume
+- `inspect` : get detailed info about volume(s)
+- `ls` : list docker volumes
+- `rm` : removes docker volume(s)
+- `prune` : removes all unused volume
 
 ### docker logs
 
