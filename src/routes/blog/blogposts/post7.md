@@ -49,6 +49,15 @@ svg_path = line_drawer(data);
 
 ### `axisBottom()` from d3-axis
 
+d3 also has utility functions to help you draw axes, given the d3-scale functions that you have initialised.
+
+```js
+import { axisBottom } from 'd3-axis';
+
+select(xAxis) // select the <g> group element inside <svg> canvas that will house your axis
+	.call(axisBottom(xScale)); // draw the axis, given the xScale which you defined previously
+```
+
 <MASMoneySupplyChartMultiLine/>
 
 ### d3-group
