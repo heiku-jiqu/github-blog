@@ -40,7 +40,7 @@
 		select(yAxis).call(axisLeft(yScale));
 	}
 
-	let linehover = false;
+	let linehover = [false, false, false];
 </script>
 
 <h2>Line Chart</h2>
@@ -52,17 +52,21 @@
 			>loading...</text
 		>
 	{:then value}
-		{#each Object.keys(value[0]).filter((d) => ['m1', 'm2', 'm3'].includes(d)) as category}
-			{console.log(category)}
+		{#each Object.keys(value[0]).filter((d) => ['m1', 'm2', 'm3'].includes(d)) as category, index}
 			<path
 				d={drawn_line.y((d) => yScale(d[category]))(value)}
 				stroke="steelblue"
 				stroke-width="2"
 				fill="none"
-				on:mouseenter={() => (linehover = true)}
-				on:mouseleave={() => (linehover = false)}
-				class:linehover
+				on:mouseenter={() => (linehover[index] = true)}
+				on:mouseleave={() => (linehover[index] = false)}
+				class:linehover={linehover[index]}
 			/>
+		{/each}
+		{#each linehover as h, i}
+			<text class:linehover-text={h} font-size="80" fill="#0000" x="150" y="200"
+				>{['M1', 'M2', 'M3'][i]}</text
+			>
 		{/each}
 		<g bind:this={xAxis} transform="translate(0, {plotHeight - plotMargin + 10})" />
 		<g bind:this={yAxis} transform="translate({plotMargin - 10}, 0)" />
@@ -72,5 +76,11 @@
 <style>
 	.linehover {
 		stroke-width: 4;
+		transition: 200ms;
+		stroke: #e07a5fff;
+	}
+	.linehover-text {
+		transition: 200ms;
+		fill: #e07a5fff;
 	}
 </style>
