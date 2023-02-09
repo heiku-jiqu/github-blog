@@ -8,19 +8,19 @@
 	<link href="/github-blog/_app/immutable/assets/_layout-b4c4881a.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
-	<link href="/github-blog/_app/immutable/assets/post7-a4591204.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-f6886707.js">
+	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-a80f37d6.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-a1812826.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-50fd5dee.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-7fc7cced.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-9d061af2.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-6b7b802b.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-36214371.js">
 	</head>
 	<body>
 		<div>
@@ -41,22 +41,55 @@
 		<text x="250" y="400" font-size="60" text-anchor="middle">loading...</text>
 	</svg>
 <h3><code>line()</code> from d3-shape</h3>
+<p><code>d3.line()</code> from d3 is a utility object that helps you draw lines. Initialise this object with <em>data accessors</em> (<code>.x()</code> and <code>.y()</code>), and the resulting instance object will parse input <em>data</em> and output either SVG path or Canvas path, depending on the line’s context (set using <code>line.context()</code>).</p>
+<p>Note: input data has to be sorted as the line is connects points sequentially in the order of the data points.</p>
+<pre class="language-js"><!-- HTML_TAG_START --><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> line <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">'d3-shape'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> scaleLinear <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">'d3-scale'</span><span class="token punctuation">;</span>
+
+<span class="token comment">// data is an Array of JSON objects</span>
+data <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">&#123;</span><span class="token literal-property property">time</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span> value <span class="token operator">=</span> <span class="token number">200</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#123;</span><span class="token literal-property property">time</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span> value <span class="token operator">=</span> <span class="token number">330</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#123;</span><span class="token literal-property property">time</span><span class="token operator">:</span> <span class="token number">4</span><span class="token punctuation">,</span> value <span class="token operator">=</span> <span class="token number">565</span><span class="token punctuation">&#125;</span>
+<span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+<span class="token comment">// initialise functions that map data values to graph positions</span>
+xScale <span class="token operator">=</span> <span class="token function">scaleTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">domain</span><span class="token punctuation">(</span><span class="token punctuation">[</span>dataMinX<span class="token punctuation">,</span> dataMaxY<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">range</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> plotWidth<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+yScale <span class="token operator">=</span> <span class="token function">scaleLinear</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">domain</span><span class="token punctuation">(</span><span class="token punctuation">[</span>dataMinY<span class="token punctuation">,</span> dataMaxY<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">range</span><span class="token punctuation">(</span><span class="token punctuation">[</span>plotHeight<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+line_drawer <span class="token operator">=</span> <span class="token function">line</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token punctuation">.</span><span class="token function">x</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">d</span><span class="token punctuation">)</span> <span class="token operator">=></span> d<span class="token punctuation">.</span>time<span class="token punctuation">)</span> <span class="token comment">// define x to be time attribute</span>
+	<span class="token punctuation">.</span><span class="token function">y</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">d</span><span class="token punctuation">)</span> <span class="token operator">=></span> d<span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// define y to be value attribute</span>
+
+<span class="token comment">// feed data into line_drawer()</span>
+<span class="token comment">// line_drawer will use corresponding accessors to</span>
+<span class="token comment">// access the data for every JSON object in the data Array</span>
+svg_path <span class="token operator">=</span> <span class="token function">line_drawer</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span></code><!-- HTML_TAG_END --></pre>
 <h3><code>axisBottom()</code> from d3-axis</h3>
+<p>d3 also has utility functions to help you draw axes, given the d3-scale functions that you have initialised.</p>
+<pre class="language-js"><!-- HTML_TAG_START --><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> axisBottom <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">'d3-axis'</span><span class="token punctuation">;</span>
+
+<span class="token function">select</span><span class="token punctuation">(</span>xAxis<span class="token punctuation">)</span> <span class="token comment">// select the &lt;g> group element inside &lt;svg> canvas that will house your axis</span>
+	<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token function">axisBottom</span><span class="token punctuation">(</span>xScale<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// draw the axis, given the xScale which you defined previously</span></code><!-- HTML_TAG_END --></pre>
 <h2>Line Chart</h2>
 
 <svg viewBox="0 0 600 800"><text x="50" y="80">Plot of a line chart</text>
 		<text x="250" y="400" font-size="60" text-anchor="middle">loading...</text>
 	</svg>
-<h3>d3-group</h3>
 <h3>dynamic <code>line()</code> accessors</h3>
-<p>For each line to plot, there is a need to change the y-accessor of <code>line()</code> dynamically based on the group.
+<p>In order to draw multiple lines, we just have to change the x/y accessors for each line we want to draw.</p>
+<p>In this case, there is a need to change the y-accessor of <code>line()</code> dynamically based on the <code>m1</code>/<code>m2</code>/<code>m3</code> attribute.
 Example: <code>line().y((d) =&gt; yScale(d.m1))</code> for m1, and <code>line().y((d) =&gt; yScale(d.m2))</code> for m2, etc.
-Use <code>d[category]</code> instead of using dot notation.</p></div>
+Instead of using dot notation, we can use <code>d[category]</code> to parameterise the accessor.</p></div>
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="4c136m">
-		import { start } from "/github-blog/_app/immutable/start-f6886707.js";
+		<script type="module" data-sveltekit-hydrate="1slm43y">
+		import { start } from "/github-blog/_app/immutable/start-a80f37d6.js";
 
 		start({
 			env: {},
@@ -70,7 +103,7 @@ Use <code>d[category]</code> instead of using dot notation.</p></div>
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="4c136m"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="1slm43y"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
