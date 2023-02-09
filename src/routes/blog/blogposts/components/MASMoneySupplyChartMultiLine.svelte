@@ -4,7 +4,6 @@
 	import { line } from 'd3-shape';
 	import { axisBottom, axisLeft } from 'd3-axis';
 	import { select } from 'd3-selection';
-	import { loop_guard } from 'svelte/internal';
 
 	let plotWidth = 600;
 	let plotHeight = 800;
