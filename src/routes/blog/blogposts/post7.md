@@ -60,10 +60,10 @@ select(xAxis) // select the <g> group element inside <svg> canvas that will hous
 
 <MASMoneySupplyChartMultiLine/>
 
-### d3-group
-
 ### dynamic `line()` accessors
 
-For each line to plot, there is a need to change the y-accessor of `line()` dynamically based on the group.
+In order to draw multiple lines, we just have to change the x/y accessors for each line we want to draw.
+
+In this case, there is a need to change the y-accessor of `line()` dynamically based on the `m1`/`m2`/`m3` attribute.
 Example: `line().y((d) => yScale(d.m1))` for m1, and `line().y((d) => yScale(d.m2))` for m2, etc.
-Use `d[category]` instead of using dot notation.
+Instead of using dot notation, we can use `d[category]` to parameterise the accessor.
