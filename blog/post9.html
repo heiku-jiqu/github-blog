@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="/github-blog/favicon.png" />
+		<meta name="viewport" content="width=device-width" />
+		<meta http-equiv="content-security-policy" content=""><link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-gruvbox-light.min.css" rel="stylesheet" data-svelte="svelte-uyunbu">
+	<link href="/github-blog/_app/immutable/assets/_layout-b4c4881a.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-31e99a83.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-6f0a7086.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-7f2f4717.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-8a31fd50.js">
+	</head>
+	<body>
+		<div>
+
+
+
+
+<header class="svelte-qm05bo"><a href="/github-blog/" class="svelte-qm05bo">Home</a>
+
+	<nav><ul class="svelte-qm05bo"><li><a href="/github-blog/blog" class="svelte-qm05bo">Blog</a></li>
+			<li><a href="/github-blog/about" class="svelte-qm05bo">About</a></li></ul></nav>
+</header>
+<div><div class="grid-container svelte-14l03dd"><div class="sides"></div>
+		<div class="article svelte-14l03dd"><h1>unittest-ing with Python</h1>
+<p>Tests are important to prove the logic you have written down works as expected,
+and to squash bugs forever.
+On top of this, practicing Test Driven Development (TDD), which is the act of writing tests
+BEFORE implementation, helps you improve software design.
+TDD forces you to think about how to test your implementation,
+and through this, you are more likely to come up with
+simpler APIs/methods/functions that do only one thing.</p>
+<p>Python comes with <code>unittest</code> module in standard library that helps you write tests.</p>
+<p>The basic flow of writing tests in <code>unittest</code> can be summarised as:</p>
+<ol><li>import <code>unittest</code></li>
+<li>create a test class that inherits from <code>unittest.TestCase</code></li>
+<li>create methods in this test class that tests a functionality through <code>unittest.TestCase.assert*</code> methods</li>
+<li>run your tests through <code>python -m unittest &lt;module_or_filepath&gt;</code></li></ol>
+<h2>Example Code:</h2>
+<pre class="language-py"><!-- HTML_TAG_START --><code class="language-py"><span class="token keyword">from</span> unittest <span class="token keyword">import</span> TestCase
+<span class="token keyword">from</span> math <span class="token keyword">import</span> sqrt
+
+<span class="token comment"># implementation that you want to test</span>
+<span class="token keyword">class</span> <span class="token class-name">MyCustomVector</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+	x<span class="token punctuation">:</span> <span class="token builtin">int</span>
+	y<span class="token punctuation">:</span> <span class="token builtin">int</span>
+
+	<span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">:</span><span class="token builtin">int</span><span class="token punctuation">,</span> y<span class="token punctuation">:</span><span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+		self<span class="token punctuation">.</span>x <span class="token operator">=</span> x
+		self<span class="token punctuation">.</span>y <span class="token operator">=</span> y
+
+	<span class="token keyword">def</span> <span class="token function">l1_norm</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">int</span><span class="token punctuation">:</span>
+		<span class="token keyword">return</span> <span class="token builtin">abs</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>x<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token builtin">abs</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>y<span class="token punctuation">)</span>
+
+	<span class="token keyword">def</span> <span class="token function">l2_norm</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">float</span><span class="token punctuation">:</span>
+		<span class="token keyword">return</span> sqrt<span class="token punctuation">(</span>self<span class="token punctuation">.</span>x <span class="token operator">**</span> <span class="token number">2</span> <span class="token operator">+</span> self<span class="token punctuation">.</span>y <span class="token operator">**</span> <span class="token number">2</span><span class="token punctuation">)</span>
+
+<span class="token comment"># test class that will run your tests</span>
+<span class="token comment"># inherit from unittest.TestCase</span>
+<span class="token keyword">class</span> <span class="token class-name">TestSomeBehaviors</span><span class="token punctuation">(</span>TestCase<span class="token punctuation">)</span><span class="token punctuation">:</span>
+	<span class="token comment"># setting up test data/fixtures to be reused in all test cases</span>
+	<span class="token comment"># within this test class</span>
+	<span class="token keyword">def</span> <span class="token function">setUp</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+		self<span class="token punctuation">.</span>input1 <span class="token operator">=</span> MyCustomVector<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span>
+		self<span class="token punctuation">.</span>input2 <span class="token operator">=</span> MyCustomVector<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span>
+
+	<span class="token keyword">def</span> <span class="token function">test_l1_norm</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+		<span class="token comment"># TestCase provides assert*() methods to use in tests</span>
+		self<span class="token punctuation">.</span>assertEqual<span class="token punctuation">(</span>
+			self<span class="token punctuation">.</span>input1<span class="token punctuation">.</span>l1_norm<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+			<span class="token number">3</span><span class="token punctuation">,</span>
+			<span class="token string">'l1 norm should be sum of absolute values'</span>
+		<span class="token punctuation">)</span>
+
+	<span class="token keyword">def</span> <span class="token function">test_l2_norm</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+		self<span class="token punctuation">.</span>assertEqual<span class="token punctuation">(</span>
+			self<span class="token punctuation">.</span>input1<span class="token punctuation">.</span>l1_norm<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+			sqrt<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+			<span class="token string">'l2 norm should be sqrt of sum of squares'</span>
+		<span class="token punctuation">)</span>
+
+	<span class="token keyword">def</span> <span class="token function">tearDown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+		<span class="token comment"># tear down test fixtures</span>
+		<span class="token comment"># useful to reverse any side effects (e.g. temp files, temp db)</span>
+		<span class="token keyword">pass</span></code><!-- HTML_TAG_END --></pre></div>
+		<div class="sides"></div></div></div>
+
+
+		<script type="module" data-sveltekit-hydrate="1alcy58">
+		import { start } from "/github-blog/_app/immutable/start-31e99a83.js";
+
+		start({
+			env: {},
+			hydrate: {
+				status: 200,
+				error: null,
+				node_ids: [0, 5],
+				params: {blogpost:"post9"},
+				routeId: "blog/[blogpost]",
+				data: (function(a){return [a,a]}(null)),
+				form: null
+			},
+			paths: {"base":"/github-blog","assets":"/github-blog"},
+			target: document.querySelector('[data-sveltekit-hydrate="1alcy58"]').parentNode,
+			trailing_slash: "never"
+		});
+	</script>
+	</div>
+	</body>
+</html>
