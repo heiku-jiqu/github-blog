@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="/github-blog/favicon.png" />
+		<meta name="viewport" content="width=device-width" />
+		<meta http-equiv="content-security-policy" content=""><link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-gruvbox-light.min.css" rel="stylesheet" data-svelte="svelte-uyunbu">
+	<link href="/github-blog/_app/immutable/assets/_layout-b4c4881a.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-99628fe9.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-8d618933.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-0bb8214e.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-99e1d2e0.js">
+	</head>
+	<body>
+		<div>
+
+
+
+
+<header class="svelte-qm05bo"><a href="/github-blog/" class="svelte-qm05bo">Home</a>
+
+	<nav><ul class="svelte-qm05bo"><li><a href="/github-blog/blog" class="svelte-qm05bo">Blog</a></li>
+			<li><a href="/github-blog/about" class="svelte-qm05bo">About</a></li></ul></nav>
+</header>
+<div><div class="grid-container svelte-14l03dd"><div class="sides"></div>
+		<div class="article svelte-14l03dd"><h1>Composable Pandas (or Not)</h1>
+<p>In this post, I explore possible ways to write Pandas code in hopes of makign Pandas code more readable, composable, reusable, and testable.</p>
+<h2>Motivation</h2>
+<p>After using R’s <code>dplyr</code> (and the entire <code>tidyverse</code> ecosystem) to manipulate dataframes for awhile, Panda’s API feels clunky in comparison.
+The main issue seems to be difficulty in chaining and composing operations.
+This tends to cause Pandas code to go against good software design principles, because it is difficult to break down larger chain of operations and also difficult to stitch smaller operations together.
+This has an added effect of making tests hard to write, as user written Pandas functions are often doing a lot of things at once.</p>
+<h2>Concrete Example of the Issue</h2>
+<pre class="language-py"><!-- HTML_TAG_START --><code class="language-py">df <span class="token operator">=</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+	<span class="token string">'name'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'a'</span><span class="token punctuation">,</span><span class="token string">'b'</span><span class="token punctuation">,</span><span class="token string">'c'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+	<span class="token string">'age'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">25</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">,</span> <span class="token number">99</span><span class="token punctuation">]</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span></code><!-- HTML_TAG_END --></pre>
+<p>A common way to filter the rows of dataframe is:</p>
+<pre class="language-py"><!-- HTML_TAG_START --><code class="language-py">df<span class="token punctuation">[</span>df<span class="token punctuation">.</span>age <span class="token operator">&lt;=</span><span class="token number">30</span><span class="token punctuation">]</span></code><!-- HTML_TAG_END --></pre>
+<p>And a common way to assign a new column to the dataframe is:</p>
+<pre class="language-py"><!-- HTML_TAG_START --><code class="language-py">df<span class="token punctuation">[</span><span class="token string">'new_col'</span><span class="token punctuation">]</span> <span class="token operator">=</span> df<span class="token punctuation">.</span>age <span class="token operator">+</span> <span class="token number">30</span></code><!-- HTML_TAG_END --></pre>
+<p>Now with the above two operations, how does one chain those two simple operations together?
+We will probably have to keep assigning intermediate dataframe variables, which gets clunky after awhile:</p>
+<pre class="language-py"><!-- HTML_TAG_START --><code class="language-py">df2 <span class="token operator">=</span> df<span class="token punctuation">[</span>df<span class="token punctuation">.</span>age <span class="token operator">&lt;=</span> <span class="token number">30</span><span class="token punctuation">]</span> <span class="token comment"># does not change df in-place?</span>
+df2<span class="token punctuation">[</span><span class="token string">'new_col'</span><span class="token punctuation">]</span> <span class="token operator">=</span> df2<span class="token punctuation">.</span>age <span class="token operator">+</span> <span class="token number">30</span> <span class="token comment"># changes df2 in-place?</span></code><!-- HTML_TAG_END --></pre>
+<h2>.assign and .query</h2>
+<p>A more chainable way to do filters and add calculated columns is to use <code>.query()</code> and <code>.assign()</code> methods:</p>
+<pre class="language-py"><!-- HTML_TAG_START --><code class="language-py">df<span class="token punctuation">.</span>query<span class="token punctuation">(</span>
+	<span class="token string">'age &lt;= 30'</span>
+<span class="token punctuation">)</span><span class="token punctuation">.</span>assign<span class="token punctuation">(</span>
+	new_col <span class="token operator">=</span> <span class="token keyword">lambda</span> x<span class="token punctuation">:</span> x<span class="token punctuation">[</span><span class="token string">'age'</span><span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token number">20</span>
+<span class="token punctuation">)</span><span class="token punctuation">.</span>query<span class="token punctuation">(</span>
+	<span class="token string">'new_col >= 50'</span>
+<span class="token punctuation">)</span></code><!-- HTML_TAG_END --></pre>
+<p>Even though this is better, there are still some drawbacks.
+The first is <code>.query()</code> uses a query string and not native python code,
+which means you lose all IDE auto complete capabilities <em>(‘what columns do my dataframe have again?‘)</em>.</p>
+<p>The second is that using <code>assign</code> fixes the column names that the lambda function operates on,
+unless you introduce another layer of abstraction to parameterise the lambda function.
+This second point is important when you want to reuse this function across different dataframes.
+This is seems to be caused by the next point.</p>
+<p>The third point is the un-intuitiveness of the LHS and RHS of the expressions in <code>.assign()</code>’s arguments.
+One would expect that since we are assigning a new <strong>column</strong> (i.e. a <code>Series</code>) called <code>new_col</code> on the LHS, the RHS’ lambda input(s) should be of type <code>Series</code> as well. However this is not the case as the lambda function takes in a <code>DataFrame</code> as input, and expects a <code>Series</code> as output.</p>
+<h1>.apply, .applymap, .map, .pipe ???</h1>
+<h1>Code examples</h1>
+<pre class="language-python"><!-- HTML_TAG_START --><code class="language-python">df <span class="token operator">=</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+	<span class="token string">'name'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'a'</span><span class="token punctuation">,</span><span class="token string">'b'</span><span class="token punctuation">,</span><span class="token string">'c'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+	<span class="token string">'age'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">25</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">,</span> <span class="token number">99</span><span class="token punctuation">]</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">to_uppercase</span><span class="token punctuation">(</span>col_name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+	<span class="token keyword">return</span> <span class="token keyword">lambda</span> dataframe<span class="token punctuation">:</span> dataframe<span class="token punctuation">[</span>col_name<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> <span class="token string">'Using element wise map: '</span> <span class="token operator">+</span> x<span class="token punctuation">.</span>upper<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">series_transform_string</span><span class="token punctuation">(</span>x<span class="token punctuation">:</span> pd<span class="token punctuation">.</span>Series<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> pd<span class="token punctuation">.</span>Series<span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token string">'Using vectorised pipe: '</span> <span class="token operator">+</span> x<span class="token punctuation">.</span><span class="token builtin">str</span><span class="token punctuation">.</span>upper<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">to_uppercase2</span><span class="token punctuation">(</span>col_name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+	<span class="token keyword">return</span> <span class="token keyword">lambda</span> dataframe<span class="token punctuation">:</span> dataframe<span class="token punctuation">[</span>col_name<span class="token punctuation">]</span><span class="token punctuation">.</span>pipe<span class="token punctuation">(</span>series_transform_string<span class="token punctuation">)</span>
+
+df<span class="token punctuation">.</span>assign<span class="token punctuation">(</span>
+	more_than_seventy <span class="token operator">=</span> <span class="token keyword">lambda</span> d<span class="token punctuation">:</span> d<span class="token punctuation">[</span><span class="token string">'age'</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> age<span class="token punctuation">:</span> <span class="token boolean">True</span> <span class="token keyword">if</span> age <span class="token operator">></span> <span class="token number">70</span> <span class="token keyword">else</span> <span class="token boolean">False</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	uppercase_name <span class="token operator">=</span> to_uppercase<span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    another_upper <span class="token operator">=</span> to_uppercase2<span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span></code><!-- HTML_TAG_END --></pre></div>
+		<div class="sides"></div></div></div>
+
+
+		<script type="module" data-sveltekit-hydrate="76s124">
+		import { start } from "/github-blog/_app/immutable/start-99628fe9.js";
+
+		start({
+			env: {},
+			hydrate: {
+				status: 200,
+				error: null,
+				node_ids: [0, 5],
+				params: {blogpost:"post10"},
+				routeId: "blog/[blogpost]",
+				data: (function(a){return [a,a]}(null)),
+				form: null
+			},
+			paths: {"base":"/github-blog","assets":"/github-blog"},
+			target: document.querySelector('[data-sveltekit-hydrate="76s124"]').parentNode,
+			trailing_slash: "never"
+		});
+	</script>
+	</div>
+	</body>
+</html>
