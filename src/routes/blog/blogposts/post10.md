@@ -67,9 +67,40 @@ This second point is important when you want to reuse this function across diffe
 This is seems to be caused by the next point.
 
 The third point is the un-intuitiveness of the LHS and RHS of the expressions in `.assign()`'s arguments.
-One would expect that since we are assigning a new **column** (i.e. a `Series`) called `new_col` on the LHS, the RHS' lambda input(s) should be of type `Series` as well. However this is not the case as the lambda function takes in a `DataFrame` as input, and expects a `Series` as output.
+One would expect that since we are assigning a new **column** (i.e. a `Series`) called `new_col` on the LHS, the RHS' lambda input(s) should be of type `Series` as well.
+This seems more intuitive because most operations are computations of one or more `Series` (e.g. total_sales_column = item_price_column \* quantity_sold_column).
+However this is not the case as the lambda function takes in a `DataFrame` as input, and expects a `Series` as output.
 
-# .apply, .applymap, .map, .pipe ???
+# Chaining methods (.apply, .applymap, .map, .pipe)
+
+There are also a variety of (overlapping?) chaining methods that we can use, which can be confusing as well.
+
+## Chaining Functions on DataFrames
+
+When working with `DataFrames`, you have the option of `.pipe`, `.apply` and `.applymap` to chain functions, which is also unintuitive at first glance (which one should I use? they all look like they do the same thing!).
+
+As a general rule of thumb:
+
+- Use `.applymap` when you need element-wise operation
+- Use `.apply` when you need to operate on row-wise aggregations/Series
+- Otherwise, use `.pipe`
+
+However, note that `.applymap` and `.apply` applies the function to ALL elements/columns/rows, and in order to operate only on certain columns, you would have to do `df['col'].applymap(my_func)`
+
+## Chaining Functions on Series
+
+When working with `Series`, you have the option of `.pipe`, `.apply` and `.map`. Again, having multiple options that does _almost_ the same things can be very confusing.
+
+As a general rule of thumb:
+
+- Use `.map` when you want to substitute elements using a dictionary (e.g. map 'A' to 1, 'B' to 2, etc.)
+- Use `.apply` if you need to use Numpy functions
+- Otherwise, use `.pipe`
+
+# Speed
+
+Since most of these chaining methods uses for-loop in the background, it will not take advantage of native vectorization to improve runtimes.
+Hence there is a major trade off in writing (somewhat) more readable code, which is disappointing as we have to trade off huge developer experience for runtime performance.
 
 # Code examples
 
