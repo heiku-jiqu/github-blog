@@ -1,8 +1,8 @@
-# Blog
+# About
 
 Writing things I learn and come across.
 
-Created using svelte, sveltekit and mdsvex.
+Created using [svelte](https://svelte.dev/), [sveltekit](https://kit.svelte.dev/) and [mdsvex](https://mdsvex.pngwn.io/).
 
 ## Developing
 
