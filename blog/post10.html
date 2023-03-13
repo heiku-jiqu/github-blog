@@ -9,18 +9,18 @@
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-99628fe9.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-51b57ceb.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-8d618933.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-4c59d419.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-0bb8214e.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-99e1d2e0.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-e8515419.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-36eb6089.js">
 	</head>
 	<body>
 		<div>
@@ -71,8 +71,27 @@ unless you introduce another layer of abstraction to parameterise the lambda fun
 This second point is important when you want to reuse this function across different dataframes.
 This is seems to be caused by the next point.</p>
 <p>The third point is the un-intuitiveness of the LHS and RHS of the expressions in <code>.assign()</code>’s arguments.
-One would expect that since we are assigning a new <strong>column</strong> (i.e. a <code>Series</code>) called <code>new_col</code> on the LHS, the RHS’ lambda input(s) should be of type <code>Series</code> as well. However this is not the case as the lambda function takes in a <code>DataFrame</code> as input, and expects a <code>Series</code> as output.</p>
-<h1>.apply, .applymap, .map, .pipe ???</h1>
+One would expect that since we are assigning a new <strong>column</strong> (i.e. a <code>Series</code>) called <code>new_col</code> on the LHS, the RHS’ lambda input(s) should be of type <code>Series</code> as well.
+This seems more intuitive because most operations are computations of one or more <code>Series</code> (e.g. total_sales_column = item_price_column * quantity_sold_column).
+However this is not the case as the lambda function takes in a <code>DataFrame</code> as input, and expects a <code>Series</code> as output.</p>
+<h1>Chaining methods (.apply, .applymap, .map, .pipe)</h1>
+<p>There are also a variety of (overlapping?) chaining methods that we can use, which can be confusing as well.</p>
+<h2>Chaining Functions on DataFrames</h2>
+<p>When working with <code>DataFrames</code>, you have the option of <code>.pipe</code>, <code>.apply</code> and <code>.applymap</code> to chain functions, which is also unintuitive at first glance (which one should I use? they all look like they do the same thing!).</p>
+<p>As a general rule of thumb:</p>
+<ul><li>Use <code>.applymap</code> when you need element-wise operation</li>
+<li>Use <code>.apply</code> when you need to operate on row-wise aggregations/Series</li>
+<li>Otherwise, use <code>.pipe</code></li></ul>
+<p>However, note that <code>.applymap</code> and <code>.apply</code> applies the function to ALL elements/columns/rows, and in order to operate only on certain columns, you would have to do <code>df[&#39;col&#39;].applymap(my_func)</code></p>
+<h2>Chaining Functions on Series</h2>
+<p>When working with <code>Series</code>, you have the option of <code>.pipe</code>, <code>.apply</code> and <code>.map</code>. Again, having multiple options that does <em>almost</em> the same things can be very confusing.</p>
+<p>As a general rule of thumb:</p>
+<ul><li>Use <code>.map</code> when you want to substitute elements using a dictionary (e.g. map ‘A’ to 1, ‘B’ to 2, etc.)</li>
+<li>Use <code>.apply</code> if you need to use Numpy functions</li>
+<li>Otherwise, use <code>.pipe</code></li></ul>
+<h1>Speed</h1>
+<p>Since most of these chaining methods uses for-loop in the background, it will not take advantage of native vectorization to improve runtimes.
+Hence there is a major trade off in writing (somewhat) more readable code, which is disappointing as we have to trade off huge developer experience for runtime performance.</p>
 <h1>Code examples</h1>
 <pre class="language-python"><!-- HTML_TAG_START --><code class="language-python">df <span class="token operator">=</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
 	<span class="token string">'name'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'a'</span><span class="token punctuation">,</span><span class="token string">'b'</span><span class="token punctuation">,</span><span class="token string">'c'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
@@ -96,8 +115,8 @@ df<span class="token punctuation">.</span>assign<span class="token punctuation">
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="76s124">
-		import { start } from "/github-blog/_app/immutable/start-99628fe9.js";
+		<script type="module" data-sveltekit-hydrate="dnvuzw">
+		import { start } from "/github-blog/_app/immutable/start-51b57ceb.js";
 
 		start({
 			env: {},
@@ -111,7 +130,7 @@ df<span class="token punctuation">.</span>assign<span class="token punctuation">
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="76s124"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="dnvuzw"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
