@@ -1,5 +1,5 @@
 ---
-title: Composable Pandas (or Not)
+title: Composable Pandas
 date: '2023-03-03'
 ---
 
@@ -7,14 +7,14 @@ date: '2023-03-03'
 
 In this post, I explore possible ways to write Pandas code in hopes of makign Pandas code more readable, composable, reusable, and testable.
 
-## Motivation
+## motivation
 
 After using R's `dplyr` (and the entire `tidyverse` ecosystem) to manipulate dataframes for awhile, Panda's API feels clunky in comparison.
 The main issue seems to be difficulty in chaining and composing operations.
 This tends to cause Pandas code to go against good software design principles, because it is difficult to break down larger chain of operations and also difficult to stitch smaller operations together.
 This has an added effect of making tests hard to write, as user written Pandas functions are often doing a lot of things at once.
 
-## Concrete Example of the Issue
+## Concrete example of the issue
 
 ```py
 df = pd.DataFrame({
@@ -73,34 +73,41 @@ However this is not the case as the lambda function takes in a `DataFrame` as in
 
 # Chaining methods (.apply, .applymap, .map, .pipe)
 
-There are also a variety of (overlapping?) chaining methods that we can use, which can be confusing as well.
+There are a variety of (overlapping) chaining methods that we can use, which does not help with implementing chaining as it can be confusing to choose which methods to use.
 
-## Chaining Functions on DataFrames
+## Chaining functions on DataFrames
 
 When working with `DataFrames`, you have the option of `.pipe`, `.apply` and `.applymap` to chain functions, which is also unintuitive at first glance (which one should I use? they all look like they do the same thing!).
 
 As a general rule of thumb:
 
+- Default to using `.pipe`, so as to ease cognitive overhead in remembering which specific method to use. If pipe isn't suitable, try the below methods;
 - Use `.applymap` when you need element-wise operation
 - Use `.apply` when you need to operate on row-wise aggregations/Series
-- Otherwise, use `.pipe`
 
 However, note that `.applymap` and `.apply` applies the function to ALL elements/columns/rows, and in order to operate only on certain columns, you would have to do `df['col'].applymap(my_func)`
 
-## Chaining Functions on Series
+## Chaining functions on Series
 
 When working with `Series`, you have the option of `.pipe`, `.apply` and `.map`. Again, having multiple options that does _almost_ the same things can be very confusing.
 
 As a general rule of thumb:
 
+- Default to using `.pipe`, so as to ease cognitive overhead in remembering which specific method to use. If pipe isn't suitable, try the below methods;
 - Use `.map` when you want to substitute elements using a dictionary (e.g. map 'A' to 1, 'B' to 2, etc.)
 - Use `.apply` if you need to use Numpy functions
-- Otherwise, use `.pipe`
 
 # Speed
 
-Since most of these chaining methods uses for-loop in the background, it will not take advantage of native vectorization to improve runtimes.
-Hence there is a major trade off in writing (somewhat) more readable code, which is disappointing as we have to trade off huge developer experience for runtime performance.
+Since most of these chaining methods uses _Python_'s for-loop in the background, it will NOT take advantage of the machine code vectorization that Pandas (and Numpy) has integrated into its normal 'unchained' API.
+These vectorizations (e.g. `df['x'] / df['y']`) calls Numpy's underlying C code which helps to improve performance massively.
+Hence there is a major trade off in writing (somewhat) more readable code, which is kind of disappointing as we have to trade off developer experience for runtime performance.
+
+# Conclusion and alternatives
+
+It does seem like it is very hard to shoe-horn dplyr's more intuitive API into pandas', as they are fundamentally designed very differently.
+
+Some alternatives that have nicer APIs include R's [dplyr](https://dplyr.tidyverse.org/) as mentioned. If using python, there are also promising alternatives like [polars](https://www.pola.rs/) and [ibis](https://ibis-project.org/).
 
 # Code examples
 
@@ -110,12 +117,16 @@ df = pd.DataFrame({
 	'age': [25, 30, 99]
 })
 
+# nest the lambdas so this funciton is usable within .assign()
 def to_uppercase(col_name):
-	return lambda dataframe: dataframe[col_name].map(lambda x: 'Using element wise map: ' + x.upper())
+	return lambda dataframe: dataframe[col_name].pipe(lambda x: 'Using element wise map: ' + x.upper())
 
+# abstract out inner function
+# multiple inner functions can then be reused/chained
 def series_transform_string(x: pd.Series) -> pd.Series:
     return 'Using vectorised pipe: ' + x.str.upper()
 
+# similar as first example, but inner lambda is abstracted out
 def to_uppercase2(col_name):
 	return lambda dataframe: dataframe[col_name].pipe(series_transform_string)
 
