@@ -52,3 +52,7 @@ details summary {
 details summary:hover {
 	background-color: var(--deep-champagne)
 }
+
+::selection {
+	background-color: rgba(129, 178, 194, 0.3);
+}
