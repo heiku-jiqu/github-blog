@@ -6,17 +6,17 @@ date: '2222-02-22'
 # {title}
 
 Python has multiple client implementations to interact with a Kafka cluster.
-This post will be walking through `confluent-kafka-python` client which is the official Python client implementation by Confluent Inc.
+This post will walk through the `confluent-kafka-python` client, which is the official Python client implementation by Confluent Inc.
 
 ## Overview
 
-The client module has a few main classes that make up the bulk of its API:
+This client module has a few main classes that make up the bulk of its API:
 
 - `Producer`: To produce events to the Kafka cluster
-- `Consumer`: To read and process events from the Kafka cluster
-- `SchemaRegistryClient`: To get metadata/schemas about the Kafka cluster/topics etc if you are using Kafka Schema Registry
-- `Serializer` / `Deserializer`: To serialize and deserialize messages sent / received from Kafka into / from formats like JSON, Protobuf, Avro, etc.
-- `AdminClient`: To manage the Kafka cluster
+- `Consumer`: To read events from the Kafka cluster
+- `SchemaRegistryClient`: To get metadata/schemas about the Kafka cluster/topics when you have a Kafka Schema Registry server
+- `Serializer` / `Deserializer`: To serialize and deserialize messages sent/received from Kafka into/from formats like JSON, Protobuf, Avro, etc.
+- `AdminClient`: To manage the Kafka cluster (e.g. creating topics, partitions, etc.)
 
 ## Producer
 
@@ -39,10 +39,10 @@ producer = Producer(config)
 The configuration can include the following:
 
 - `bootstrap.servers` (**required**): the URL to the Kafka cluster/brokers
-- `acks`: level of acknowledgement required before returning from produce request. (`0`, `1`, `all` for no ack, only lead broker ack, and all broker acks, respectively)
+- `acks`: level of acknowledgement required before returning from produce request (`0`, `1`, `all` for no ack, only lead broker ack, and all broker acks, respectively)
 - `compression.type`: enables compression of messages (e.g. `gzip`, `zstd`)
-- `batch.size`: number of bytes to batch up before sending produce request. should be adjust with `linger.ms`
-- `linger.ms`: number of milliseconds to wait for batch before sending produce request (i.e. latency). should be adjusted with `batch.size`
+- `batch.size`: number of bytes to batch up before sending produce request. Should be adjust with `linger.ms`
+- `linger.ms`: number of milliseconds to wait for batch before sending produce request (i.e. latency). Should be adjusted with `batch.size`
 - any other connection security settings like `security.protocol` and `ssl.keystore`
 
 ### methods
