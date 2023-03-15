@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="/github-blog/favicon.png" />
+		<meta name="viewport" content="width=device-width" />
+		<meta http-equiv="content-security-policy" content=""><link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-gruvbox-light.min.css" rel="stylesheet" data-svelte="svelte-uyunbu">
+	<link href="/github-blog/_app/immutable/assets/_layout-ff0af52f.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-afd1db0b.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-b81d2ce4.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-b2c10670.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-8c6d3f26.js">
+	</head>
+	<body>
+		<div>
+
+
+
+
+<header class="svelte-qm05bo"><a href="/github-blog/" class="svelte-qm05bo">Home</a>
+
+	<nav><ul class="svelte-qm05bo"><li><a href="/github-blog/blog" class="svelte-qm05bo">Blog</a></li>
+			<li><a href="/github-blog/about" class="svelte-qm05bo">About</a></li></ul></nav>
+</header>
+<div><div class="grid-container svelte-14l03dd"><div class="sides"></div>
+		<div class="article svelte-14l03dd"><h1>Kafka and Python</h1>
+<p>Python has multiple client implementations to interact with a Kafka cluster.
+This post will walk through the <code>confluent-kafka-python</code> client, which is the official Python client implementation by Confluent Inc.</p>
+<h2>Overview</h2>
+<p>This client module has a few main classes that make up the bulk of its API:</p>
+<ul><li><code>Producer</code>: To produce events to the Kafka cluster</li>
+<li><code>Consumer</code>: To read events from the Kafka cluster</li>
+<li><code>SchemaRegistryClient</code>: To get metadata/schemas about the Kafka cluster/topics when you have a Kafka Schema Registry server</li>
+<li><code>Serializer</code> / <code>Deserializer</code>: To serialize and deserialize messages sent/received from Kafka into/from formats like JSON, Protobuf, Avro, etc.</li>
+<li><code>AdminClient</code>: To manage the Kafka cluster (e.g. creating topics, partitions, etc.)</li></ul>
+<h2>Producer</h2>
+<p>The <code>Producer</code> class is used to send events to Kafka. It is responsible for:</p>
+<ul><li>Partition assignment of the events</li>
+<li>Batching events for improved throughput (but added latency)</li>
+<li>Compression of events and its data</li>
+<li>Retries (e.g. due to network errors)</li>
+<li>Response callbacks when events are successfully delivered</li></ul>
+<h3>using Producer</h3>
+<p><code>Producer</code> can be initialised by passing in a dictionary of configuration settings to the constructor.</p>
+<pre class="language-py"><!-- HTML_TAG_START --><code class="language-py">producer <span class="token operator">=</span> Producer<span class="token punctuation">(</span>config<span class="token punctuation">)</span></code><!-- HTML_TAG_END --></pre>
+<p>The configuration can include the following:</p>
+<ul><li><code>bootstrap.servers</code> (<strong>required</strong>): the URL to the Kafka cluster/brokers</li>
+<li><code>acks</code>: level of acknowledgement required before returning from produce request (<code>0</code>, <code>1</code>, <code>all</code> for no ack, only lead broker ack, and all broker acks, respectively)</li>
+<li><code>compression.type</code>: enables compression of messages (e.g. <code>gzip</code>, <code>zstd</code>)</li>
+<li><code>batch.size</code>: number of bytes to batch up before sending produce request. Should be adjust with <code>linger.ms</code></li>
+<li><code>linger.ms</code>: number of milliseconds to wait for batch before sending produce request (i.e. latency). Should be adjusted with <code>batch.size</code></li>
+<li>any other connection security settings like <code>security.protocol</code> and <code>ssl.keystore</code></li></ul>
+<h3>methods</h3>
+<p>The 2 most important methods to take not of is <code>.produce()</code> and <code>.flush()</code></p>
+<p><code>.produce()</code> is used to send events to Kafka asynchronously, and <code>.flush()</code> is used to make sure all produce requests and callbacks are complete.</p>
+<h4>methods for transactions</h4>
+<p><code>Producer.init_transactions()</code>
+<code>Producer.begin_transaction()</code>
+<code>Producer.commit_transaction()</code>
+<code>Producer.abort_transaction()</code>
+<code>Producer.send_offsets_to_transaction()</code></p>
+<h3>example</h3>
+<pre class="language-py"><!-- HTML_TAG_START --><code class="language-py"><span class="token keyword">from</span> confluent_kafka <span class="token keyword">import</span> Producer
+
+config <span class="token operator">=</span> <span class="token punctuation">&#123;</span>boostrap<span class="token punctuation">.</span>servers<span class="token punctuation">:</span> localhost<span class="token punctuation">:</span><span class="token number">9092</span><span class="token punctuation">&#125;</span>
+producer <span class="token operator">=</span> Producer<span class="token punctuation">(</span>config<span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">callback</span><span class="token punctuation">(</span>err<span class="token punctuation">:</span> KafkaError<span class="token punctuation">,</span> msg<span class="token punctuation">:</span> Message<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> err<span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Event produce to topic </span><span class="token interpolation"><span class="token punctuation">&#123;</span>msg<span class="token punctuation">.</span>topic<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string"> failed for event: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>event<span class="token punctuation">.</span>key<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"</span><span class="token interpolation"><span class="token punctuation">&#123;</span>msg<span class="token punctuation">.</span>value<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string"> sent to topic </span><span class="token interpolation"><span class="token punctuation">&#123;</span>msg<span class="token punctuation">.</span>topic<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string"> in partition </span><span class="token interpolation"><span class="token punctuation">&#123;</span>msg<span class="token punctuation">.</span>partition<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+
+producer<span class="token punctuation">.</span>produce<span class="token punctuation">(</span>
+    topic <span class="token operator">=</span> <span class="token string">'hello_topic'</span><span class="token punctuation">,</span>
+    key <span class="token operator">=</span> <span class="token string">"abc"</span><span class="token punctuation">,</span>
+    value <span class="token operator">=</span> <span class="token string">"hello abc"</span><span class="token punctuation">,</span>
+    on_delivery <span class="token operator">=</span> callback
+<span class="token punctuation">)</span>
+producer<span class="token punctuation">.</span>flush<span class="token punctuation">(</span><span class="token punctuation">)</span></code><!-- HTML_TAG_END --></pre>
+<h2>Consumer</h2>
+<h3>configs</h3>
+<p>cluster location, security settings, consumer group settings</p>
+<p><code>group.id</code>
+<code>auto.offset.reset</code>: whether to always reset to start of topic, or only consume new events as they arrive
+<code>enable.auto.commit</code>: whether to manually commit offsets using our code, or let the client automatically commit
+<code>isolation.level</code>: transaction processing, whether to read committed or uncomitted events</p>
+<h3>methods</h3>
+<p><code>Consumer.subscribe()</code>
+<code>Consumer.poll()</code></p></div>
+		<div class="sides"></div></div></div>
+
+
+		<script type="module" data-sveltekit-hydrate="la6kju">
+		import { start } from "/github-blog/_app/immutable/start-afd1db0b.js";
+
+		start({
+			env: {},
+			hydrate: {
+				status: 200,
+				error: null,
+				node_ids: [0, 5],
+				params: {blogpost:"post11"},
+				routeId: "blog/[blogpost]",
+				data: (function(a){return [a,a]}(null)),
+				form: null
+			},
+			paths: {"base":"/github-blog","assets":"/github-blog"},
+			target: document.querySelector('[data-sveltekit-hydrate="la6kju"]').parentNode,
+			trailing_slash: "never"
+		});
+	</script>
+	</div>
+	</body>
+</html>
