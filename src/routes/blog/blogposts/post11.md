@@ -1,6 +1,6 @@
 ---
 title: Kafka and Python
-date: '2222-02-22'
+date: '2023-03-15'
 ---
 
 # {title}
