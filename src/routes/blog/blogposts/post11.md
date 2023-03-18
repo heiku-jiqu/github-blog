@@ -84,6 +84,14 @@ producer.flush()
 
 ## Consumer
 
+The `Consumer` class' main function used to read events from the Kafka cluster. It is also responsbile several areas like:
+
+- Subscribing to Kafka topics
+- Reading from those topics
+- Keeping track of successfully read events (by updating commited offset)
+- Manage offsets of the application
+- Joining Consumer Groups (to horizontally scale the consumer app, up to number of partitions of topic)
+
 ### configs
 
 cluster location, security settings, consumer group settings
