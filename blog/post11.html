@@ -9,18 +9,18 @@
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-afd1db0b.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-8023da9f.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-b81d2ce4.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-89704629.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-b2c10670.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-8c6d3f26.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-cf159341.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-6e470f41.js">
 	</head>
 	<body>
 		<div>
@@ -90,6 +90,12 @@ producer<span class="token punctuation">.</span>produce<span class="token punctu
 <span class="token punctuation">)</span>
 producer<span class="token punctuation">.</span>flush<span class="token punctuation">(</span><span class="token punctuation">)</span></code><!-- HTML_TAG_END --></pre>
 <h2>Consumer</h2>
+<p>The <code>Consumer</code> class’ main function used to read events from the Kafka cluster. It is also responsbile several areas like:</p>
+<ul><li>Subscribing to Kafka topics</li>
+<li>Reading from those topics</li>
+<li>Keeping track of successfully read events (by updating commited offset)</li>
+<li>Manage offsets of the application</li>
+<li>Joining Consumer Groups (to horizontally scale the consumer app, up to number of partitions of topic)</li></ul>
 <h3>configs</h3>
 <p>cluster location, security settings, consumer group settings</p>
 <p><code>group.id</code>
@@ -102,8 +108,8 @@ producer<span class="token punctuation">.</span>flush<span class="token punctuat
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="la6kju">
-		import { start } from "/github-blog/_app/immutable/start-afd1db0b.js";
+		<script type="module" data-sveltekit-hydrate="1itpd9e">
+		import { start } from "/github-blog/_app/immutable/start-8023da9f.js";
 
 		start({
 			env: {},
@@ -117,7 +123,7 @@ producer<span class="token punctuation">.</span>flush<span class="token punctuat
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="la6kju"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="1itpd9e"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
