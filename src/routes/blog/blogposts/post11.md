@@ -59,7 +59,7 @@ The 2 most important methods to take not of is `.produce()` and `.flush()`
 `Producer.abort_transaction()`
 `Producer.send_offsets_to_transaction()`
 
-### example
+### example code
 
 ```py
 from confluent_kafka import Producer
@@ -96,12 +96,32 @@ The `Consumer` class' main function used to read events from the Kafka cluster. 
 
 cluster location, security settings, consumer group settings
 
-`group.id`
-`auto.offset.reset`: whether to always reset to start of topic, or only consume new events as they arrive
-`enable.auto.commit`: whether to manually commit offsets using our code, or let the client automatically commit
-`isolation.level`: transaction processing, whether to read committed or uncomitted events
+- `group.id`: the group id that identifies which consumer belongs to which consumer group (i.e. same group id = same consumer group)
+- `auto.offset.reset`: whether to start reading at the beginning of topic (`earliest`), or only read new events as they arrive (`latest`); this only comes into play when there is no offsets in Kafka (e.g. at the start of consumer app or when offset expire)
+- `enable.auto.commit`: whether to manually commit offsets using our code, or let the client automatically commit
+- `isolation.level`: transaction processing, whether to read committed or uncomitted events
 
 ### methods
 
-`Consumer.subscribe()`
-`Consumer.poll()`
+`Consumer.subscribe()`: subscribes to Kafka topics. can pass in callbacks to handle on reshuffle etc.
+
+`Consumer.poll()`: returns either `None` or a `Message`
+
+### example code
+
+```py
+config
+consumer = Consumer(config)
+
+while True:
+    event = consumer.poll(timeout=1.0)
+
+    if event is None:
+        continue
+    if event.error():
+        #handle error
+        pass
+    else:
+        #process event
+        consumer.commit(event)
+```
