@@ -103,25 +103,30 @@ cluster location, security settings, consumer group settings
 
 ### methods
 
-`Consumer.subscribe()`: subscribes to Kafka topics. can pass in callbacks to handle on reshuffle etc.
+`.subscribe()`: subscribes to Kafka topics. can pass in callbacks to handle on reshuffle etc.
 
-`Consumer.poll()`: returns either `None` or a `Message`
+`.poll()`: returns either `None` (when client cannot reach Kafka server or there is) or a `Message`, which the client will need to check for `Message.error()` for any `KafkaError`.
 
 ### example code
 
 ```py
 config
 consumer = Consumer(config)
+consumer.subscribe(['my_topic'])
 
-while True:
-    event = consumer.poll(timeout=1.0)
+try:
+    while True:
+        event = consumer.poll(timeout=1.0)
 
-    if event is None:
-        continue
-    if event.error():
-        #handle error
-        pass
-    else:
-        #process event
-        consumer.commit(event)
+        if event is None:
+            continue
+        if event.error():
+            print(event.error())
+        else:
+            print(f"Received message: {event.value().decode('utf8')} from partition {event.partition()} in topic {event.topci()}")
+            consumer.commit(event)
+except KeyboardInterrupt:
+    print("Shutting down")
+finally:
+    consumer.close()
 ```
