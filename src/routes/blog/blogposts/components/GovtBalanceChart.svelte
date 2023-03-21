@@ -5,7 +5,8 @@
 
 	async function filter_data(promise) {
 		let data = await promise;
-		return data.filter((r) => r.item == 'Overall Balance');
+		console.log(data);
+		return data.filter((r) => r.item == 'Overall Budget Balance');
 	}
 
 	let plotMargin = 100;

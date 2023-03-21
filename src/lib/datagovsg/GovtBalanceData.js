@@ -1,6 +1,7 @@
 export async function fetch_govt_balance_data() {
 	const data_gov_url = 'https://data.gov.sg/api/action/datastore_search';
-	const resource_id = '98856a60-33cd-482a-9dc4-1ed52e562d5d';
+	// Government Overall Fiscal Position (Ministry of Finance)
+	const resource_id = '25299884-d68e-4f6d-a393-db113ce8ac6b';
 	const params_obj = {
 		resource_id,
 		q: 'balance'
