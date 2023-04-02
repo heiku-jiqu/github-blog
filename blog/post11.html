@@ -9,18 +9,18 @@
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-0bbedf31.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-28e19295.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-5c2349bc.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-dad1b121.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-760ddded.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-94dbfff1.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-3b148d4d.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-0de9ca2d.js">
 	</head>
 	<body>
 		<div>
@@ -103,28 +103,33 @@ producer<span class="token punctuation">.</span>flush<span class="token punctuat
 <li><code>enable.auto.commit</code>: whether to manually commit offsets using our code, or let the client automatically commit</li>
 <li><code>isolation.level</code>: transaction processing, whether to read committed or uncomitted events</li></ul>
 <h3>methods</h3>
-<p><code>Consumer.subscribe()</code>: subscribes to Kafka topics. can pass in callbacks to handle on reshuffle etc.</p>
-<p><code>Consumer.poll()</code>: returns either <code>None</code> or a <code>Message</code></p>
+<p><code>.subscribe()</code>: subscribes to Kafka topics. can pass in callbacks to handle on reshuffle etc.</p>
+<p><code>.poll()</code>: returns either <code>None</code> (when client cannot reach Kafka server or there is) or a <code>Message</code>, which the client will need to check for <code>Message.error()</code> for any <code>KafkaError</code>.</p>
 <h3>example code</h3>
 <pre class="language-py"><!-- HTML_TAG_START --><code class="language-py">config
 consumer <span class="token operator">=</span> Consumer<span class="token punctuation">(</span>config<span class="token punctuation">)</span>
+consumer<span class="token punctuation">.</span>subscribe<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'my_topic'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
 
-<span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
-    event <span class="token operator">=</span> consumer<span class="token punctuation">.</span>poll<span class="token punctuation">(</span>timeout<span class="token operator">=</span><span class="token number">1.0</span><span class="token punctuation">)</span>
+<span class="token keyword">try</span><span class="token punctuation">:</span>
+    <span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
+        event <span class="token operator">=</span> consumer<span class="token punctuation">.</span>poll<span class="token punctuation">(</span>timeout<span class="token operator">=</span><span class="token number">1.0</span><span class="token punctuation">)</span>
 
-    <span class="token keyword">if</span> event <span class="token keyword">is</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
-        <span class="token keyword">continue</span>
-    <span class="token keyword">if</span> event<span class="token punctuation">.</span>error<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token comment">#handle error</span>
-        <span class="token keyword">pass</span>
-    <span class="token keyword">else</span><span class="token punctuation">:</span>
-        <span class="token comment">#process event</span>
-        consumer<span class="token punctuation">.</span>commit<span class="token punctuation">(</span>event<span class="token punctuation">)</span></code><!-- HTML_TAG_END --></pre></div>
+        <span class="token keyword">if</span> event <span class="token keyword">is</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+            <span class="token keyword">continue</span>
+        <span class="token keyword">if</span> event<span class="token punctuation">.</span>error<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span>event<span class="token punctuation">.</span>error<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Received message: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>event<span class="token punctuation">.</span>value<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">'utf8'</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string"> from partition </span><span class="token interpolation"><span class="token punctuation">&#123;</span>event<span class="token punctuation">.</span>partition<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string"> in topic </span><span class="token interpolation"><span class="token punctuation">&#123;</span>event<span class="token punctuation">.</span>topci<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+            consumer<span class="token punctuation">.</span>commit<span class="token punctuation">(</span>event<span class="token punctuation">)</span>
+<span class="token keyword">except</span> KeyboardInterrupt<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Shutting down"</span><span class="token punctuation">)</span>
+<span class="token keyword">finally</span><span class="token punctuation">:</span>
+    consumer<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span></code><!-- HTML_TAG_END --></pre></div>
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="xnilrz">
-		import { start } from "/github-blog/_app/immutable/start-0bbedf31.js";
+		<script type="module" data-sveltekit-hydrate="w2edgy">
+		import { start } from "/github-blog/_app/immutable/start-28e19295.js";
 
 		start({
 			env: {},
@@ -138,7 +143,7 @@ consumer <span class="token operator">=</span> Consumer<span class="token punctu
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="xnilrz"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="w2edgy"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>

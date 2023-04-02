@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="/github-blog/favicon.png" />
+		<meta name="viewport" content="width=device-width" />
+		<meta http-equiv="content-security-policy" content=""><link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-gruvbox-light.min.css" rel="stylesheet" data-svelte="svelte-uyunbu">
+	<link href="/github-blog/_app/immutable/assets/_layout-ff0af52f.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-28e19295.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-dad1b121.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-3b148d4d.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-0de9ca2d.js">
+	</head>
+	<body>
+		<div>
+
+
+
+
+<header class="svelte-qm05bo"><a href="/github-blog/" class="svelte-qm05bo">Home</a>
+
+	<nav><ul class="svelte-qm05bo"><li><a href="/github-blog/blog" class="svelte-qm05bo">Blog</a></li>
+			<li><a href="/github-blog/about" class="svelte-qm05bo">About</a></li></ul></nav>
+</header>
+<div><div class="grid-container svelte-14l03dd"><div class="sides"></div>
+		<div class="article svelte-14l03dd"><h1>Writing File to In-Memory Buffer in Python</h1>
+<h1>tl;dr</h1>
+<p>Use <code>BytesIO()</code> file-like object and write bytes to this object.
+When appending this data in <code>requests</code> library, remember to “reset” the cursor position of the object using <code>file.seek(0)</code> so that <code>file.read()</code> will return the written bytes.</p>
+<h1>Background</h1>
+<p>When creating data pipelines, at the end you will usually want to write the processed data into a sink. Normally, the sink will be a file system, and supplying a path-like string to the API will suffice (e.g. <code>pandas.DataFrame.to_csv(&#39;/path/to/file.csv&#39;)</code>).
+However, when you instead want to send this data through a HTTP POST method, it doesn’t make sense to write the data to file system, then read back the data from file system and attach the data into your request.</p>
+<h1>Solution</h1>
+<p>Luckily a simple solution is to use Python’s built in <code>BytesIO</code> object, which is a file-like object that lets you write to in-memory buffer (aka RAM). You can pass in this file-like object to most API’s writing to file system methods.</p>
+<p>Usually, writing to file system goes something like this:</p>
+<pre class="language-py"><!-- HTML_TAG_START --><code class="language-py"><span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'path/to/file'</span><span class="token punctuation">,</span> <span class="token string">'wb'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+	df<span class="token punctuation">.</span>to_csv<span class="token punctuation">(</span>f<span class="token punctuation">)</span></code><!-- HTML_TAG_END --></pre>
+<p>To write to to an in-memory buffer (aka your RAM), change to this:</p>
+<pre class="language-py"><!-- HTML_TAG_START --><code class="language-py"><span class="token keyword">with</span> io<span class="token punctuation">.</span>BytesIO<span class="token punctuation">(</span>mode<span class="token operator">=</span><span class="token string">'w'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+	df<span class="token punctuation">.</span>to_csv<span class="token punctuation">(</span>f<span class="token punctuation">)</span></code><!-- HTML_TAG_END --></pre>
+<h2>Note on reading after writing to BytesIO</h2>
+<p>When writing to <code>BytesIO</code>, there is an underlying cursor that gets shifted to the right for every byte written. This cursor is <strong>not resetted</strong> when you try to read from the object.</p>
+<pre class="language-py"><!-- HTML_TAG_START --><code class="language-py">f <span class="token operator">=</span> BytesIO<span class="token punctuation">(</span>mode<span class="token operator">=</span><span class="token string">'w'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+f<span class="token punctuation">.</span>write<span class="token punctuation">(</span><span class="token string">b"hello"</span><span class="token punctuation">)</span>
+f<span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># returns empty string!</span>
+f<span class="token punctuation">.</span>seek<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+f<span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># returns 'hello'</span></code><!-- HTML_TAG_END --></pre>
+<p>Therefore, when attaching your <code>BytesIO</code> buffer to the <code>data</code> param of <code>requests.post()</code>, remember to <code>f.seek(0)</code> to reset the cursor position to the beginning.</p></div>
+		<div class="sides"></div></div></div>
+
+
+		<script type="module" data-sveltekit-hydrate="oj4fxk">
+		import { start } from "/github-blog/_app/immutable/start-28e19295.js";
+
+		start({
+			env: {},
+			hydrate: {
+				status: 200,
+				error: null,
+				node_ids: [0, 5],
+				params: {blogpost:"post12"},
+				routeId: "blog/[blogpost]",
+				data: (function(a){return [a,a]}(null)),
+				form: null
+			},
+			paths: {"base":"/github-blog","assets":"/github-blog"},
+			target: document.querySelector('[data-sveltekit-hydrate="oj4fxk"]').parentNode,
+			trailing_slash: "never"
+		});
+	</script>
+	</div>
+	</body>
+</html>
