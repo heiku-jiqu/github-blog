@@ -1,6 +1,6 @@
 ---
 title: Javascript File, Blob, ArrayBuffer, TypedArray, DataView
-date: '2222-02-22'
+date: '2023-05-09'
 ---
 
 # {title}
