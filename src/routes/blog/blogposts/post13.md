@@ -29,6 +29,8 @@ In order to manipulate the bytes and give them meaning, we must do it through a 
 
 ## TypedArray
 
+TypedArrays are an umbrella term for a bunch of different classes such as UInt8Array, Float64Array, etc 'views' into the array buffer. They give _meaning_ to the bytes that exists in the ArrayBuffers.
+
 # References / Further Reading
 
 - [File](https://developer.mozilla.org/en-US/docs/Web/API/File)
