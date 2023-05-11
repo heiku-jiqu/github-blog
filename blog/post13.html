@@ -9,18 +9,18 @@
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-e7a43076.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-4a617218.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-3c0cd808.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-757add48.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-5c48821d.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-60b9e0bd.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-3d38195d.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-96fba548.js">
 	</head>
 	<body>
 		<div>
@@ -48,6 +48,7 @@ When it is created, a contiguous segment of memory will be <em>allocated</em>, b
 Furthermore, the bytes in this memory location by itself is meaningless, just a bunch of 1s and 0s.</p>
 <p>In order to manipulate the bytes and give them meaning, we must do it through a view (using TypedArrays or DataViews)</p>
 <h2>TypedArray</h2>
+<p>TypedArrays are an umbrella term for a bunch of different classes such as UInt8Array, Float64Array, etc ‘views’ into the array buffer. They give <em>meaning</em> to the bytes that exists in the ArrayBuffers.</p>
 <h1>References / Further Reading</h1>
 <ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/File" rel="nofollow">File</a></li>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Blob" rel="nofollow">Blob</a></li>
@@ -56,8 +57,8 @@ Furthermore, the bytes in this memory location by itself is meaningless, just a 
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="1xjho8r">
-		import { start } from "/github-blog/_app/immutable/start-e7a43076.js";
+		<script type="module" data-sveltekit-hydrate="17dttcu">
+		import { start } from "/github-blog/_app/immutable/start-4a617218.js";
 
 		start({
 			env: {},
@@ -71,7 +72,7 @@ Furthermore, the bytes in this memory location by itself is meaningless, just a 
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="1xjho8r"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="17dttcu"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
