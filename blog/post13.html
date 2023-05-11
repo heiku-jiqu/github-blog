@@ -9,18 +9,18 @@
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-4a617218.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-57aca863.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-757add48.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-26c558b0.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-3d38195d.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-96fba548.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-68d2069a.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-1b190471.js">
 	</head>
 	<body>
 		<div>
@@ -48,7 +48,37 @@ When it is created, a contiguous segment of memory will be <em>allocated</em>, b
 Furthermore, the bytes in this memory location by itself is meaningless, just a bunch of 1s and 0s.</p>
 <p>In order to manipulate the bytes and give them meaning, we must do it through a view (using TypedArrays or DataViews)</p>
 <h2>TypedArray</h2>
-<p>TypedArrays are an umbrella term for a bunch of different classes such as UInt8Array, Float64Array, etc ‘views’ into the array buffer. They give <em>meaning</em> to the bytes that exists in the ArrayBuffers.</p>
+<p>TypedArrays are an umbrella term for a bunch of different classes such as Uint8Array, Float64Array, etc.
+They are ‘views’ into the array buffer and give <em>meaning</em> to the bytes that exists in the ArrayBuffers.
+For instance, a Uint8Array will imply that every 8 bits (or 1 byte) is an integer. And this same relationship applies for other TypedArray, i.e. Uint16Array means an integer every 16 bits (2 bytes), Float64Array means a decimal point number every 64 bits (8 bytes), etc.</p>
+<pre class="language-js"><!-- HTML_TAG_START --><code class="language-js"><span class="token keyword">let</span> buffer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayBuffer</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// create new array buffer of length 16 BYTES</span>
+<span class="token comment">// create a view of the buffer, where every 4 bytes represent one uint32</span>
+<span class="token keyword">let</span> uint32arr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Uint32Array</span><span class="token punctuation">(</span>buffer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// typedarray can be indexed</span>
+uint32arr<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">322</span><span class="token punctuation">;</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>uint32arr<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// [322, 0, 0, 0]</span>
+<span class="token comment">// note the rest of the values are 0</span>
+<span class="token comment">// note that there are only 4 items because len_of_buffer / len_of_uint32 = 4</span>
+
+<span class="token comment">// you can reference the underlying arraybuffer</span>
+uint32arr<span class="token punctuation">.</span>buffer<span class="token punctuation">;</span>
+
+<span class="token comment">// note that assigning number larger than what the type can hold will overflow</span>
+<span class="token keyword">let</span> uint8arr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Uint8Array</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// this will automatically create an underlying buffer</span>
+uint8arr<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">255</span><span class="token punctuation">;</span>
+uint8arr<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">256</span><span class="token punctuation">;</span>
+uint8arr<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">257</span><span class="token punctuation">;</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>uint8arr<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// [255, 0, 1]</span></code><!-- HTML_TAG_END --></pre>
+<p>TypedArray has most of the regular Array methods like <code>map</code>, <code>slice</code>, <code>find</code>, <code>reduce</code> etc.</p>
+<h2>DataView</h2>
+<p>DataViews are flexible alternatives to TypedArrays as they don’t declare <em>upfront</em> what type, but rather the type is specified during usage of the view using its <code>.get</code> and <code>.set</code> typed methods.</p>
+<pre class="language-js"><!-- HTML_TAG_START --><code class="language-js"><span class="token keyword">let</span> buff <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayBuffer</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> dv <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DataView</span><span class="token punctuation">(</span>buff<span class="token punctuation">)</span><span class="token punctuation">;</span>
+dv<span class="token punctuation">.</span><span class="token function">setInt8</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// at 0 byte offset from start of view, set value to 20</span>
+dv<span class="token punctuation">.</span><span class="token function">setFloat32</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> Math<span class="token punctuation">.</span><span class="token constant">PI</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// at 1 byte offset from start of view, set value to Math.PI</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>dv<span class="token punctuation">.</span><span class="token function">getInt8</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 20 // at 0 byte offset, read as Int8</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>dv<span class="token punctuation">.</span><span class="token function">getFloat32</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 3.141... // at 1 byte offset, read the next 4 bytes as Float32</span></code><!-- HTML_TAG_END --></pre>
+<p>From the above example, you can see DataView can be useful when the buffer contains multiple types.</p>
 <h1>References / Further Reading</h1>
 <ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/File" rel="nofollow">File</a></li>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Blob" rel="nofollow">Blob</a></li>
@@ -57,8 +87,8 @@ Furthermore, the bytes in this memory location by itself is meaningless, just a 
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="17dttcu">
-		import { start } from "/github-blog/_app/immutable/start-4a617218.js";
+		<script type="module" data-sveltekit-hydrate="1ustqmp">
+		import { start } from "/github-blog/_app/immutable/start-57aca863.js";
 
 		start({
 			env: {},
@@ -72,7 +102,7 @@ Furthermore, the bytes in this memory location by itself is meaningless, just a 
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="17dttcu"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="1ustqmp"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
