@@ -9,18 +9,18 @@
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-57aca863.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-ddd24f44.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-26c558b0.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-fa903b2e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-68d2069a.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-1b190471.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-832fcb9c.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-43513bce.js">
 	</head>
 	<body>
 		<div>
@@ -34,7 +34,7 @@
 			<li><a href="/github-blog/about" class="svelte-qm05bo">About</a></li></ul></nav>
 </header>
 <div><div class="grid-container svelte-14l03dd"><div class="sides"></div>
-		<div class="article svelte-14l03dd"><h1>Javascript File, Blob, ArrayBuffer, TypedArray, DataView</h1>
+		<div class="article svelte-14l03dd"><h1>Javascript ArrayBuffer, TypedArray, DataView, TextDecoder, Blob, File</h1>
 <p>When working with binary data in Javascript, there’s a lot of classes that can be potentially used, and they all seem to do the same thing: deal with binary data.</p>
 <p>What are the nuances and differences between all the different types, and when should we use which class?</p>
 <h2>ArrayBuffer</h2>
@@ -79,16 +79,30 @@ dv<span class="token punctuation">.</span><span class="token function">setFloat3
 console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>dv<span class="token punctuation">.</span><span class="token function">getInt8</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 20 // at 0 byte offset, read as Int8</span>
 console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>dv<span class="token punctuation">.</span><span class="token function">getFloat32</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 3.141... // at 1 byte offset, read the next 4 bytes as Float32</span></code><!-- HTML_TAG_END --></pre>
 <p>From the above example, you can see DataView can be useful when the buffer contains multiple types.</p>
+<h2>TextDecoder and TextEncoder</h2>
+<p>If the binary data is a string instead of numbers, you can use <code>TextDecoder</code> to decode the binary.
+It supports many encodings <a href="https://developer.mozilla.org/en-US/docs/Web/API/Encoding_API/Encodings" rel="nofollow">link</a>, but the default is UTF-8.</p>
+<p>A <code>TextEncoder</code> encodes a JavaScript string into a Uint8Array UTF-8 encoded text. It <em>only supports UTF-8 encoding</em>.</p>
+<pre class="language-js"><!-- HTML_TAG_START --><code class="language-js"><span class="token keyword">let</span> encoder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TextEncoder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+encoded_utf8 <span class="token operator">=</span> encoder<span class="token punctuation">.</span><span class="token function">encode</span><span class="token punctuation">(</span><span class="token string">'Hello'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>encoded_utf8<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Uint8Array[72, 101, 108, 108, 111]</span>
+
+<span class="token keyword">let</span> decoder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TextDecoder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+decoded_text <span class="token operator">=</span> decoder<span class="token punctuation">.</span><span class="token function">decode</span><span class="token punctuation">(</span>encoded_utf8<span class="token punctuation">)</span><span class="token punctuation">;</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>decoded_text<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Hello</span></code><!-- HTML_TAG_END --></pre>
+<h2>Blob</h2>
 <h1>References / Further Reading</h1>
 <ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/File" rel="nofollow">File</a></li>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Blob" rel="nofollow">Blob</a></li>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer" rel="nofollow">ArrayBuffer</a></li>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray" rel="nofollow">TypedArray</a></li></ul></div>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray" rel="nofollow">TypedArray</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder" rel="nofollow">TextDecoder</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/TextEncoder" rel="nofollow">TextEncoder</a></li></ul></div>
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="1ustqmp">
-		import { start } from "/github-blog/_app/immutable/start-57aca863.js";
+		<script type="module" data-sveltekit-hydrate="1m7j9uc">
+		import { start } from "/github-blog/_app/immutable/start-ddd24f44.js";
 
 		start({
 			env: {},
@@ -102,7 +116,7 @@ console<span class="token punctuation">.</span><span class="token function">log<
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="1ustqmp"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="1m7j9uc"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
