@@ -1,5 +1,5 @@
 ---
-title: Javascript File, Blob, ArrayBuffer, TypedArray, DataView
+title: Javascript ArrayBuffer, TypedArray, DataView, TextDecoder, Blob, File
 date: '2023-05-09'
 ---
 
@@ -71,9 +71,30 @@ console.log(dv.getFloat32(1)); // 3.141... // at 1 byte offset, read the next 4 
 
 From the above example, you can see DataView can be useful when the buffer contains multiple types.
 
+## TextDecoder and TextEncoder
+
+If the binary data is a string instead of numbers, you can use `TextDecoder` to decode the binary.
+It supports many encodings [link](https://developer.mozilla.org/en-US/docs/Web/API/Encoding_API/Encodings), but the default is UTF-8.
+
+A `TextEncoder` encodes a JavaScript string into a Uint8Array UTF-8 encoded text. It _only supports UTF-8 encoding_.
+
+```js
+let encoder = new TextEncoder();
+encoded_utf8 = encoder.encode('Hello');
+console.log(encoded_utf8); // Uint8Array[72, 101, 108, 108, 111]
+
+let decoder = new TextDecoder();
+decoded_text = decoder.decode(encoded_utf8);
+console.log(decoded_text); // Hello
+```
+
+## Blob
+
 # References / Further Reading
 
 - [File](https://developer.mozilla.org/en-US/docs/Web/API/File)
 - [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
 - [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
 - [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)
+- [TextDecoder](https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder)
+- [TextEncoder](https://developer.mozilla.org/en-US/docs/Web/API/TextEncoder)
