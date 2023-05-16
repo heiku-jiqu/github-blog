@@ -90,6 +90,49 @@ console.log(decoded_text); // Hello
 
 ## Blob
 
+A `Blob` is a higher level interface, defined by the web's File API [specification](https://www.w3.org/TR/FileAPI/)
+that represents a file-like object of immutable raw data.
+
+The `Blob` constructor takes in an iterable (e.g. Array) of Blob objects, strings or buffers (e.g. ArrayBuffer, TypedArray, etc), and you can specify the MIME type of the data that is in this `Blob`.
+
+```js
+let blob = new Blob(['<html>...</html>'], { type: 'text/html' });
+
+let hello = new Uint8Array([72, 101, 108, 108, 111]); // hello in binary
+let hello_blob = new Blob([hello, ' ', 'world'], { type: 'text/plain' }); // you can mix types
+```
+
+Although Blobs are immutable, you can use its `.slice()` method to extract out parts that you're interesting, and create a new Blob object from the slices.
+It is also possible to get the underlying ArrayBuffer through the `.arrayBuffer()` method, to do more low level processing.
+And if it ever gets too big, it is possible to convert it into a ReadableStream using the `.stream()` method.
+
+You can also generate URLs to Blobs which will return as 'blob:<origin>/<uuid>'. This Blob URL is referencing data that is on the client (browser), not on the server.
+
+Blobs are useful for upload/download operations as you can specify the MIME type of the binary data, unlike ArrayBuffers and TypedArrays.
+
+## File
+
+A `File` is also a higher level interface defined in the web's File API spec.
+It inherits (all its methods) from Blob and adds on some filesystem related capabilities.
+A `File` has 2 additional properties: `name` and `lastModified`.
+`File` objects are typically obtained through `<input>`s, but it is also possible to create it using its constructor.
+
+It is possible to use the `FileReader` object to quickly read the File/Blob into ArrayBuffer/Text/DataURL.
+
+```html
+<input type="file" onchange="showFile(this)" />
+
+<script>
+	function showFile(input) {
+		// input.files is an Array as user can select multiple files
+		let file = input.files[0];
+
+		alert(`File name: ${file.name}`); // e.g my.png
+		alert(`Last modified: ${file.lastModified}`); // e.g 1552830408824
+	}
+</script>
+```
+
 # References / Further Reading
 
 - [File](https://developer.mozilla.org/en-US/docs/Web/API/File)
