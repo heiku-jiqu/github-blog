@@ -5,8 +5,8 @@ date: '2023-06-07'
 
 # {title}
 
-Recently read a extremely valuable site on database indexing over at [use-the-index-luke](https://use-the-index-luke.com/).
-This post is to synthesise and summarise the main learnings that I took away from the e-book.
+Recently read an extremely informative e-book on database indexing over at [use-the-index-luke](https://use-the-index-luke.com/).
+This post is to synthesise and summarise the main learnings that I took away from the ~200 page e-book.
 
 # The Three Powers of Indexing
 
@@ -16,11 +16,26 @@ This post is to synthesise and summarise the main learnings that I took away fro
 
 ## Data Structures Underlying the Index
 
-**Linked list**
-
-**B-trees**
-
 **Redundant/Duplicated Data**
+An index is (usually) a separate data structure maintained by the database.
+In other words, it is redundant data that is stored/managed on top of the actual data that is stored/managed in your table.
+An index is powered by two key data structures: Doubly Linked List and B-Tree.
+One node corresponds to one database block.
+
+**Database block / Database page**
+A database block or page is the smallest (size) unit of operation, usually about 4 kilobytes in size.
+The data in one block is physically arranged in a _contiguous_ block of memory.
+One block can usually store multiple rows of the table data, or multiple index entries.
+This means that in order to read a single row within a block that contains multiple rows, the database will have to read the entire block.
+
+**Doubly Linked List**
+The doubly linked lists' nodes are actually the leaf nodes for the B-tree.
+Each node has multiple index entries, sorted by the index key.
+Each entry in the node will store the index key(s) and also a pointer (ROWID) to the corresponding (physical) location of the data row.
+Each node is also connected to the next higher entry node and next lower entry node, giving it the ability to move up and down the index keys (double linked list).
+This effectively makes the index entries and the index nodes all sorted.
+
+**B-tree**
 
 **Pipelining**
 
