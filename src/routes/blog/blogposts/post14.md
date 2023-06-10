@@ -32,17 +32,35 @@ This means that in order to read a single row within a block that contains multi
 The doubly linked lists' nodes are actually the leaf nodes for the B-tree.
 Each node has multiple index entries, sorted by the index key.
 Each entry in the node will store the index key(s) and also a pointer (ROWID) to the corresponding (physical) location of the data row.
-Each node is also connected to the next higher entry node and next lower entry node, giving it the ability to move up and down the index keys (double linked list).
+Each node is also connected to the next higher entry (leaf) node and next lower (leaf) entry node, giving it the ability to move up and down the index keys in all the leaf nodes (double linked list).
 This effectively makes the index entries and the index nodes all sorted.
+
+The important thing to note here is that accessing all ROWID rows contained in one single index node is most likely a **random operation** because row data is stored in the heap and there are no guarantees that it is ordered.
+This is further exacerbated by having to read the ROWIDs sequentially as they appear and also having to access row data _in blocks_.
+The implication is that scanning through the ROWIDs could mean _accessing the same blocks multiple times_ to read different rows in the same block, effectively making using the index _slower_ than a full etable scan!
+Of course, the database optimizer will try avoid this using its cost metrics and estimation.
 
 **B-tree**
 The B-tree forms the upper 'layers' of the index. Each leaf node's highest value will be connected to the node in the layer above.
 The node in the layer above consists of the highest (index key) values of several child nodes; depending on the block size, it can store ~100 values.
-This process is repeated until the tree like structure is formed.
+This process is repeated for every branch layer until the tree like structure (root node) is formed.
 The `B` stands for balanced, which means that the depth of the deepest node is at most 1 layer deeper than the rest.
 The B-tree allows log(n) lookups, therefore traversing the tree is very fast.
 
 ## WHERE clause
+
+`WHERE` clause are the main utiliser of indexes.
+
+Some key points to effectively write `WHERE` clause:
+
+- As much as possible, do not wrap indexed columns within functions, because optimiser treats these as black boxes.
+- If functions are unavoidable, create a function based index.
+- The order of columns in the index definition is very important. Choose an order that can be used as often as possible.
+  - Queries can only use index when the `WHERE` clause contains "cumulation" of the index columns starting from the left. E.g. For index with (col1, col2, col3), `WHERE` clause with either col1, col1 + col2, or col1 + col2 + col3 can use the index, whereas all other predicates are unable to use the index due to how the underlying index keys are sorted.
+- There are three different ways that the DB optimizer can use index predicates, with drastically different performance characteristics.
+  1.  Index unique scan, where only tree traversal is necessary. This of course requires unique constraint to be in place. (Super fast)
+  1.  Index range scan, where the DB will perform both tree traversal as well as follow leaf nodes to find all matching entires. (Good enough)
+  1.  Table access by index ROWID, where the DB will follow the ROWID pointer to read the row, then perform the filter based on what is found in the row. (Can be dangerous as it depends on table size _not_ query size)
 
 ## JOIN operations
 
