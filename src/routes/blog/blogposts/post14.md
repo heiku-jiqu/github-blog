@@ -36,8 +36,11 @@ Each node is also connected to the next higher entry node and next lower entry n
 This effectively makes the index entries and the index nodes all sorted.
 
 **B-tree**
-
-**Pipelining**
+The B-tree forms the upper 'layers' of the index. Each leaf node's highest value will be connected to the node in the layer above.
+The node in the layer above consists of the highest (index key) values of several child nodes; depending on the block size, it can store ~100 values.
+This process is repeated until the tree like structure is formed.
+The `B` stands for balanced, which means that the depth of the deepest node is at most 1 layer deeper than the rest.
+The B-tree allows log(n) lookups, therefore traversing the tree is very fast.
 
 ## WHERE clause
 
@@ -63,3 +66,7 @@ Code:
 ## Heading 2
 
 The quick brown fox jumps over the lazy dog.
+
+**Pipelining**
+
+**Clustering Factor**
