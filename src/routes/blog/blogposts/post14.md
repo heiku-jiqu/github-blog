@@ -106,18 +106,7 @@ Sort merge join can be sped up if the keys are presorted (from an index or from 
 
 ## INSERT, DELETE, UPDATE
 
-Code:
-
-```css
-.grid-container {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
-}
-```
-
-## Heading 2
-
-The quick brown fox jumps over the lazy dog.
+## Glossary
 
 **Pipelining**
 
