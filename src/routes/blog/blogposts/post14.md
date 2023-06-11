@@ -65,14 +65,38 @@ Some key points to effectively write `WHERE` clause:
 - If functions are unavoidable, create a function based index.
 - The order of columns in the index definition is very important. Choose an order that can be used as often as possible.
   - Queries can only use index when the `WHERE` clause contains "cumulation" of the index columns starting from the left. E.g. For index with (col1, col2, col3), `WHERE` clause with either col1, col1 + col2, or col1 + col2 + col3 can use the index, whereas all other predicates are unable to use the index due to how the underlying index keys are sorted.
+- When creating index, prioritise equality first then for range predicates.
 - For `LIKE 'abc%xyz'` predicates, only the part infront of the `%` is used for access predicates.
 - Avoid `LIKE` on date types as it internally applies `TO_STRING()` which obfuscates the index.
 - When working with numeric strings, make sure to supply a string as predicate to avoid type conversion which obfuscates index (`WHERE string_col = 42` vs `WHERE string_col = "42"`).
 - Combining columns also obfuscates index (e.g. filtering on date_column + time_column).
   - If possible, add combined column into table and index
   - If not possible, use "redundant" predicate on a single column so that predicate can take advantage of the index (e.g. `WHERE ADDTIME(date_col, time_col) > DATEADD(now(), INTERVAL '1 day') AND date_col >= DATE(DATE_ADD(now(), INTERVAL '1 day'))`, the second predicate is redundant but able to use index on date_col).
+- Partial indexing (indexing only certain rows) may be useful on certain workloads to reduce index size and improve update performance on non-indexed rows.
+- When index causes problems for a particular query,
 
 ## JOIN operations
+
+JOINs in databases are done 2 tables at a time. If multiple JOINs are needed then DB will do it recursively 2 tables at a time.
+This means the optimiser has to evaluate the `n!` join order permutations to come up with the best execution plan.
+Therefore, the more complex the query, the more important using prepared statements become.
+
+There are 3 types of `JOIN` algorithms:
+
+**Nested Loop Join**
+Nested loop join operates like a nested for loop: for each join key in table 1, find the corresponding key in table 2.
+To improve performance, index the join key columns.
+This algorithm is performant when rows returned by the 'outer loop' is low.
+
+**Hash Join**
+Hash join operates by loading all the keys (and rows) of one table in-memory, so that the other table can keep looking up the corresponding join key.
+Indexing join key columns for this algorithm is useless as the keys are already in-memory!
+Hence, it is better to index the independent `WHERE` clause to improve performance.
+Another way to improve hash join performance is to reduce the memory footprint of the hash table, this implies both selecting less rows _as well as less columns_.
+
+**Sort Merge Join**
+Sort merge join operates by combining 2 _sorted_ tables (like a zipper). It iteratively loads the smallest keys from the two tables and do a cartesian product on them.
+Sort merge join can be sped up if the keys are presorted (from an index or from another sort operation in the query).
 
 ## ORDER BY and GROUP BY
 
@@ -98,3 +122,7 @@ The quick brown fox jumps over the lazy dog.
 **Pipelining**
 
 **Clustering Factor**
+
+**Covering Index**
+
+**Prepared Statements/Bind Parameters**
