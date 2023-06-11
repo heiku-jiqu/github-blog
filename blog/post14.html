@@ -9,18 +9,18 @@
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-64dc04e4.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-52502fc2.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-bd5f0052.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-b43e00d2.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-f7ec3c16.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-6e44245d.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-d69ac811.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-5e459d20.js">
 	</head>
 	<body>
 		<div>
@@ -56,12 +56,55 @@ This means that in order to read a single row within a block that contains multi
 The doubly linked lists’ nodes are actually the leaf nodes for the B-tree.
 Each node has multiple index entries, sorted by the index key.
 Each entry in the node will store the index key(s) and also a pointer (ROWID) to the corresponding (physical) location of the data row.
-Each node is also connected to the next higher entry node and next lower entry node, giving it the ability to move up and down the index keys (double linked list).
+Each node is also connected to the next higher entry (leaf) node and next lower (leaf) entry node, giving it the ability to move up and down the index keys in all the leaf nodes (double linked list).
 This effectively makes the index entries and the index nodes all sorted.</p>
-<p><strong>B-tree</strong></p>
-<p><strong>Pipelining</strong></p>
+<p>The important thing to note here is that accessing all ROWID rows contained in one single index node is most likely a <strong>random operation</strong> because row data is stored in the heap and there are no guarantees that it is ordered.
+This is further exacerbated by having to read the ROWIDs sequentially as they appear and also having to access row data <em>in blocks</em>.
+The implication is that scanning through the ROWIDs could mean <em>accessing the same blocks multiple times</em> to read different rows in the same block, effectively making using the index <em>slower</em> than a full etable scan!
+Of course, the database optimizer will try avoid this using its cost metrics and estimation.</p>
+<p><strong>B-tree</strong>
+The B-tree forms the upper ‘layers’ of the index. Each leaf node’s highest value will be connected to the node in the layer above.
+The node in the layer above consists of the highest (index key) values of several child nodes; depending on the block size, it can store ~100 values.
+This process is repeated for every branch layer until the tree like structure (root node) is formed.
+The <code>B</code> stands for balanced, which means that the depth of the deepest node is at most 1 layer deeper than the rest.
+The B-tree allows log(n) lookups, therefore traversing the tree is very fast.</p>
+<p><strong>Index access patterns</strong>
+There are three different ways that the DB optimizer can use index predicates, with drastically different performance characteristics.</p>
+<ol><li>Index unique scan, where only tree traversal is necessary. This of course requires unique constraint to be in place. (Super fast)</li>
+<li>Index range scan, where the DB will perform both tree traversal as well as follow leaf nodes to find all matching entires. (Good enough)</li>
+<li>Table access by index ROWID, where the DB will follow the ROWID pointer to read the row, then perform the filter based on what is found in the row. (Can be dangerous as it depends on table size <em>not</em> query size)</li></ol>
 <h2>WHERE clause</h2>
+<p><code>WHERE</code> clauses are the main utiliser of indexes.
+The overarching theme and guideline here is to keep indexed columns as they are, and do functions/operations on the other side of the predicates.</p>
+<p>Some key points to effectively write <code>WHERE</code> clause:</p>
+<ul><li>As much as possible, do not wrap indexed columns within functions, because optimiser treats these as black boxes.</li>
+<li>If functions are unavoidable, create a function based index.</li>
+<li>The order of columns in the index definition is very important. Choose an order that can be used as often as possible.<ul><li>Queries can only use index when the <code>WHERE</code> clause contains “cumulation” of the index columns starting from the left. E.g. For index with (col1, col2, col3), <code>WHERE</code> clause with either col1, col1 + col2, or col1 + col2 + col3 can use the index, whereas all other predicates are unable to use the index due to how the underlying index keys are sorted.</li></ul></li>
+<li>When creating index, prioritise equality first then for range predicates.</li>
+<li>For <code>LIKE &#39;abc%xyz&#39;</code> predicates, only the part infront of the <code>%</code> is used for access predicates.</li>
+<li>Avoid <code>LIKE</code> on date types as it internally applies <code>TO_STRING()</code> which obfuscates the index.</li>
+<li>When working with numeric strings, make sure to supply a string as predicate to avoid type conversion which obfuscates index (<code>WHERE string_col = 42</code> vs <code>WHERE string_col = &quot;42&quot;</code>).</li>
+<li>Combining columns also obfuscates index (e.g. filtering on date_column + time_column).<ul><li>If possible, add combined column into table and index</li>
+<li>If not possible, use “redundant” predicate on a single column so that predicate can take advantage of the index (e.g. <code>WHERE ADDTIME(date_col, time_col) &gt; DATEADD(now(), INTERVAL &#39;1 day&#39;) AND date_col &gt;= DATE(DATE_ADD(now(), INTERVAL &#39;1 day&#39;))</code>, the second predicate is redundant but able to use index on date_col).</li></ul></li>
+<li>Partial indexing (indexing only certain rows) may be useful on certain workloads to reduce index size and improve update performance on non-indexed rows.</li>
+<li>When index causes problems for a particular query,</li></ul>
 <h2>JOIN operations</h2>
+<p>JOINs in databases are done 2 tables at a time. If multiple JOINs are needed then DB will do it recursively 2 tables at a time.
+This means the optimiser has to evaluate the <code>n!</code> join order permutations to come up with the best execution plan.
+Therefore, the more complex the query, the more important using prepared statements become.</p>
+<p>There are 3 types of <code>JOIN</code> algorithms:</p>
+<p><strong>Nested Loop Join</strong>
+Nested loop join operates like a nested for loop: for each join key in table 1, find the corresponding key in table 2.
+To improve performance, index the join key columns.
+This algorithm is performant when rows returned by the ‘outer loop’ is low.</p>
+<p><strong>Hash Join</strong>
+Hash join operates by loading all the keys (and rows) of one table in-memory, so that the other table can keep looking up the corresponding join key.
+Indexing join key columns for this algorithm is useless as the keys are already in-memory!
+Hence, it is better to index the independent <code>WHERE</code> clause to improve performance.
+Another way to improve hash join performance is to reduce the memory footprint of the hash table, this implies both selecting less rows <em>as well as less columns</em>.</p>
+<p><strong>Sort Merge Join</strong>
+Sort merge join operates by combining 2 <em>sorted</em> tables (like a zipper). It iteratively loads the smallest keys from the two tables and do a cartesian product on them.
+Sort merge join can be sped up if the keys are presorted (from an index or from another sort operation in the query).</p>
 <h2>ORDER BY and GROUP BY</h2>
 <h2>Data Clustering</h2>
 <h2>Partial Results</h2>
@@ -72,12 +115,16 @@ This effectively makes the index entries and the index nodes all sorted.</p>
 	<span class="token property">grid-template-columns</span><span class="token punctuation">:</span> <span class="token function">repeat</span><span class="token punctuation">(</span>auto-fill<span class="token punctuation">,</span> <span class="token function">minmax</span><span class="token punctuation">(</span><span class="token function">min</span><span class="token punctuation">(</span>200px<span class="token punctuation">,</span> 100%<span class="token punctuation">)</span><span class="token punctuation">,</span> 1fr<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span></code><!-- HTML_TAG_END --></pre>
 <h2>Heading 2</h2>
-<p>The quick brown fox jumps over the lazy dog.</p></div>
+<p>The quick brown fox jumps over the lazy dog.</p>
+<p><strong>Pipelining</strong></p>
+<p><strong>Clustering Factor</strong></p>
+<p><strong>Covering Index</strong></p>
+<p><strong>Prepared Statements/Bind Parameters</strong></p></div>
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="at9yp9">
-		import { start } from "/github-blog/_app/immutable/start-64dc04e4.js";
+		<script type="module" data-sveltekit-hydrate="weejra">
+		import { start } from "/github-blog/_app/immutable/start-52502fc2.js";
 
 		start({
 			env: {},
@@ -91,7 +138,7 @@ This effectively makes the index entries and the index nodes all sorted.</p>
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="at9yp9"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="weejra"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
