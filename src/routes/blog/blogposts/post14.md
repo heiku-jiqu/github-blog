@@ -47,9 +47,17 @@ This process is repeated for every branch layer until the tree like structure (r
 The `B` stands for balanced, which means that the depth of the deepest node is at most 1 layer deeper than the rest.
 The B-tree allows log(n) lookups, therefore traversing the tree is very fast.
 
+**Index access patterns**
+There are three different ways that the DB optimizer can use index predicates, with drastically different performance characteristics.
+
+1.  Index unique scan, where only tree traversal is necessary. This of course requires unique constraint to be in place. (Super fast)
+1.  Index range scan, where the DB will perform both tree traversal as well as follow leaf nodes to find all matching entires. (Good enough)
+1.  Table access by index ROWID, where the DB will follow the ROWID pointer to read the row, then perform the filter based on what is found in the row. (Can be dangerous as it depends on table size _not_ query size)
+
 ## WHERE clause
 
-`WHERE` clause are the main utiliser of indexes.
+`WHERE` clauses are the main utiliser of indexes.
+The overarching theme and guideline here is to keep indexed columns as they are, and do functions/operations on the other side of the predicates.
 
 Some key points to effectively write `WHERE` clause:
 
@@ -57,10 +65,12 @@ Some key points to effectively write `WHERE` clause:
 - If functions are unavoidable, create a function based index.
 - The order of columns in the index definition is very important. Choose an order that can be used as often as possible.
   - Queries can only use index when the `WHERE` clause contains "cumulation" of the index columns starting from the left. E.g. For index with (col1, col2, col3), `WHERE` clause with either col1, col1 + col2, or col1 + col2 + col3 can use the index, whereas all other predicates are unable to use the index due to how the underlying index keys are sorted.
-- There are three different ways that the DB optimizer can use index predicates, with drastically different performance characteristics.
-  1.  Index unique scan, where only tree traversal is necessary. This of course requires unique constraint to be in place. (Super fast)
-  1.  Index range scan, where the DB will perform both tree traversal as well as follow leaf nodes to find all matching entires. (Good enough)
-  1.  Table access by index ROWID, where the DB will follow the ROWID pointer to read the row, then perform the filter based on what is found in the row. (Can be dangerous as it depends on table size _not_ query size)
+- For `LIKE 'abc%xyz'` predicates, only the part infront of the `%` is used for access predicates.
+- Avoid `LIKE` on date types as it internally applies `TO_STRING()` which obfuscates the index.
+- When working with numeric strings, make sure to supply a string as predicate to avoid type conversion which obfuscates index (`WHERE string_col = 42` vs `WHERE string_col = "42"`).
+- Combining columns also obfuscates index (e.g. filtering on date_column + time_column).
+  - If possible, add combined column into table and index
+  - If not possible, use "redundant" predicate on a single column so that predicate can take advantage of the index (e.g. `WHERE ADDTIME(date_col, time_col) > DATEADD(now(), INTERVAL '1 day') AND date_col >= DATE(DATE_ADD(now(), INTERVAL '1 day'))`, the second predicate is redundant but able to use index on date_col).
 
 ## JOIN operations
 
