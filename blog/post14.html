@@ -9,18 +9,18 @@
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-52502fc2.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-6f280cf2.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-b43e00d2.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-ee2d27ec.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-d69ac811.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-5e459d20.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-35ff73c6.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-3e91a724.js">
 	</head>
 	<body>
 		<div>
@@ -42,18 +42,18 @@ This post is to synthesise and summarise the main learnings that I took away fro
 <li>Data Clustering</li>
 <li>Pipelined Sorting</li></ol>
 <h2>Data Structures Underlying the Index</h2>
-<p><strong>Redundant/Duplicated Data</strong>
-An index is (usually) a separate data structure maintained by the database.
+<p><strong>Redundant/Duplicated Data</strong></p>
+<p>An index is (usually) a separate data structure maintained by the database.
 In other words, it is redundant data that is stored/managed on top of the actual data that is stored/managed in your table.
 An index is powered by two key data structures: Doubly Linked List and B-Tree.
 One node corresponds to one database block.</p>
-<p><strong>Database block / Database page</strong>
-A database block or page is the smallest (size) unit of operation, usually about 4 kilobytes in size.
+<p><strong>Database block / Database page</strong></p>
+<p>A database block or page is the smallest (size) unit of operation, usually about 4 kilobytes in size.
 The data in one block is physically arranged in a <em>contiguous</em> block of memory.
 One block can usually store multiple rows of the table data, or multiple index entries.
 This means that in order to read a single row within a block that contains multiple rows, the database will have to read the entire block.</p>
-<p><strong>Doubly Linked List</strong>
-The doubly linked lists’ nodes are actually the leaf nodes for the B-tree.
+<p><strong>Doubly Linked List</strong></p>
+<p>The doubly linked lists’ nodes are actually the leaf nodes for the B-tree.
 Each node has multiple index entries, sorted by the index key.
 Each entry in the node will store the index key(s) and also a pointer (ROWID) to the corresponding (physical) location of the data row.
 Each node is also connected to the next higher entry (leaf) node and next lower (leaf) entry node, giving it the ability to move up and down the index keys in all the leaf nodes (double linked list).
@@ -62,17 +62,17 @@ This effectively makes the index entries and the index nodes all sorted.</p>
 This is further exacerbated by having to read the ROWIDs sequentially as they appear and also having to access row data <em>in blocks</em>.
 The implication is that scanning through the ROWIDs could mean <em>accessing the same blocks multiple times</em> to read different rows in the same block, effectively making using the index <em>slower</em> than a full etable scan!
 Of course, the database optimizer will try avoid this using its cost metrics and estimation.</p>
-<p><strong>B-tree</strong>
-The B-tree forms the upper ‘layers’ of the index. Each leaf node’s highest value will be connected to the node in the layer above.
+<p><strong>B-tree</strong></p>
+<p>The B-tree forms the upper ‘layers’ of the index. Each leaf node’s highest value will be connected to the node in the layer above.
 The node in the layer above consists of the highest (index key) values of several child nodes; depending on the block size, it can store ~100 values.
 This process is repeated for every branch layer until the tree like structure (root node) is formed.
 The <code>B</code> stands for balanced, which means that the depth of the deepest node is at most 1 layer deeper than the rest.
 The B-tree allows log(n) lookups, therefore traversing the tree is very fast.</p>
-<p><strong>Index access patterns</strong>
-There are three different ways that the DB optimizer can use index predicates, with drastically different performance characteristics.</p>
+<p><strong>Types of Index Operations</strong></p>
+<p>There are three different ways that the DB optimizer can use index predicates, with drastically different performance characteristics.</p>
 <ol><li>Index unique scan, where only tree traversal is necessary. This of course requires unique constraint to be in place. (Super fast)</li>
-<li>Index range scan, where the DB will perform both tree traversal as well as follow leaf nodes to find all matching entires. (Good enough)</li>
-<li>Table access by index ROWID, where the DB will follow the ROWID pointer to read the row, then perform the filter based on what is found in the row. (Can be dangerous as it depends on table size <em>not</em> query size)</li></ol>
+<li>Index range scan, where the DB will perform both tree traversal as well as follow leaf nodes to find all matching entires. Aka index access predicates (Good enough)</li>
+<li>Table access by index ROWID, where the DB will follow the ROWID pointer to read the row, then perform the filter based on what is found in the row. Aka index filter predicates. (Can be dangerous as it depends on table size <em>not</em> query size)</li></ol>
 <h2>WHERE clause</h2>
 <p><code>WHERE</code> clauses are the main utiliser of indexes.
 The overarching theme and guideline here is to keep indexed columns as they are, and do functions/operations on the other side of the predicates.</p>
@@ -93,38 +93,50 @@ The overarching theme and guideline here is to keep indexed columns as they are,
 This means the optimiser has to evaluate the <code>n!</code> join order permutations to come up with the best execution plan.
 Therefore, the more complex the query, the more important using prepared statements become.</p>
 <p>There are 3 types of <code>JOIN</code> algorithms:</p>
-<p><strong>Nested Loop Join</strong>
-Nested loop join operates like a nested for loop: for each join key in table 1, find the corresponding key in table 2.
+<p><strong>Nested Loop Join</strong></p>
+<p>Nested loop join operates like a nested for loop: for each join key in table 1, find the corresponding key in table 2.
 To improve performance, index the join key columns.
 This algorithm is performant when rows returned by the ‘outer loop’ is low.</p>
-<p><strong>Hash Join</strong>
-Hash join operates by loading all the keys (and rows) of one table in-memory, so that the other table can keep looking up the corresponding join key.
+<p><strong>Hash Join</strong></p>
+<p>Hash join operates by loading all the keys (and rows) of one table in-memory, so that the other table can keep looking up the corresponding join key.
 Indexing join key columns for this algorithm is useless as the keys are already in-memory!
 Hence, it is better to index the independent <code>WHERE</code> clause to improve performance.
 Another way to improve hash join performance is to reduce the memory footprint of the hash table, this implies both selecting less rows <em>as well as less columns</em>.</p>
-<p><strong>Sort Merge Join</strong>
-Sort merge join operates by combining 2 <em>sorted</em> tables (like a zipper). It iteratively loads the smallest keys from the two tables and do a cartesian product on them.
+<p><strong>Sort Merge Join</strong></p>
+<p>Sort merge join operates by combining 2 <em>sorted</em> tables (like a zipper). It iteratively loads the smallest keys from the two tables and do a cartesian product on them.
 Sort merge join can be sped up if the keys are presorted (from an index or from another sort operation in the query).</p>
-<h2>ORDER BY and GROUP BY</h2>
 <h2>Data Clustering</h2>
+<p>Besides enabling fast lookups, indexes provide data clustering.
+Data clustering in this case means to store consecutively accessed data close to each other (physically) so that accessing them requires fewer IO operations.
+Values that the query plan is interested in can be found on the index itself.
+This is especially useful for two things: optimizing index filter predicates and enabling index only scans.</p>
+<p><strong>Optimizing Index Filter Predicates</strong></p>
+<p>If query is bottlenecked by table access by index ROWID =&gt; filter predicate, then adding those columns that appear in these filter predicate into the index will speed up the query, since the values can now be found in the index instead of having to access the table rows.
+When doing this, remember to always prioritise optimising for index access predicates first (i.e. Btree traversal) before optimizing for index filter predicates!
+Also, do extend the current index instead of creating a new index to minimise index maintenance effort.</p>
+<p><strong>Enabling Index Only Scans</strong></p>
+<p>This takes the above concept to the extreme, where all <code>SELECT</code>ed columns are added into the index so the query skips accessing the heap table entirely.
+Note that performance improvement depends on number of accessed rows (more improvement when nrows is high) and the index clustering factor of the query without the index (more improvement when clustering factor was high).</p>
+<p><strong>Index-Organized Tables aka Clustered Index</strong></p>
+<p>Another way to achieve data clustering is to order the table physically by the index keys, called “Clustered Index” in MS SQL Server.
+This have the benefit of enabling index only scans on all queries, but the drawback is that row access through secondary indexes require traversing the table tree (instead of just following the ROWID pointer).
+A general guideline is that tables with one index benefit from being Index-Organized table, while tables with many indexes usually benefit from heap table.</p>
+<h2>ORDER BY and GROUP BY</h2>
 <h2>Partial Results</h2>
 <h2>INSERT, DELETE, UPDATE</h2>
-<p>Code:</p>
-<pre class="language-css"><!-- HTML_TAG_START --><code class="language-css"><span class="token selector">.grid-container</span> <span class="token punctuation">&#123;</span>
-	<span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span>
-	<span class="token property">grid-template-columns</span><span class="token punctuation">:</span> <span class="token function">repeat</span><span class="token punctuation">(</span>auto-fill<span class="token punctuation">,</span> <span class="token function">minmax</span><span class="token punctuation">(</span><span class="token function">min</span><span class="token punctuation">(</span>200px<span class="token punctuation">,</span> 100%<span class="token punctuation">)</span><span class="token punctuation">,</span> 1fr<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span></code><!-- HTML_TAG_END --></pre>
-<h2>Heading 2</h2>
-<p>The quick brown fox jumps over the lazy dog.</p>
+<h2>Glossary</h2>
 <p><strong>Pipelining</strong></p>
-<p><strong>Clustering Factor</strong></p>
+<p><strong>Clustering Factor</strong>
+Clustering factor is how correlated the sequence of the column’s data values are to the sequence of their physical order.
+In Oracle, the clustering factor value is <em>low</em> when the sequences are correlated.
+While in Postgres, they use actual Pearson correlation, so when value is 0 is totally uncorrelated and when value is 1 (or -1) they are totally correlated.</p>
 <p><strong>Covering Index</strong></p>
 <p><strong>Prepared Statements/Bind Parameters</strong></p></div>
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="weejra">
-		import { start } from "/github-blog/_app/immutable/start-52502fc2.js";
+		<script type="module" data-sveltekit-hydrate="1982jyj">
+		import { start } from "/github-blog/_app/immutable/start-6f280cf2.js";
 
 		start({
 			env: {},
@@ -138,7 +150,7 @@ Sort merge join can be sped up if the keys are presorted (from an index or from 
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="weejra"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="1982jyj"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
