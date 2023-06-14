@@ -9,18 +9,18 @@
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-3719e3e1.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-66f7477f.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-4bb71019.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-dfde1503.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-735087ad.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-544ef6d2.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-a9079fb9.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-40a28350.js">
 	</head>
 	<body>
 		<div>
@@ -138,8 +138,15 @@ Sort/Group algorithm sorts the inputs by grouping column, then aggregates the so
 <h2>INSERT, DELETE, UPDATE</h2>
 <h2>Glossary</h2>
 <p><strong>Pipelining</strong></p>
-<p><strong>Clustering Factor</strong>
-Clustering factor is how correlated the sequence of the column’s data values are to the sequence of their physical order.
+<p>Pipelining / Pipelined Execution is a way in which database executes the operations from the query plan.
+Pipelined Execution works “row-by-row” and passes the row/tuple to the next operation immediately after the current operation is done.
+Pipelined execution is advantageous because it reduces response time of your query, especially for <code>LIMIT</code> type queries.</p>
+<p>This is in contrast to another way of execution (Materlisation Execution Model), which is to wait for the entire intermediate output to materialise, then pass on to the next operation.
+A similar analogy is the difference between stream processing vs batch processing.</p>
+<p>OLAP databases also take pipelining one step further and implements Vectorized Execution. In Vectorized Execution, instead of returning “row-by-row”, the operator returns “batch-by-batch”, i.e. small batches of rows instead of a single row.
+This greatly reduces number of CPU cycles needed per operator, and also allows operators to take advantage of CPU’s SIMD instructions (Single Instruction Multiple Data) to speed up the query.</p>
+<p><strong>Clustering Factor</strong></p>
+<p>Clustering factor is how correlated the sequence of the column’s data values are to the sequence of their physical order.
 In Oracle, the clustering factor value is <em>low</em> when the sequences are correlated.
 While in Postgres, they use actual Pearson correlation, so when value is 0 is totally uncorrelated and when value is 1 (or -1) they are totally correlated.</p>
 <p><strong>Covering Index</strong></p>
@@ -147,8 +154,8 @@ While in Postgres, they use actual Pearson correlation, so when value is 0 is to
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="1xv70zi">
-		import { start } from "/github-blog/_app/immutable/start-3719e3e1.js";
+		<script type="module" data-sveltekit-hydrate="ekrfrr">
+		import { start } from "/github-blog/_app/immutable/start-66f7477f.js";
 
 		start({
 			env: {},
@@ -162,7 +169,7 @@ While in Postgres, they use actual Pearson correlation, so when value is 0 is to
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="1xv70zi"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="ekrfrr"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
