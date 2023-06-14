@@ -130,7 +130,26 @@ Another way to achieve data clustering is to order the table physically by the i
 This have the benefit of enabling index only scans on all queries, but the drawback is that row access through secondary indexes require traversing the table tree (instead of just following the ROWID pointer).
 A general guideline is that tables with one index benefit from being Index-Organized table, while tables with many indexes usually benefit from heap table.
 
-## ORDER BY and GROUP BY
+## ORDER BY
+
+As mentioned, indexes have pre-sorted data based on the index keys.
+Hence, to optimize `ORDER BY` queries, add all sorting columns into index that is used by the `WHERE` clause.
+
+Although adding `ASC`/`DESC` homogeneously to all sorting columns can take advantage of the same index (due to double linked list being able to traverse both directions),
+_mixing `ASC` and `DESC` will prevent the use of the original index as it will result in a different in ordering between the query and index_.
+For example, `ORDER BY date_col ASC, product_id ASC` and `ORDER BY date_col DESC, product_id DESC` can use the same index, but `ORDER BY date_col ASC, product_id DESC` will _not_ be able to use the same index!
+
+It is also important to note that, for large queries, full table scan + sorting may actually be faster than accesing table rows through index due to the "random IO" nature of accessing table rows.
+
+## GROUP BY
+
+`GROUP BY` has 2 main algorithms: Hash Table algorithm and Sort/Group algorithm.
+Hash Table algorithm stores a (temporary) hash table with grouping column as keys, then aggregates that inputs into this hash table.
+Sort/Group algorithm sorts the inputs by grouping column, then aggregates the sorted input.
+
+Notice that although both needs to materialise an intermediate state, but Hash Table's memory footprint is way smaller than Sort/Group's sorted input, therefore usually optimizer prefers Hash Table algo.
+
+Only the Sort/Group algorithm can make use of index to optmize its performance, and the advantage it has over Hash Table algo is that it enables _pipelined execution_ of the query.
 
 ## Partial Results
 
