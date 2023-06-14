@@ -159,7 +159,18 @@ Only the Sort/Group algorithm can make use of index to optmize its performance, 
 
 **Pipelining**
 
+Pipelining / Pipelined Execution is a way in which database executes the operations from the query plan.
+Pipelined Execution works "row-by-row" and passes the row/tuple to the next operation immediately after the current operation is done.
+Pipelined execution is advantageous because it reduces response time of your query, especially for `LIMIT` type queries.
+
+This is in contrast to another way of execution (Materlisation Execution Model), which is to wait for the entire intermediate output to materialise, then pass on to the next operation.
+A similar analogy is the difference between stream processing vs batch processing.
+
+OLAP databases also take pipelining one step further and implements Vectorized Execution. In Vectorized Execution, instead of returning "row-by-row", the operator returns "batch-by-batch", i.e. small batches of rows instead of a single row.
+This greatly reduces number of CPU cycles needed per operator, and also allows operators to take advantage of CPU's SIMD instructions (Single Instruction Multiple Data) to speed up the query.
+
 **Clustering Factor**
+
 Clustering factor is how correlated the sequence of the column's data values are to the sequence of their physical order.
 In Oracle, the clustering factor value is _low_ when the sequences are correlated.
 While in Postgres, they use actual Pearson correlation, so when value is 0 is totally uncorrelated and when value is 1 (or -1) they are totally correlated.
