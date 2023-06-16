@@ -9,18 +9,18 @@
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-66f7477f.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-8e1d7148.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-dfde1503.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-f82372f9.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-a9079fb9.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-40a28350.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-911a1291.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-7ff6543a.js">
 	</head>
 	<body>
 		<div>
@@ -34,7 +34,7 @@
 			<li><a href="/github-blog/about" class="svelte-qm05bo">About</a></li></ul></nav>
 </header>
 <div><div class="grid-container svelte-14l03dd"><div class="sides"></div>
-		<div class="article svelte-14l03dd"><h1>Database Indexes</h1>
+		<div class="article svelte-14l03dd"><h1>Database Indexes and Query Optimization</h1>
 <p>Recently read an extremely informative e-book on database indexing over at <a href="https://use-the-index-luke.com/" rel="nofollow">use-the-index-luke</a>.
 This post is to synthesise and summarise the main learnings that I took away from the ~200 page e-book.</p>
 <h1>The Three Powers of Indexing</h1>
@@ -117,6 +117,7 @@ Also, do extend the current index instead of creating a new index to minimise in
 <p><strong>Enabling Index Only Scans</strong></p>
 <p>This takes the above concept to the extreme, where all <code>SELECT</code>ed columns are added into the index so the query skips accessing the heap table entirely.
 Note that performance improvement depends on number of accessed rows (more improvement when nrows is high) and the index clustering factor of the query without the index (more improvement when clustering factor was high).</p>
+<p>An index that covers the entire query is called a <em>covering index</em>.</p>
 <p><strong>Index-Organized Tables aka Clustered Index</strong></p>
 <p>Another way to achieve data clustering is to order the table physically by the index keys, called “Clustered Index” in MS SQL Server.
 This have the benefit of enabling index only scans on all queries, but the drawback is that row access through secondary indexes require traversing the table tree (instead of just following the ROWID pointer).
@@ -135,7 +136,30 @@ Sort/Group algorithm sorts the inputs by grouping column, then aggregates the so
 <p>Notice that although both needs to materialise an intermediate state, but Hash Table’s memory footprint is way smaller than Sort/Group’s sorted input, therefore usually optimizer prefers Hash Table algo.</p>
 <p>Only the Sort/Group algorithm can make use of index to optmize its performance, and the advantage it has over Hash Table algo is that it enables <em>pipelined execution</em> of the query.</p>
 <h2>Partial Results</h2>
+<p>Indexes enables pipelined <code>ORDER BY</code> execution, which optimizes pagination queries by returning results without needing to read the entire table.</p>
+<p>Therefore, for queries that require partial results (e.g. fetch first 10 IDs), indexing all <code>ORDER BY</code> columns enables pipelining and therefore greatly reduces latency of the query.
+The database will stop execution and return as soon as it has found the required number of rows.
+For “Top N” queries, this means that response time of pipelined “Top N” queries grows with number of rows <strong>selected</strong> instead of table size!
+“Top N” queries can be done using <code>LIMIT</code> or <code>FETCH FIRST N ROWS</code> clause.</p>
+<p>For paging through the next N results, there are actually two ways to do this.
+The normal way is to add the <code>OFFSET</code> extension clause into the <code>LIMIT</code>/<code>FETCH FIRST</code> clauses.
+However there are 2 disadvantages to this:
+the query results will “drift” if there were inserts;
+and the query actually <em>slows</em> down the further <code>OFFSET</code> you put, since the database has to scan and count the index before returning the desired rows.</p>
+<p>The other method is to use <code>WHERE</code> clause on the last fetched row of the previous page. This will have big performance benefit since it uses tree traversal to find the relevant rows to skip.
+To implement this, it is possible to use <a href="https://www.postgresql.org/docs/current/functions-comparisons.html#ROW-WISE-COMPARISON" rel="nofollow">row value comparison</a> if supported by your database, <code>WHERE (sale_date, sale_id) &lt; (?, ?)</code>, as the logic matches the sorting logic.
+If not, it is possible, but less efficient, to do normal comparisons, <code>WHERE sale_date &lt;= ? AND NOT (sale_date = ? AND sale_id &gt;= ?)</code>.
+This method’s disadvantage is that you are not able to “jump” straight to page N, since you require the previous page’s last value. But it is still good for ‘infinite scrolling’ pages.</p>
+<p>For more detailed explanation, do read through the original article at <a href="https://use-the-index-luke.com/sql/partial-results/fetch-next-page" rel="nofollow">use the index luke</a>.</p>
 <h2>INSERT, DELETE, UPDATE</h2>
+<p>Since indexes are purely redundant/duplicate data that exists on top of the actual table’s data, this requires compute time to keep both indexes and table in sync, as well as maintain the underlying index data structure.
+Therefore, the performance of <code>INSERT</code>, <code>DELETE</code> and <code>UPDATE</code> all degrade proportionally to the number of indexes the table has.</p>
+<p>For <code>INSERT</code>s, it is important to note that the <em>first index, i.e. going from 0 to 1 index, makes the greatest difference in performance</em> (several orders of magnitude more degradation, compared to adding more indexes when you already have one).
+This property can be useful when you are bulk loading large amounts of data, which you can temporarily drop the index to load much faster.</p>
+<p>For <code>DELETE</code>s, the execution acts like <code>SELECT</code> with extra delete step at the end.
+Hence <code>DELETE</code>ing a single row with no index does not gain the same speed up as <code>INSERT</code> (as it requires full table scan), but it may still make sense when <code>DELETE</code>ing many rows.</p>
+<p>For <code>UPDATE</code>s, the execution acts like a <code>DELETE</code> + <code>INSERT</code> operation. The important thing about <code>UPDATE</code>s is that changed values/columns may not be present in all indexes, therefore it is important to only update the columns that needs updating.
+This might not apply when writing the SQL manually, but when using ORM tools this could be a hidden performance trap if not careful.</p>
 <h2>Glossary</h2>
 <p><strong>Pipelining</strong></p>
 <p>Pipelining / Pipelined Execution is a way in which database executes the operations from the query plan.
@@ -149,13 +173,19 @@ This greatly reduces number of CPU cycles needed per operator, and also allows o
 <p>Clustering factor is how correlated the sequence of the column’s data values are to the sequence of their physical order.
 In Oracle, the clustering factor value is <em>low</em> when the sequences are correlated.
 While in Postgres, they use actual Pearson correlation, so when value is 0 is totally uncorrelated and when value is 1 (or -1) they are totally correlated.</p>
-<p><strong>Covering Index</strong></p>
-<p><strong>Prepared Statements/Bind Parameters</strong></p></div>
+<p><strong>Prepared Statements/Bind Parameters</strong></p>
+<p>Prepared statements are SQL template statements which have placeholders in certain clauses that can be filled on the next run.</p>
+<p>For example:</p>
+<pre class="language-sql"><!-- HTML_TAG_START --><code class="language-sql"><span class="token keyword">SELECT</span> column1<span class="token punctuation">,</span> column2
+<span class="token keyword">FROM</span> my_table
+<span class="token keyword">WHERE</span> date_column <span class="token operator">></span> ? <span class="token operator">AND</span> id_column <span class="token operator">=</span><span class="token operator">=</span> ?</code><!-- HTML_TAG_END --></pre>
+<p>The above statement is a prepared statement as there are <code>?</code> in the <code>WHERE</code> clause. Actual values will be sent by the application to the database on the subsequent calls to this prepared statement.</p>
+<p>Prepared statements are highly recommended because it prevents SQL injection attacks. It also prevents re-run of query optimizer everytime the query is sent to the database, this reduces latency since the database can re-use the same query plan for this prepared statement, which is especially important for complex queries!</p></div>
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="ekrfrr">
-		import { start } from "/github-blog/_app/immutable/start-66f7477f.js";
+		<script type="module" data-sveltekit-hydrate="1f43skl">
+		import { start } from "/github-blog/_app/immutable/start-8e1d7148.js";
 
 		start({
 			env: {},
@@ -169,7 +199,7 @@ While in Postgres, they use actual Pearson correlation, so when value is 0 is to
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="ekrfrr"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="1f43skl"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
