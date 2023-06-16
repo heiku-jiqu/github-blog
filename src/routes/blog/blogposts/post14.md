@@ -124,6 +124,8 @@ Also, do extend the current index instead of creating a new index to minimise in
 This takes the above concept to the extreme, where all `SELECT`ed columns are added into the index so the query skips accessing the heap table entirely.
 Note that performance improvement depends on number of accessed rows (more improvement when nrows is high) and the index clustering factor of the query without the index (more improvement when clustering factor was high).
 
+An index that covers the entire query is called a _covering index_.
+
 **Index-Organized Tables aka Clustered Index**
 
 Another way to achieve data clustering is to order the table physically by the index keys, called "Clustered Index" in MS SQL Server.
@@ -207,6 +209,18 @@ Clustering factor is how correlated the sequence of the column's data values are
 In Oracle, the clustering factor value is _low_ when the sequences are correlated.
 While in Postgres, they use actual Pearson correlation, so when value is 0 is totally uncorrelated and when value is 1 (or -1) they are totally correlated.
 
-**Covering Index**
-
 **Prepared Statements/Bind Parameters**
+
+Prepared statements are SQL template statements which have placeholders in certain clauses that can be filled on the next run.
+
+For example:
+
+```SQL
+SELECT column1, column2
+FROM my_table
+WHERE date_column > ? AND id_column == ?
+```
+
+The above statement is a prepared statement as there are `?` in the `WHERE` clause. Actual values will be sent by the application to the database on the subsequent calls to this prepared statement.
+
+Prepared statements are highly recommended because it prevents SQL injection attacks. It also prevents re-run of query optimizer everytime the query is sent to the database, this reduces latency since the database can re-use the same query plan for this prepared statement, which is especially important for complex queries!
