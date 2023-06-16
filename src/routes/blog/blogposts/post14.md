@@ -1,5 +1,5 @@
 ---
-title: Database Indexes
+title: Database Indexes and Query Optimization
 date: '2023-06-07'
 ---
 
