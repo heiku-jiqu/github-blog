@@ -155,6 +155,18 @@ Only the Sort/Group algorithm can make use of index to optmize its performance, 
 
 ## INSERT, DELETE, UPDATE
 
+Since indexes are purely redundant/duplicate data that exists on top of the actual table's data, this requires compute time to keep both indexes and table in sync, as well as maintain the underlying index data structure.
+Therefore, the performance of `INSERT`, `DELETE` and `UPDATE` all degrade proportionally to the number of indexes the table has.
+
+For `INSERT`s, it is important to note that the _first index, i.e. going from 0 to 1 index, makes the greatest difference in performance_ (several orders of magnitude more degradation, compared to adding more indexes when you already have one).
+This property can be useful when you are bulk loading large amounts of data, which you can temporarily drop the index to load much faster.
+
+For `DELETE`s, the execution acts like `SELECT` with extra delete step at the end.
+Hence `DELETE`ing a single row with no index does not gain the same speed up as `INSERT` (as it requires full table scan), but it may still make sense when `DELETE`ing many rows.
+
+For `UPDATE`s, the execution acts like a `DELETE` + `INSERT` operation. The important thing about `UPDATE`s is that changed values/columns may not be present in all indexes, therefore it is important to only update the columns that needs updating.
+This might not apply when writing the SQL manually, but when using ORM tools this could be a hidden performance trap if not careful.
+
 ## Glossary
 
 **Pipelining**
