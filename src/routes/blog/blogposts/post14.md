@@ -153,6 +153,26 @@ Only the Sort/Group algorithm can make use of index to optmize its performance, 
 
 ## Partial Results
 
+Indexes enables pipelined `ORDER BY` execution, which optimizes pagination queries by returning results without needing to read the entire table.
+
+Therefore, for queries that require partial results (e.g. fetch first 10 IDs), indexing all `ORDER BY` columns enables pipelining and therefore greatly reduces latency of the query.
+The database will stop execution and return as soon as it has found the required number of rows.
+For "Top N" queries, this means that response time of pipelined "Top N" queries grows with number of rows **selected** instead of table size!
+"Top N" queries can be done using `LIMIT` or `FETCH FIRST N ROWS` clause.
+
+For paging through the next N results, there are actually two ways to do this.
+The normal way is to add the `OFFSET` extension clause into the `LIMIT`/`FETCH FIRST` clauses.
+However there are 2 disadvantages to this:
+the query results will "drift" if there were inserts;
+and the query actually _slows_ down the further `OFFSET` you put, since the database has to scan and count the index before returning the desired rows.
+
+The other method is to use `WHERE` clause on the last fetched row of the previous page. This will have big performance benefit since it uses tree traversal to find the relevant rows to skip.
+To implement this, it is possible to use [row value comparison](https://www.postgresql.org/docs/current/functions-comparisons.html#ROW-WISE-COMPARISON) if supported by your database, `WHERE (sale_date, sale_id) < (?, ?)`, as the logic matches the sorting logic.
+If not, it is possible, but less efficient, to do normal comparisons, `WHERE sale_date <= ? AND NOT (sale_date = ? AND sale_id >= ?)`.
+This method's disadvantage is that you are not able to "jump" straight to page N, since you require the previous page's last value. But it is still good for 'infinite scrolling' pages.
+
+For more detailed explanation, do read through the original article at [use the index luke](https://use-the-index-luke.com/sql/partial-results/fetch-next-page).
+
 ## INSERT, DELETE, UPDATE
 
 Since indexes are purely redundant/duplicate data that exists on top of the actual table's data, this requires compute time to keep both indexes and table in sync, as well as maintain the underlying index data structure.
