@@ -6,6 +6,9 @@
 		<meta name="viewport" content="width=device-width" />
 		<meta http-equiv="content-security-policy" content=""><link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-gruvbox-light.min.css" rel="stylesheet" data-svelte="svelte-uyunbu">
 	<link href="/github-blog/_app/immutable/assets/_layout-ff0af52f.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/start-38b87d8b.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
@@ -15,7 +18,9 @@
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/about/_page.svelte-499dd886.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-c421c757.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-e02ed2cc.js">
 	</head>
 	<body>
 		<div>
@@ -28,11 +33,35 @@
 	<nav><ul class="svelte-qm05bo"><li><a href="/github-blog/blog" class="svelte-qm05bo">Blog</a></li>
 			<li><a href="/github-blog/about" class="svelte-qm05bo">About</a></li></ul></nav>
 </header>
-<div><h1>about</h1>
-<p>solidify learning through writing</p></div>
+<div><div class="grid-container svelte-14l03dd"><div class="sides"></div>
+		<div class="article svelte-14l03dd"><h1>Cryptic Cryptography Codex</h1>
+<p>This post aggregates some of the common terms that I’ve come across related to cryptography in the software world, and also how the concepts relate to each other.</p>
+<h2>Goals of Cryptography</h2>
+<p>Confidentiality
+Integrity
+Authenticity
+Availability
+Non-repudiation</p>
+<h2>Hash / Digest</h2>
+<h2>Certificate</h2>
+<h2>Certificate Authority</h2>
+<h2>Symmetric, Assymetric Algorithms</h2>
+<p>aka Public key cryptography and Private key cryptography</p>
+<p>RSA, SHA, SSL?</p>
+<h2>Encryption, Decryption</h2>
+<h2>Cyphers / Ciphers / Ciphertext</h2>
+<h2>Plain Text</h2>
+<h2>Signatures</h2>
+<h2>Fingerprint</h2>
+<h2>Private / Public Keys</h2>
+<h2>Hybrid Systems</h2>
+<h2>Stream, Block</h2>
+<h2>pkcs .cer .pfx</h2>
+<h2>X.509</h2></div>
+		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="8s32kj">
+		<script type="module" data-sveltekit-hydrate="g49rvj">
 		import { start } from "/github-blog/_app/immutable/start-38b87d8b.js";
 
 		start({
@@ -40,14 +69,14 @@
 			hydrate: {
 				status: 200,
 				error: null,
-				node_ids: [0, 3],
-				params: {},
-				routeId: "about",
+				node_ids: [0, 5],
+				params: {blogpost:"post15"},
+				routeId: "blog/[blogpost]",
 				data: (function(a){return [a,a]}(null)),
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="8s32kj"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="g49rvj"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
