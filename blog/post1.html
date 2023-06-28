@@ -9,18 +9,18 @@
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-38b87d8b.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-8c2e616c.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-5986b6a1.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-11ad6c2c.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-c421c757.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-e02ed2cc.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-72406761.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-0642b05d.js">
 	</head>
 	<body>
 		<div>
@@ -35,7 +35,7 @@
 </header>
 <div><div class="grid-container svelte-14l03dd"><div class="sides"></div>
 		<div class="article svelte-14l03dd"><h1>CSS Responsive Grid Layout</h1>
-<p>There are two main ways to customise the layout of html elements / components:
+<p>There are two main ways to customise the layout of HTML elements / components:
 <code>display: grid</code> and <code>display: flex</code>.</p>
 <p>This post describes how to achieve a responsive layout that will automatically populate components into a parent component such that the number of columns is dynamic. For example, when viewed on larger screens, there will be 5 columns, but when viewed on narrower screens, it will shrink to one column.</p>
 <p>TL;DR:</p>
@@ -45,18 +45,18 @@
 <span class="token punctuation">&#125;</span></code><!-- HTML_TAG_END --></pre>
 <h2>display: grid</h2>
 <p>By setting the <em>parent</em> component’s CSS property to <code>display: grid</code>, we are able to control how the <em>child</em> components are arranged. This property itself does not do anything, you will need to specify <em>how</em> the components should be arranged.</p>
-<h2>grid-template-columns</h2>
+<h2><code>grid-template-columns</code></h2>
 <p><code>grid-template-columns</code> is one of the CSS property that helps you specify how child components are arranged. The simplest way is to give values corresponding to the size of each column.</p>
 <p>For example: <code>grid-template-columns: 1fr 1fr 1fr</code> will arrange the child components into 3 columns taking equal widths, and if there are more than 3 child components it will flow to the next row.
 <em>Notice that the number of values you pass in will determine the number of columns in the grid</em></p>
 <h2>repeat()</h2>
 <p>Instead of statically passing in the number of values, there is another equivalent syntax using the repeat() function: <code>grid-template-columns: repeat(3, 1fr)</code></p>
 <p><code>repeat()</code> takes in 2 parameters, the number of times to repeat and the size to repeat.</p>
-<h3>repeat(): special #1</h3>
-<p>Instead of having number of times as the first parameter, <code>repeat()</code> can also take in either of these two keywords: <code>autofit</code> and <code>autofill</code>, as its first parameter.</p>
+<h3><code>repeat()</code>: special #1</h3>
+<p>Instead of having the number of times as the first parameter, <code>repeat()</code> can also take in either of these two keywords: <code>autofit</code> and <code>autofill</code>, as its first parameter.</p>
 <p>Both keywords work similarly in that they will populate the maximum number of columns until no more child components can fit, then move on to the next row.</p>
 <p>Example: <code>grid-template-columns: repeat(autofill, 200px)</code></p>
-<h3>repeat(): special #2</h3>
+<h3><code>repeat()</code>: special #2</h3>
 <p>Above example will populate a <em>fixed width</em> child component. In order to make the child components response, repeat()‘s second parameter accepts a <code>minmax()</code> function.</p>
 <p>Example: <code>grid-template-columns: repeat(autofill, minmax(200px, 1fr))</code></p>
 <p>We can specify that the child components has a <em>minimum width</em> of 200px.</p>
@@ -66,8 +66,8 @@
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="1fbp2vr">
-		import { start } from "/github-blog/_app/immutable/start-38b87d8b.js";
+		<script type="module" data-sveltekit-hydrate="id6wpt">
+		import { start } from "/github-blog/_app/immutable/start-8c2e616c.js";
 
 		start({
 			env: {},
@@ -81,7 +81,7 @@
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="1fbp2vr"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="id6wpt"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>

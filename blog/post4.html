@@ -9,18 +9,18 @@
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-38b87d8b.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-8c2e616c.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-5986b6a1.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-11ad6c2c.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-c421c757.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-e02ed2cc.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-72406761.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-0642b05d.js">
 	</head>
 	<body>
 		<div>
@@ -48,11 +48,11 @@
 <h3>SVG viewbox</h3>
 <p>The unit of measurement in the SVG coordinates is by default 1unit = 1px of the device’s screen.
 However, since SVG is scalable, we can change the <em>viewbox</em> attribute of <code>&lt;svg&gt;</code> to (automatically) map SVG’s 1 unit to however big the screen size is.</p>
-<p>For example, defining a SVG canvas: <code>&lt;svg viewBox=&quot;0 0 200 200&quot;&gt;</code>. This translates to setting canvas top left corner to (0,0) and the canvas width and height to be 200. Say the canvas is displayed in a 1000px by 1000px screen, then 1 unit in SVG = 5 px on screen.</p>
+<p>For example, defining a SVG canvas: <code>&lt;svg viewBox=&quot;0 0 200 200&quot;&gt;</code>. This translates to setting canvas top left corner to (0,0) and the canvas width and height to be 200. Say the canvas is displayed in a 1000px by 1000px screen, then 1 unit in SVG = 5 pixels on screen.</p>
 <p>This is useful because you can fix the coordinates of the viewBox, allowing the SVG element sizes to be <em>relative</em> to the viewBox you defined, letting it scale to any screen size.</p>
 <h3>mapping data values to SVG unit values</h3>
 <p>Now we need a way to map the values in our data to the SVG’s coordinate system.
-For example, say our data consists of numbers from 0 to 10, and our SVG’s coordinate system is defined as 0 to 200 pixels. We will need to map the 0 in our data to 0 pixel in SVG, and 5 in our data to 100 pixel in SVG, etc.</p>
+For example, say our data consists of numbers from 0 to 10, and our SVG’s coordinate system is defined as 0 to 200 pixels. We will need to map the 0 in our data to 0 pixels in SVG, and 5 in our data to 100 pixels in SVG, etc.</p>
 <p>To do this, <code>d3-scale</code> library has a lot of helper functions that can help us generate this mapping function. Specifically, <code>scaleLinear</code> helps returns a linearly interpolating function that maps values between our data and the SVG coordinate.</p>
 <pre class="language-js"><!-- HTML_TAG_START --><code class="language-js"><span class="token keyword">const</span> interpolateFunction <span class="token operator">=</span> <span class="token function">scaleLinear</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// returns a interpolating function</span>
 	<span class="token punctuation">.</span><span class="token function">domain</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment">// provide the min and max of our data</span>
@@ -72,7 +72,7 @@ Luckily there is an easy trick to solve this using <code>scaleLinear()</code>: r
 <span class="token function">reverseInterpolate</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// returns 100</span>
 <span class="token function">reverseInterpolate</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// returns 0</span></code><!-- HTML_TAG_END --></pre>
 <p>By just swapping the elements in the <code>.range()</code> method, the returned <code>reverseInerpolate</code> function now maps <strong>larger</strong> y value to a <strong>higher</strong> point inside the SVG.</p>
-<h3>horizontal axis: cateogories</h3>
+<h3>horizontal axis: categories</h3>
 <p>Horizontal axis for bar charts are usually categorical variables. This means using <code>scaleLinear()</code> does not make sense.
 <code>d3-scale</code> provides another helper function, <code>scaleBand()</code> that will help us interpolate the horizontal positions of the bars.
 The returned function will give us the horizontal position of the <em>left</em> side of the bar (i.e. the start of the bar)</p>
@@ -90,7 +90,7 @@ The returned function will give us the horizontal position of the <em>left</em> 
 categoricalInterpolate<span class="token punctuation">.</span><span class="token function">step</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// returns the length between start of 2 consecutive bars</span>
 categoricalInterpoalte<span class="token punctuation">.</span><span class="token function">bandwidth</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// returns the width of the bar</span></code><!-- HTML_TAG_END --></pre>
 <h3>drawing bars</h3>
-<p>We can draw bars with <code>&lt;rect&gt;</code> svg element.
+<p>We can draw bars with <code>&lt;rect&gt;</code> SVG element.
 This element requires us to specify the rectangle’s top left position <code>x</code> and <code>y</code>, the <code>height</code> (how far down), and the <code>width</code> (how far right).</p>
 <p>We can determine the 4 properties for each data point <code>(xData, yData)</code> with the two <code>d3-scale</code> interpolating functions we have created:</p>
 <ul><li><code>x</code> = <code>categoricalInterpolate(xData)</code></li>
@@ -104,8 +104,8 @@ This element requires us to specify the rectangle’s top left position <code>x<
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="1a05gx3">
-		import { start } from "/github-blog/_app/immutable/start-38b87d8b.js";
+		<script type="module" data-sveltekit-hydrate="1l24vjv">
+		import { start } from "/github-blog/_app/immutable/start-8c2e616c.js";
 
 		start({
 			env: {},
@@ -119,7 +119,7 @@ This element requires us to specify the rectangle’s top left position <code>x<
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="1a05gx3"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="1l24vjv"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>

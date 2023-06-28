@@ -9,18 +9,18 @@
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-38b87d8b.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-8c2e616c.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-5986b6a1.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-11ad6c2c.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-c421c757.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-e02ed2cc.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-72406761.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-0642b05d.js">
 	</head>
 	<body>
 		<div>
@@ -35,34 +35,59 @@
 </header>
 <div><div class="grid-container svelte-14l03dd"><div class="sides"></div>
 		<div class="article svelte-14l03dd"><h1>Cryptic Cryptography Codex</h1>
-<p>This post aggregates some of the common terms that I’ve come across related to cryptography in the software world, and also how the concepts relate to each other.</p>
+<p>When working with sensitive data, it is inevitable to come across cryptography terms scattered here and there, be it for storing data, sharing data, de-identifying data, etc.
+This post aggregates some of the common terms that I’ve come across related to cryptography in the software world, and also how the concepts relate to each other.</p>
 <h2>Goals of Cryptography</h2>
+<p>Before diving into many of the cryptographic terms/acronyms used, it is useful to have a general overview of cryptography.</p>
 <p>Confidentiality
 Integrity
 Authenticity
 Availability
 Non-repudiation</p>
-<h2>Hash / Digest</h2>
-<h2>Certificate</h2>
-<h2>Certificate Authority</h2>
-<h2>Symmetric, Assymetric Algorithms</h2>
-<p>aka Public key cryptography and Private key cryptography</p>
-<p>RSA, SHA, SSL?</p>
 <h2>Encryption, Decryption</h2>
-<h2>Cyphers / Ciphers / Ciphertext</h2>
+<h2>Cyphers / Cyphers / Ciphertext</h2>
 <h2>Plain Text</h2>
+<h2>Types of Algorithms</h2>
+<h3>Hash Functions</h3>
+<p>SHA</p>
+<h4>Message Integrity Code (MIC)</h4>
+<p>aka Message Authentication Code (no relation with MAC Address which stands for Media Access Control Address)</p>
+<p>Poly1305 (TLS)</p>
+<h3>Symmetric</h3>
+<p>aka Public key cryptography</p>
+<h4>Block Cyphers</h4>
+<p>AES</p>
+<h5>Mode of Operation</h5>
+<p>Since block cypher only work on fixed size blocks (e.g. 512bits), how do the algorithms deal with bigger sizes?</p>
+<p>GCM Mode?</p>
+<h4>Stream Cyphers</h4>
+<p>RC4/ARCFOUR/ARC4 (older versions of SSL/TLS, but not recommended)
+ChaCha20 (TLS)</p>
+<h3>Asymmetric Algorithms</h3>
+<p>aka Private key cryptography</p>
+<p>RSA?</p>
+<h3>Hybrid Systems</h3>
+<p>TLS (SSL), SSH</p>
+<h3>Strength of Algorithm</h3>
+<h2>Private / Public Keys</h2>
+<h2>AEAD</h2>
+<p>Authenticated Encryption, Associated Data</p>
+<h2>Certificate</h2>
+<h2>PKCS#</h2>
+<h2>S/MIME</h2>
+<h2>Certificate Authority</h2>
 <h2>Signatures</h2>
 <h2>Fingerprint</h2>
-<h2>Private / Public Keys</h2>
-<h2>Hybrid Systems</h2>
-<h2>Stream, Block</h2>
-<h2>pkcs .cer .pfx</h2>
-<h2>X.509</h2></div>
+<h2>pkcs .cer .pfx pem</h2>
+<h2>X.509</h2>
+<h1>Links</h1>
+<p><a href="https://www.rfc-editor.org/rfc/rfc8446" rel="nofollow">TLS</a></p>
+<p>(<a href="https://crypto.stackexchange.com/questions/87078/stream-cipher-and-block-cipher-usage-in-network-data-encryption" rel="nofollow">https://crypto.stackexchange.com/questions/87078/stream-cipher-and-block-cipher-usage-in-network-data-encryption</a>)</p></div>
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="g49rvj">
-		import { start } from "/github-blog/_app/immutable/start-38b87d8b.js";
+		<script type="module" data-sveltekit-hydrate="1jdbysq">
+		import { start } from "/github-blog/_app/immutable/start-8c2e616c.js";
 
 		start({
 			env: {},
@@ -76,7 +101,7 @@ Non-repudiation</p>
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="g49rvj"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="1jdbysq"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>

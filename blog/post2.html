@@ -9,18 +9,18 @@
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-38b87d8b.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-8c2e616c.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-5986b6a1.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-11ad6c2c.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-c421c757.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-e02ed2cc.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-72406761.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-0642b05d.js">
 	</head>
 	<body>
 		<div>
@@ -35,7 +35,7 @@
 </header>
 <div><div class="grid-container svelte-14l03dd"><div class="sides"></div>
 		<div class="article svelte-14l03dd"><h1>CSS Horizontal Scrolling Items With Grid</h1>
-<p>There are times when we want to arrange items that scrolls horizontally.
+<p>There are times when we want to arrange items that scroll horizontally.
 We can achieve this using <code>grid-auto-flow</code> and <code>overflow-x</code> CSS property in the parent component.</p>
 <p>Example component:</p>
 <div class="container svelte-vq2zon"><section class="item svelte-vq2zon">1</section><section class="item svelte-vq2zon">2</section><section class="item svelte-vq2zon">3</section><section class="item svelte-vq2zon">4</section><section class="item svelte-vq2zon">5</section><section class="item svelte-vq2zon">6</section><section class="item svelte-vq2zon">7</section>
@@ -50,18 +50,18 @@ This tells the parent component to “clip” (cut off) the extra child items, a
 <p>The <code>auto</code> keyword actually means that the parent component will automatically include/exclude the scroll bar depending on whether child items exceed the parent component.
 To always have the scroll bar, use <code>overflow-x: scroll</code> instead!</p>
 <h1>Scroll snapping</h1>
-<p>To further enhance the horizontal scrolling, we can add sroll snapping so that the first item visible will always not be cut off.</p>
-<p>To do this, we need to add <code>scroll-snap-type</code> and <code>scroll-snap-align</code> to parent and child components respectively.</p>
+<p>We can add scroll snapping so that the first item visible will always not be cut off, which further enhances the horizontal scrolling.</p>
+<p>Implement this by adding <code>scroll-snap-type</code> and <code>scroll-snap-align</code> to parent and child components respectively.</p>
 <h2>Activate scroll snapping</h2>
 <p>In the parent component, add <code>scroll-snap-type: x mandatory</code>.
-The <code>x</code> keyword species that you are activating snap in the x axis, and <code>mandatory</code> specifies that you are enforing the component to <strong>always</strong> snap child components (the alternative is using <code>proximity</code> keyword).</p>
+The <code>x</code> keyword species that you are activating snap in the x-axis, and <code>mandatory</code> specifies that you are enforcing the component to <strong>always</strong> snap child components (the alternative is using <code>proximity</code> keyword).</p>
 <h2>Set where to snap to</h2>
 <p>In the child component, add <code>scroll-snap-align: start</code> so that items are always snapped to the start of the first item.</p></div>
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="q70koz">
-		import { start } from "/github-blog/_app/immutable/start-38b87d8b.js";
+		<script type="module" data-sveltekit-hydrate="5y9sz">
+		import { start } from "/github-blog/_app/immutable/start-8c2e616c.js";
 
 		start({
 			env: {},
@@ -75,7 +75,7 @@ The <code>x</code> keyword species that you are activating snap in the x axis, a
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="q70koz"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="5y9sz"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
