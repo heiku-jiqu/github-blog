@@ -21,7 +21,7 @@ This is where asynchronous programming comes in to help us run things is paralle
 
 Implementations of async programming defers in different programming language, but in Javascript, the most fundamental async type is the _Promise_.
 
-A promise short circuits the waiting time by returning a container immediately, allowing the subsequent code to run whilst it wait in the background.
+A promise short circuits the waiting time by returning a container immediately, allowing the subsequent code to run whilst it waits in the background.
 This container wraps the actual value that the async task will eventually return.
 
 How do to use the value inside the Promise then?

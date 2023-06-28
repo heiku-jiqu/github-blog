@@ -5,7 +5,7 @@ date: '2022-09-14'
 
 # {title}
 
-There are two main ways to customise the layout of html elements / components:
+There are two main ways to customise the layout of HTML elements / components:
 `display: grid` and `display: flex`.
 
 This post describes how to achieve a responsive layout that will automatically populate components into a parent component such that the number of columns is dynamic. For example, when viewed on larger screens, there will be 5 columns, but when viewed on narrower screens, it will shrink to one column.
@@ -23,7 +23,7 @@ TL;DR:
 
 By setting the _parent_ component's CSS property to `display: grid`, we are able to control how the _child_ components are arranged. This property itself does not do anything, you will need to specify _how_ the components should be arranged.
 
-## grid-template-columns
+## `grid-template-columns`
 
 `grid-template-columns` is one of the CSS property that helps you specify how child components are arranged. The simplest way is to give values corresponding to the size of each column.
 
@@ -36,15 +36,15 @@ Instead of statically passing in the number of values, there is another equivale
 
 `repeat()` takes in 2 parameters, the number of times to repeat and the size to repeat.
 
-### repeat(): special #1
+### `repeat()`: special #1
 
-Instead of having number of times as the first parameter, `repeat()` can also take in either of these two keywords: `autofit` and `autofill`, as its first parameter.
+Instead of having the number of times as the first parameter, `repeat()` can also take in either of these two keywords: `autofit` and `autofill`, as its first parameter.
 
 Both keywords work similarly in that they will populate the maximum number of columns until no more child components can fit, then move on to the next row.
 
 Example: `grid-template-columns: repeat(autofill, 200px)`
 
-### repeat(): special #2
+### `repeat()`: special #2
 
 Above example will populate a _fixed width_ child component. In order to make the child components response, repeat()'s second parameter accepts a `minmax()` function.
 

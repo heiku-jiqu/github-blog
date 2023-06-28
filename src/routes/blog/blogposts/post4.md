@@ -33,14 +33,14 @@ The vertical axis runs from **top to bottom**
 The unit of measurement in the SVG coordinates is by default 1unit = 1px of the device's screen.
 However, since SVG is scalable, we can change the _viewbox_ attribute of `<svg>` to (automatically) map SVG's 1 unit to however big the screen size is.
 
-For example, defining a SVG canvas: `<svg viewBox="0 0 200 200">`. This translates to setting canvas top left corner to (0,0) and the canvas width and height to be 200. Say the canvas is displayed in a 1000px by 1000px screen, then 1 unit in SVG = 5 px on screen.
+For example, defining a SVG canvas: `<svg viewBox="0 0 200 200">`. This translates to setting canvas top left corner to (0,0) and the canvas width and height to be 200. Say the canvas is displayed in a 1000px by 1000px screen, then 1 unit in SVG = 5 pixels on screen.
 
 This is useful because you can fix the coordinates of the viewBox, allowing the SVG element sizes to be _relative_ to the viewBox you defined, letting it scale to any screen size.
 
 ### mapping data values to SVG unit values
 
 Now we need a way to map the values in our data to the SVG's coordinate system.
-For example, say our data consists of numbers from 0 to 10, and our SVG's coordinate system is defined as 0 to 200 pixels. We will need to map the 0 in our data to 0 pixel in SVG, and 5 in our data to 100 pixel in SVG, etc.
+For example, say our data consists of numbers from 0 to 10, and our SVG's coordinate system is defined as 0 to 200 pixels. We will need to map the 0 in our data to 0 pixels in SVG, and 5 in our data to 100 pixels in SVG, etc.
 
 To do this, `d3-scale` library has a lot of helper functions that can help us generate this mapping function. Specifically, `scaleLinear` helps returns a linearly interpolating function that maps values between our data and the SVG coordinate.
 
@@ -71,7 +71,7 @@ reverseInterpolate(10); // returns 0
 
 By just swapping the elements in the `.range()` method, the returned `reverseInerpolate` function now maps **larger** y value to a **higher** point inside the SVG.
 
-### horizontal axis: cateogories
+### horizontal axis: categories
 
 Horizontal axis for bar charts are usually categorical variables. This means using `scaleLinear()` does not make sense.
 `d3-scale` provides another helper function, `scaleBand()` that will help us interpolate the horizontal positions of the bars.
@@ -95,7 +95,7 @@ categoricalInterpoalte.bandwidth(); // returns the width of the bar
 
 ### drawing bars
 
-We can draw bars with `<rect>` svg element.
+We can draw bars with `<rect>` SVG element.
 This element requires us to specify the rectangle's top left position `x` and `y`, the `height` (how far down), and the `width` (how far right).
 
 We can determine the 4 properties for each data point `(xData, yData)` with the two `d3-scale` interpolating functions we have created:

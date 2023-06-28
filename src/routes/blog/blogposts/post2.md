@@ -9,7 +9,7 @@ date: '2022-09-19'
 
 # {title}
 
-There are times when we want to arrange items that scrolls horizontally.
+There are times when we want to arrange items that scroll horizontally.
 We can achieve this using `grid-auto-flow` and `overflow-x` CSS property in the parent component.
 
 Example component:
@@ -33,14 +33,14 @@ To always have the scroll bar, use `overflow-x: scroll` instead!
 
 # Scroll snapping
 
-To further enhance the horizontal scrolling, we can add sroll snapping so that the first item visible will always not be cut off.
+We can add scroll snapping so that the first item visible will always not be cut off, which further enhances the horizontal scrolling.
 
-To do this, we need to add `scroll-snap-type` and `scroll-snap-align` to parent and child components respectively.
+Implement this by adding `scroll-snap-type` and `scroll-snap-align` to parent and child components respectively.
 
 ## Activate scroll snapping
 
 In the parent component, add `scroll-snap-type: x mandatory`.
-The `x` keyword species that you are activating snap in the x axis, and `mandatory` specifies that you are enforing the component to **always** snap child components (the alternative is using `proximity` keyword).
+The `x` keyword species that you are activating snap in the x-axis, and `mandatory` specifies that you are enforcing the component to **always** snap child components (the alternative is using `proximity` keyword).
 
 ## Set where to snap to
 

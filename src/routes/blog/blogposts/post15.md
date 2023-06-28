@@ -5,12 +5,12 @@ date: '2023-06-23'
 
 # {title}
 
-When working with sensitive data, it is inevitable to come across cryptography terms scattered here and there, be it for storing data, sharing data, deidentifying data, etc.
+When working with sensitive data, it is inevitable to come across cryptography terms scattered here and there, be it for storing data, sharing data, de-identifying data, etc.
 This post aggregates some of the common terms that I've come across related to cryptography in the software world, and also how the concepts relate to each other.
 
 ## Goals of Cryptography
 
-Before diving into many of the cryptographic terms/acryonyms used, it is useful to have a general overview of cryptography.
+Before diving into many of the cryptographic terms/acronyms used, it is useful to have a general overview of cryptography.
 
 Confidentiality
 Integrity
@@ -20,7 +20,7 @@ Non-repudiation
 
 ## Encryption, Decryption
 
-## Cyphers / Ciphers / Ciphertext
+## Cyphers / Cyphers / Ciphertext
 
 ## Plain Text
 
@@ -40,26 +40,26 @@ Poly1305 (TLS)
 
 aka Public key cryptography
 
-#### Block Ciphers
+#### Block Cyphers
 
 AES
 
 ##### Mode of Operation
 
-Since block cipher only work on fixed size blocks (e.g. 512bits), how do the algorithms deal with bigger sizes?
+Since block cypher only work on fixed size blocks (e.g. 512bits), how do the algorithms deal with bigger sizes?
 
 GCM Mode?
 
-#### Stream Ciphers
+#### Stream Cyphers
 
 RC4/ARCFOUR/ARC4 (older versions of SSL/TLS, but not recommended)
 ChaCha20 (TLS)
 
-### Assymetric Algorithms
+### Asymmetric Algorithms
 
 aka Private key cryptography
 
-RSA, , ?
+RSA?
 
 ### Hybrid Systems
 
