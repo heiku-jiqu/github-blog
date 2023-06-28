@@ -10,6 +10,8 @@ This post aggregates some of the common terms that I've come across related to c
 
 ## Goals of Cryptography
 
+Before diving into many of the cryptographic terms/acryonyms used, it is useful to have a general overview of cryptography.
+
 Confidentiality
 Integrity
 Authenticity
