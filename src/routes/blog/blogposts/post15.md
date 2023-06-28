@@ -16,33 +16,72 @@ Authenticity
 Availability
 Non-repudiation
 
-## Hash / Digest
-
-## Certificate
-
-## Certificate Authority
-
-## Symmetric, Assymetric Algorithms
-
-aka Public key cryptography and Private key cryptography
-
-RSA, SHA, SSL?
-
 ## Encryption, Decryption
 
 ## Cyphers / Ciphers / Ciphertext
 
 ## Plain Text
 
-## Signatures
+## Types of Algorithms
 
-## Fingerprint
+### Hash Functions
+
+SHA
+
+#### Message Integrity Code (MIC)
+
+aka Message Authentication Code (no relation with MAC Address which stands for Media Access Control Address)
+
+Poly1305 (TLS)
+
+### Symmetric
+
+aka Public key cryptography
+
+#### Block Ciphers
+
+AES
+
+##### Mode of Operation
+
+Since block cipher only work on fixed size blocks (e.g. 512bits), how do the algorithms deal with bigger sizes?
+
+GCM Mode?
+
+#### Stream Ciphers
+
+RC4/ARCFOUR/ARC4 (older versions of SSL/TLS, but not recommended)
+ChaCha20 (TLS)
+
+### Assymetric Algorithms
+
+aka Private key cryptography
+
+RSA, , ?
+
+### Hybrid Systems
+
+TLS (SSL), SSH
+
+### Strength of Algorithm
 
 ## Private / Public Keys
 
-## Hybrid Systems
+## AEAD
 
-## Stream, Block
+Authenticated Encryption, Associated Data
+
+## Certificate
+
+## PKCS#
+
+## S/MIME
+
+## Certificate Authority
+
+## Signatures
+
+## Fingerprint
 
 ## pkcs .cer .pfx pem
 
