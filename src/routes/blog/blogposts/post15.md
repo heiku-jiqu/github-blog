@@ -86,3 +86,9 @@ Authenticated Encryption, Associated Data
 ## pkcs .cer .pfx pem
 
 ## X.509
+
+# Links
+
+[TLS](https://www.rfc-editor.org/rfc/rfc8446)
+
+(https://crypto.stackexchange.com/questions/87078/stream-cipher-and-block-cipher-usage-in-network-data-encryption)
