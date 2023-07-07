@@ -75,6 +75,8 @@ Authenticated Encryption, Associated Data
 
 ## Digital Signatures
 
+Digital Signatures help to prove that the information sent to the recipient has not been tampered with in any way.
+
 ## Public Key Certificates
 
 At a high level, a Certificate helps to (mostly) guarantee that a person is not an impostor.
