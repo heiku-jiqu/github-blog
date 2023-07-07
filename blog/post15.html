@@ -9,18 +9,18 @@
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-8c2e616c.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-daa0bc62.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-11ad6c2c.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-9dfa10ba.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-72406761.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-0642b05d.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-43b9b583.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-9dd2952c.js">
 	</head>
 	<body>
 		<div>
@@ -72,11 +72,24 @@ ChaCha20 (TLS)</p>
 <h2>Private / Public Keys</h2>
 <h2>AEAD</h2>
 <p>Authenticated Encryption, Associated Data</p>
-<h2>Certificate</h2>
+<h2>Digital Signatures</h2>
+<p>Digital Signatures help to prove that the information sent to the recipient has not been tampered with in any way.</p>
+<h2>Public Key Certificates</h2>
+<p>At a high level, a Certificate helps to (mostly) guarantee that a person is not an impostor.</p>
+<p><a href="https://crypto.stackexchange.com/questions/102565/how-do-certificates-help" rel="nofollow">https://crypto.stackexchange.com/questions/102565/how-do-certificates-help</a></p>
+<p>Certificate includes information about:</p>
+<ul><li>key</li>
+<li>subject, aka identity of the key’s owner</li>
+<li>issuer, aka entity that verified the certificate’s contents</li></ul>
+<p>Helps to address this issue: “How do I know the subject I am communicating with is who they say they are?“.
+More concretely, “How do I know if this particular server that will be serving me web pages to <a href="http://www.abcxyz.com" rel="nofollow">www.abcxyz.com</a> is actually the server of <a href="http://www.abcxyz.com" rel="nofollow">www.abcxyz.com</a> and not just some other random server?”</p>
+<p>Other names:</p>
+<ul><li>Digital Certificates</li>
+<li>Identity Certificates</li>
+<li>Certificates</li></ul>
+<h3>Certificate Authority</h3>
 <h2>PKCS#</h2>
 <h2>S/MIME</h2>
-<h2>Certificate Authority</h2>
-<h2>Signatures</h2>
 <h2>Fingerprint</h2>
 <h2>pkcs .cer .pfx pem</h2>
 <h2>X.509</h2>
@@ -86,8 +99,8 @@ ChaCha20 (TLS)</p>
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="1jdbysq">
-		import { start } from "/github-blog/_app/immutable/start-8c2e616c.js";
+		<script type="module" data-sveltekit-hydrate="2cpkj3">
+		import { start } from "/github-blog/_app/immutable/start-daa0bc62.js";
 
 		start({
 			env: {},
@@ -101,7 +114,7 @@ ChaCha20 (TLS)</p>
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="1jdbysq"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="2cpkj3"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
