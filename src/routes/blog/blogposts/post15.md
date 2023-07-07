@@ -73,15 +73,34 @@ TLS (SSL), SSH
 
 Authenticated Encryption, Associated Data
 
-## Certificate
+## Digital Signatures
+
+## Public Key Certificates
+
+At a high level, a Certificate helps to (mostly) guarantee that a person is not an impostor.
+
+https://crypto.stackexchange.com/questions/102565/how-do-certificates-help
+
+Certificate includes information about:
+
+    - key
+    - subject, aka identity of the key's owner
+    - issuer, aka entity that verified the certificate's contents
+
+Helps to address this issue: "How do I know the subject I am communicating with is who they say they are?".
+More concretely, "How do I know if this particular server that will be serving me web pages to www.abcxyz.com is actually the server of www.abcxyz.com and not just some other random server?"
+
+Other names:
+
+    - Digital Certificates
+    - Identity Certificates
+    - Certificates
+
+### Certificate Authority
 
 ## PKCS#
 
 ## S/MIME
-
-## Certificate Authority
-
-## Signatures
 
 ## Fingerprint
 
