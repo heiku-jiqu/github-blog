@@ -20,11 +20,20 @@ Non-repudiation
 
 ## Encryption, Decryption
 
-## Cyphers / Cyphers / Ciphertext
+## Plaintext
 
-## Plain Text
+Plaintext is the data/information that that is unencrypted.
+This includes any type of binary data, not just textual data.
 
-## Types of Algorithms
+## Cyphertext
+
+Cyphertexts are the output of encrypting plaintext.
+
+## Cyphers
+
+Cyphers refer to the algorithms that is used to transform plaintext into cyphertext (encrypt), or cyphertext into plaintext (decrypt)
+
+## Types of Algorithms / Cyphers
 
 ### Hash Functions
 
