@@ -40,7 +40,7 @@ There are 3 broad categories of encryption.
 ### Hash Functions
 
 Hash functions are **one-way** functions that can only encrypt.
-When an input passes through a hash function, the output will be a relatively small number of bytes called the _digest_.
+When an input passes through a hash function, the output will be a relatively small, fixed sized number of bytes called the _digest_.
 It is designed to be impossible to decrypt and go from the digest back to the input (hence "one-way").
 However, the important property is that the digest is designed to not clash when different inputs are used (technically it is extremely low probability).
 Meaning, even if your input changes one single bit, passing it through a hash function will give a completely different result.
