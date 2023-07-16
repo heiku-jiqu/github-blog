@@ -9,18 +9,18 @@
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-6faa5ba2.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-6c6d2b50.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-42755446.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-a3529384.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-082c0aaf.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-6da81265.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-9db64a31.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-0aeab379.js">
 	</head>
 	<body>
 		<div>
@@ -53,21 +53,50 @@ This includes any type of binary data, not just textual data.</p>
 <h2>Cyphers</h2>
 <p>Cyphers refer to the algorithms that is used to transform plaintext into cyphertext (encrypt), or cyphertext into plaintext (decrypt)</p>
 <h2>Types of Algorithms / Cyphers</h2>
+<p>There are 3 broad categories of encryption: Hash functions, symmetric algorithms, and assymmetric algorithms.
+These 3 categories form the building blocks of cryptography in computing, and can be combined/piece together in ways to provide more novel use cases.</p>
 <h3>Hash Functions</h3>
-<p>SHA</p>
+<p>Hash functions are <strong>one-way</strong> functions that can only encrypt.
+When an input passes through a hash function, the output will be a relatively small, fixed sized number of bytes called the <em>digest</em>.
+It is designed to be impossible to decrypt and go from the digest back to the input (hence “one-way”).
+However, the important property is that the digest is designed to not clash when different inputs are used (technically it is extremely low probability).
+Meaning, even if your input changes one single bit, passing it through a hash function will give a completely different result.
+This makes it useful to verify whether anything that you have has been tampered with.</p>
+<p>Common examples include: SHA, Poly1305 (used in TLS).</p>
+<h4>SHA</h4>
+<p>An example of a common hash function is <strong>SHA</strong> which stands for Secure Hash Algorithm.
+SHA currently has 4 generations: SHA-0 to SHA-3. SHA-0 and SHA-1 are already considered insecure by today’s standards and should not be used.</p>
+<p>Within the SHA-2 and SHA-3 families, there are different variants that differ based on the size of the output.
+Variants have naming conventions of “SHA-<size of output>” for SHA-2 and “SHA<strong>3</strong>-<size of output>” for SHA-3.
+For example, “SHA-256” refers to SHA-2 variant that generates 256bit length output, and “SHA<strong>3</strong>-256” refers to SHA-<strong>3</strong> variant that generates 256bit length output.
+<em>Note that there are no variants for SHA-0 and SHA-1</em>.</size></size></p>
 <h4>Message Integrity Code (MIC)</h4>
-<p>aka Message Authentication Code (no relation with MAC Address which stands for Media Access Control Address)</p>
-<p>Poly1305 (TLS)</p>
-<h3>Symmetric</h3>
-<p>aka Public key cryptography</p>
+<p>aka Message Authentication Code (MAC)</p>
+<p>Note: this has no relation with MAC Address which stands for Media Access Control Address.</p>
+<h3>Symmetric Algorithms</h3>
+<p>Symmetric algorithms (aka Public key cryptography) are algorithms where you pass in your data and a key (which is generated, akin to the “password”), and it will encrypt the data as output.
+To decrypt, pass in the cyphertext as well as the same key, and it will generate the original plaintext data.</p>
+<p>The term “symmetric” comes from the fact that both encryption and decryption uses the same key, and the term “public key” comes from the fact that the same key which you used to encrypt must be shared to whoever needs to decrypt.</p>
+<p>An important property of symmetric algorithms is it is very fast compared to asymmetric algorithms, and of course the ability to get back the original data from cyphertext.</p>
+<p>There are two broad categories of symmetric algorithms: block cyphers and stream cyphers.</p>
 <h4>Block Cyphers</h4>
-<p>AES</p>
+<p>Block cyphers, as the name suggests, operate by encrypting the plaintext in fixed-length blocks, and the leftover bits will be padded to the size of the blocks.</p>
+<p>Common examples include: AES, DES.</p>
 <h5>Mode of Operation</h5>
-<p>Since block cypher only work on fixed size blocks (e.g. 512bits), how do the algorithms deal with bigger sizes?</p>
-<p>GCM Mode?</p>
+<p>Since block cyphers are only able to encrypt one block of fixed number of bits (e.g. 256 bits), there is a need to determine how to actually repeat this one block operation on the entire plaintext data. This is known as the block cypher’s <em>mode of operation</em>.</p>
+<p>Some common modes of operation include:</p>
+<ul><li>CBC (Cipher Block Chaining)</li>
+<li>CFB (Cipher FeedBack)</li>
+<li>OFB (Output FeedBack)</li>
+<li>ECB (Electronic CodeBook)</li>
+<li>CTR (Counter)</li></ul>
+<p>AEAD modes:</p>
+<ul><li>GCM (Galois Counter Mode)</li>
+<li>CCM (Counter with CBC-MAC)</li>
+<li>SIV (Synthetic Initialisation Vector)</li></ul>
 <h4>Stream Cyphers</h4>
 <p>RC4/ARCFOUR/ARC4 (older versions of SSL/TLS, but not recommended)
-ChaCha20 (TLS)</p>
+ChaCha20 (used in TLS)</p>
 <h3>Asymmetric Algorithms</h3>
 <p>aka Private key cryptography</p>
 <p>RSA?</p>
@@ -76,7 +105,7 @@ ChaCha20 (TLS)</p>
 <h3>Strength of Algorithm</h3>
 <h2>Private / Public Keys</h2>
 <h2>AEAD</h2>
-<p>Authenticated Encryption, Associated Data</p>
+<p>Authenticated Encryption with Associated Data</p>
 <h2>Digital Signatures</h2>
 <p>Digital Signatures help to prove that the information sent to the recipient has not been tampered with in any way.</p>
 <h2>Public Key Certificates</h2>
@@ -104,8 +133,8 @@ More concretely, “How do I know if this particular server that will be serving
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="dfku3p">
-		import { start } from "/github-blog/_app/immutable/start-6faa5ba2.js";
+		<script type="module" data-sveltekit-hydrate="1ez8jw6">
+		import { start } from "/github-blog/_app/immutable/start-6c6d2b50.js";
 
 		start({
 			env: {},
@@ -119,7 +148,7 @@ More concretely, “How do I know if this particular server that will be serving
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="dfku3p"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="1ez8jw6"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
