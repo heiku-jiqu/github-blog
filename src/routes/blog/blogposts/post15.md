@@ -35,7 +35,8 @@ Cyphers refer to the algorithms that is used to transform plaintext into cyphert
 
 ## Types of Algorithms / Cyphers
 
-There are 3 broad categories of encryption.
+There are 3 broad categories of encryption: Hash functions, symmetric algorithms, and assymmetric algorithms.
+These 3 categories form the building blocks of cryptography in computing, and can be combined/piece together in ways to provide more novel use cases.
 
 ### Hash Functions
 
@@ -45,6 +46,9 @@ It is designed to be impossible to decrypt and go from the digest back to the in
 However, the important property is that the digest is designed to not clash when different inputs are used (technically it is extremely low probability).
 Meaning, even if your input changes one single bit, passing it through a hash function will give a completely different result.
 This makes it useful to verify whether anything that you have has been tampered with.
+
+Common examples include: SHA, Poly1305 (used in TLS).
+
 
 #### SHA
 
@@ -58,9 +62,9 @@ _Note that there are no variants for SHA-0 and SHA-1_.
 
 #### Message Integrity Code (MIC)
 
-aka Message Authentication Code (no relation with MAC Address which stands for Media Access Control Address)
+aka Message Authentication Code (MAC)
 
-Poly1305 (TLS)
+Note: this has no relation with MAC Address which stands for Media Access Control Address.
 
 ### Symmetric
 
@@ -79,7 +83,7 @@ GCM Mode?
 #### Stream Cyphers
 
 RC4/ARCFOUR/ARC4 (older versions of SSL/TLS, but not recommended)
-ChaCha20 (TLS)
+ChaCha20 (used in TLS)
 
 ### Asymmetric Algorithms
 
