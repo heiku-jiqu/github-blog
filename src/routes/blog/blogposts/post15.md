@@ -41,12 +41,20 @@ There are 3 broad categories of encryption.
 
 Hash functions are **one-way** functions that can only encrypt.
 When an input passes through a hash function, the output will be a relatively small number of bytes called the _digest_.
-It is designed to be impossible to decrypt and go from the digest back to the input.
-However, the important property is that the digest is designed to not clash when different inputs are used.
+It is designed to be impossible to decrypt and go from the digest back to the input (hence "one-way").
+However, the important property is that the digest is designed to not clash when different inputs are used (technically it is extremely low probability).
 Meaning, even if your input changes one single bit, passing it through a hash function will give a completely different result.
 This makes it useful to verify whether anything that you have has been tampered with.
 
-SHA
+#### SHA
+
+An example of a common hash function is **SHA** which stands for Secure Hash Algorithm.
+SHA currently has 4 generations: SHA-0 to SHA-3. SHA-0 and SHA-1 are already considered insecure by today's standards and should not be used.
+
+Within the SHA-2 and SHA-3 families, there are different variants that differ based on the size of the output.
+Variants have naming conventions of "SHA-<size of output>" for SHA-2 and "SHA**3**-<size of output>" for SHA-3.
+For example, "SHA-256" refers to SHA-2 variant that generates 256bit length output, and "SHA**3**-256" refers to SHA-**3** variant that generates 256bit length output.
+_Note that there are no variants for SHA-0 and SHA-1_.
 
 #### Message Integrity Code (MIC)
 
