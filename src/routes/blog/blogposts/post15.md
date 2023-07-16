@@ -122,7 +122,7 @@ TLS (SSL), SSH
 
 ## AEAD
 
-Authenticated Encryption, Associated Data
+Authenticated Encryption with Associated Data
 
 ## Digital Signatures
 
