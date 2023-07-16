@@ -76,9 +76,21 @@ AES
 
 ##### Mode of Operation
 
-Since block cypher only work on fixed size blocks (e.g. 512bits), how do the algorithms deal with bigger sizes?
+Since block cyphers are only able to encrypt one block of fixed number of bits (e.g. 256 bits), there is a need to determine how to actually repeat this one block operation on the entire plaintext data. This is known as the block cypher's _mode of operation_.
 
-GCM Mode?
+Some common modes of operation include:
+
+- CBC (Cipher Block Chaining)
+- CFB (Cipher FeedBack)
+- OFB (Output FeedBack)
+- ECB (Electronic CodeBook)
+- CTR (Counter)
+
+AEAD modes:
+
+- GCM (Galois Counter Mode)
+- CCM (Counter with CBC-MAC)
+- SIV (Synthetic Initialisation Vector)
 
 #### Stream Cyphers
 
