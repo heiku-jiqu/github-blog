@@ -35,7 +35,16 @@ Cyphers refer to the algorithms that is used to transform plaintext into cyphert
 
 ## Types of Algorithms / Cyphers
 
+There are 3 broad categories of encryption.
+
 ### Hash Functions
+
+Hash functions are **one-way** functions that can only encrypt.
+When an input passes through a hash function, the output will be a relatively small number of bytes called the _digest_.
+It is designed to be impossible to decrypt and go from the digest back to the input.
+However, the important property is that the digest is designed to not clash when different inputs are used.
+Meaning, even if your input changes one single bit, passing it through a hash function will give a completely different result.
+This makes it useful to verify whether anything that you have has been tampered with.
 
 SHA
 
