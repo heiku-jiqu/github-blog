@@ -72,7 +72,9 @@ aka Public key cryptography
 
 #### Block Cyphers
 
-AES
+Block cyphers, as the name suggests, operate by encrypting the plaintext in fixed-length blocks, and the leftover bits will be padded to the size of the blocks.
+
+Common examples include: AES, DES.
 
 ##### Mode of Operation
 
