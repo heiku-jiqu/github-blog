@@ -66,9 +66,16 @@ aka Message Authentication Code (MAC)
 
 Note: this has no relation with MAC Address which stands for Media Access Control Address.
 
-### Symmetric
+### Symmetric Algorithms
 
-aka Public key cryptography
+Symmetric algorithms (aka Public key cryptography) are algorithms where you pass in your data and a key (which is generated, akin to the "password"), and it will encrypt the data as output.
+To decrypt, pass in the cyphertext as well as the same key, and it will generate the original plaintext data.
+
+The term "symmetric" comes from the fact that both encryption and decryption uses the same key, and the term "public key" comes from the fact that the same key which you used to encrypt must be shared to whoever needs to decrypt.
+
+An important property of symmetric algorithms is it is very fast compared to asymmetric algorithms, and of course the ability to get back the original data from cyphertext.
+
+There are two broad categories of symmetric algorithms: block cyphers and stream cyphers.
 
 #### Block Cyphers
 
