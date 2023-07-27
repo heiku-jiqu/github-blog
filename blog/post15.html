@@ -9,18 +9,18 @@
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-6c6d2b50.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-3add02d6.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-a3529384.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-0c48f9d9.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-9db64a31.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-0aeab379.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-2ce8d4e7.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-43e1dde5.js">
 	</head>
 	<body>
 		<div>
@@ -74,9 +74,9 @@ For example, “SHA-256” refers to SHA-2 variant that generates 256bit length 
 <p>aka Message Authentication Code (MAC)</p>
 <p>Note: this has no relation with MAC Address which stands for Media Access Control Address.</p>
 <h3>Symmetric Algorithms</h3>
-<p>Symmetric algorithms (aka Public key cryptography) are algorithms where you pass in your data and a key (which is generated, akin to the “password”), and it will encrypt the data as output.
+<p>Symmetric algorithms (aka private key cryptography) are algorithms where you pass in your data and a key (which is generated, akin to the “password”), and it will encrypt the data as output.
 To decrypt, pass in the cyphertext as well as the same key, and it will generate the original plaintext data.</p>
-<p>The term “symmetric” comes from the fact that both encryption and decryption uses the same key, and the term “public key” comes from the fact that the same key which you used to encrypt must be shared to whoever needs to decrypt.</p>
+<p>The term “symmetric” comes from the fact that both encryption and decryption uses the same key, and the term “private key” comes from the fact that the same key which you used to encrypt must be shared to whoever needs to decrypt.</p>
 <p>An important property of symmetric algorithms is it is very fast compared to asymmetric algorithms, and of course the ability to get back the original data from cyphertext.</p>
 <p>There are two broad categories of symmetric algorithms: block cyphers and stream cyphers.</p>
 <h4>Block Cyphers</h4>
@@ -98,7 +98,16 @@ To decrypt, pass in the cyphertext as well as the same key, and it will generate
 <p>RC4/ARCFOUR/ARC4 (older versions of SSL/TLS, but not recommended)
 ChaCha20 (used in TLS)</p>
 <h3>Asymmetric Algorithms</h3>
-<p>aka Private key cryptography</p>
+<p>aka public key cryptography</p>
+<p>Asymmetric algorithms works by generating a key pair: a public key and a private key.</p>
+<p>The two keys in the key pair are mathematically linked, such that it allows unique properties:</p>
+<ul><li>Anything encrypted by the public key can only be decrypted by the private key</li>
+<li>Anything encrypted by the private key can only be decrypted by the public key</li>
+<li>Note: Cyphertext using private key != Cyphertext using public key</li>
+<li>It is practically impossible to reverse engineer the private key from the public key</li></ul>
+<p>Allows anyone (‘public’) with the public key (which is freely distributed) to send secret (encrypted) messages to the owner of the private key.</p>
+<p>The second property on the surface seems useless, since theres not point in encrypting something that the public can decrypt.
+However, this property actually enables digital signatures.</p>
 <p>RSA?</p>
 <h3>Hybrid Systems</h3>
 <p>TLS (SSL), SSH</p>
@@ -108,6 +117,14 @@ ChaCha20 (used in TLS)</p>
 <p>Authenticated Encryption with Associated Data</p>
 <h2>Digital Signatures</h2>
 <p>Digital Signatures help to prove that the information sent to the recipient has not been tampered with in any way.</p>
+<p>Digital Signatures work by:</p>
+<ol><li>Sender distributes public key to recipient</li>
+<li>Sender hashes message to obtain a digest of the message</li>
+<li>Sender encrypts digest with his private key (The output is the Signature!)</li>
+<li>Sender sends recipient the message and digest</li>
+<li>Recipient hashes message from Sender</li>
+<li>Recipient uses Sender’s public key to decrypt the Signature to obtain Sender’s Hash</li>
+<li>Recipient compares Recipient’s hash and Sender’s hash, if they are the same, then Recipient knows that the message has not been tempered with and that the Sender indeed sent that message, not anyone else</li></ol>
 <h2>Public Key Certificates</h2>
 <p>At a high level, a Certificate helps to (mostly) guarantee that a person is not an impostor.</p>
 <p><a href="https://crypto.stackexchange.com/questions/102565/how-do-certificates-help" rel="nofollow">https://crypto.stackexchange.com/questions/102565/how-do-certificates-help</a></p>
@@ -133,8 +150,8 @@ More concretely, “How do I know if this particular server that will be serving
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="1ez8jw6">
-		import { start } from "/github-blog/_app/immutable/start-6c6d2b50.js";
+		<script type="module" data-sveltekit-hydrate="13kemyn">
+		import { start } from "/github-blog/_app/immutable/start-3add02d6.js";
 
 		start({
 			env: {},
@@ -148,7 +165,7 @@ More concretely, “How do I know if this particular server that will be serving
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="1ez8jw6"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="13kemyn"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
