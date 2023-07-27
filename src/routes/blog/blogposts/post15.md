@@ -141,6 +141,16 @@ Authenticated Encryption with Associated Data
 
 Digital Signatures help to prove that the information sent to the recipient has not been tampered with in any way.
 
+Digital Signatures work by:
+
+    1. Sender distributes public key to recipient
+    1. Sender hashes message to obtain a digest of the message
+    1. Sender encrypts digest with his private key (The output is the Signature!)
+    1. Sender sends recipient the message and digest
+    1. Recipient hashes message from Sender
+    1. Recipient uses Sender's public key to decrypt the Signature to obtain Sender's Hash
+    1. Recipient compares Recipient's hash and Sender's hash, if they are the same, then Recipient knows that the message has not been tempered with and that the Sender indeed sent that message, not anyone else
+
 ## Public Key Certificates
 
 At a high level, a Certificate helps to (mostly) guarantee that a person is not an impostor.
