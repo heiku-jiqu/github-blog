@@ -49,7 +49,6 @@ This makes it useful to verify whether anything that you have has been tampered 
 
 Common examples include: SHA, Poly1305 (used in TLS).
 
-
 #### SHA
 
 An example of a common hash function is **SHA** which stands for Secure Hash Algorithm.
@@ -68,10 +67,10 @@ Note: this has no relation with MAC Address which stands for Media Access Contro
 
 ### Symmetric Algorithms
 
-Symmetric algorithms (aka Public key cryptography) are algorithms where you pass in your data and a key (which is generated, akin to the "password"), and it will encrypt the data as output.
+Symmetric algorithms (aka private key cryptography) are algorithms where you pass in your data and a key (which is generated, akin to the "password"), and it will encrypt the data as output.
 To decrypt, pass in the cyphertext as well as the same key, and it will generate the original plaintext data.
 
-The term "symmetric" comes from the fact that both encryption and decryption uses the same key, and the term "public key" comes from the fact that the same key which you used to encrypt must be shared to whoever needs to decrypt.
+The term "symmetric" comes from the fact that both encryption and decryption uses the same key, and the term "private key" comes from the fact that the same key which you used to encrypt must be shared to whoever needs to decrypt.
 
 An important property of symmetric algorithms is it is very fast compared to asymmetric algorithms, and of course the ability to get back the original data from cyphertext.
 
@@ -108,7 +107,7 @@ ChaCha20 (used in TLS)
 
 ### Asymmetric Algorithms
 
-aka Private key cryptography
+aka public key cryptography
 
 RSA?
 
