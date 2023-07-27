@@ -109,6 +109,20 @@ ChaCha20 (used in TLS)
 
 aka public key cryptography
 
+Asymmetric algorithms works by generating a key pair: a public key and a private key.
+
+The two keys in the key pair are mathematically linked, such that it allows unique properties:
+
+- Anything encrypted by the public key can only be decrypted by the private key
+- Anything encrypted by the private key can only be decrypted by the public key
+- Note: Cyphertext using private key != Cyphertext using public key
+- It is practically impossible to reverse engineer the private key from the public key
+
+Allows anyone ('public') with the public key (which is freely distributed) to send secret (encrypted) messages to the owner of the private key.
+
+The second property on the surface seems useless, since theres not point in encrypting something that the public can decrypt.
+However, this property actually enables digital signatures.
+
 RSA?
 
 ### Hybrid Systems
