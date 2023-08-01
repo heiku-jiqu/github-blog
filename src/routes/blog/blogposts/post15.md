@@ -277,7 +277,8 @@ It usually comes in `.p12` or `.pfx` files.
 
 [TLS](https://www.rfc-editor.org/rfc/rfc8446)
 
-(https://crypto.stackexchange.com/questions/87078/stream-cipher-and-block-cipher-usage-in-network-data-encryption)
+[Stream and Block Cyphers](https://crypto.stackexchange.com/questions/87078/stream-cipher-and-block-cipher-usage-in-network-data-encryption)
 
 [Encodings of PKIX, PKCS and CMS](https://www.rfc-editor.org/rfc/rfc7468)
+
 [ITU-T Recommendation Series](https://en.wikipedia.org/wiki/Category:ITU-T_recommendations)
