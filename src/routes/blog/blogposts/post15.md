@@ -213,7 +213,11 @@ They act as a third party to assert that digital certificates used by servers ha
 Users that visit servers with certificates can verify the certificate's authenticity by decrypting the signature with CA's public key, and matching the result with the hash of the certificate's contents.
 If they match, then users can be relatively assured that the server is who they say they are.
 
-## PKCS#
+## PKCS
+
+PKCS stands for Public Key Cryptography Standards, which includes a number of standards that are adopted in cryptographic systems to ensure that everyone is on the same page.
+
+Usually, people will reference specific PKCS standards such as PKCS#7, PKCS#8, PKCS#11, etc.
 
 ## S/MIME
 
