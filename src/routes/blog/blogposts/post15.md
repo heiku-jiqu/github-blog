@@ -149,10 +149,6 @@ Hybrid systems are just implementations that makes use of multiple types of cryp
 For example, TLS (SSL) uses both Asymmetric and Symmetric algorithm for communicate between server and clients.
 This allows systems to leverage the speed of Symmetric algorithms while still gaining the utilities of Asymmetric algorithms.
 
-## AEAD
-
-Authenticated Encryption with Associated Data
-
 ## Digital Signatures
 
 Digital Signatures help to prove that the information sent to the recipient has not been tampered with in any way.
@@ -181,6 +177,12 @@ However, the difference is that MIC uses the same secret key to generate and ver
     1. Recipient compares Recipient's MIC and Sender's MIC, if they are the same, then Recipient knows that the message has not been tempered with and that the Sender indeed sent that message, not anyone else
 
 _Note: this has no relation with MAC Address which stands for Media Access Control Address._
+
+## AEAD
+
+Authenticated Encryption (AE) is when an encryption/decryption method assures both confidentiality and data integrity, i.e. the receiver knows when the cyphertext has been tampered with. This can be done by sending the MIC along with the ciphertext.
+
+Authenticated Encryption with Associated Data (AEAD) is just an extension, where there instead of generating the MIC from just the message ciphertext, you obtain the MIC from message ciphertext + any associated data. This sort of encryption method allows you to send ciphertext + (unencrypted) associated data, all while ensuring confidentiality and data integrity.
 
 ## Public Key Certificates
 
