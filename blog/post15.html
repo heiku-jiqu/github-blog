@@ -9,18 +9,18 @@
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-3add02d6.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-0f16d2ec.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-0c48f9d9.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-c3858ecd.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-2ce8d4e7.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-43e1dde5.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-cae61425.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-2e077d8d.js">
 	</head>
 	<body>
 		<div>
@@ -39,22 +39,27 @@
 This post aggregates some of the common terms that I’ve come across related to cryptography in the software world, and also how the concepts relate to each other.</p>
 <h2>Goals of Cryptography</h2>
 <p>Before diving into many of the cryptographic terms/acronyms used, it is useful to have a general overview of cryptography.</p>
-<p>Confidentiality
-Integrity
-Authenticity
-Availability
-Non-repudiation</p>
+<p>Broadly, there are some goals of cryptography which are related to information security:</p>
+<ul><li>Confidentiality: Data that is secret is not able to be accessed/read by unauthorized users</li>
+<li>Integrity: Data is not altered by unauthorized users</li>
+<li>Authenticity: Data is sent/received between intended parties</li>
+<li>Non-repudiation: Action(s) done by a party cannot be refuted (e.g. I should not be able to send a message and later refute that the message wasn’t sent by me)</li>
+<li>Availability: Data is available to authorized users in a timely manner</li></ul>
+<p>Note that some concepts do overlap with each other, for example if a protocol provides Authenticity, it also provides Integrity since it confirms that no unauthorized users has been involved in the communication channel.</p>
 <h2>Encryption, Decryption</h2>
+<p>Encryption is the process of turning plaintext into cyphertext.
+Decryption is the other way round, turning cyphertext back into plaintext.</p>
 <h2>Plaintext</h2>
 <p>Plaintext is the data/information that that is unencrypted.
 This includes any type of binary data, not just textual data.</p>
 <h2>Cyphertext</h2>
-<p>Cyphertexts are the output of encrypting plaintext.</p>
+<p>Cyphertexts are the output of encrypting plaintext.
+The bits will be scrambled in such a way that it does not resemble its original plaintext form anymore.</p>
 <h2>Cyphers</h2>
 <p>Cyphers refer to the algorithms that is used to transform plaintext into cyphertext (encrypt), or cyphertext into plaintext (decrypt)</p>
 <h2>Types of Algorithms / Cyphers</h2>
-<p>There are 3 broad categories of encryption: Hash functions, symmetric algorithms, and assymmetric algorithms.
-These 3 categories form the building blocks of cryptography in computing, and can be combined/piece together in ways to provide more novel use cases.</p>
+<p>There are 3 broad categories of encryption: Hash functions, Symmetric algorithms, and Asymmetric algorithms.
+These 3 categories form the building blocks of cryptography in computing, and can be combined/pieced together in ways to provide more novel use cases.</p>
 <h3>Hash Functions</h3>
 <p>Hash functions are <strong>one-way</strong> functions that can only encrypt.
 When an input passes through a hash function, the output will be a relatively small, fixed sized number of bytes called the <em>digest</em>.
@@ -70,9 +75,6 @@ SHA currently has 4 generations: SHA-0 to SHA-3. SHA-0 and SHA-1 are already con
 Variants have naming conventions of “SHA-<size of output>” for SHA-2 and “SHA<strong>3</strong>-<size of output>” for SHA-3.
 For example, “SHA-256” refers to SHA-2 variant that generates 256bit length output, and “SHA<strong>3</strong>-256” refers to SHA-<strong>3</strong> variant that generates 256bit length output.
 <em>Note that there are no variants for SHA-0 and SHA-1</em>.</size></size></p>
-<h4>Message Integrity Code (MIC)</h4>
-<p>aka Message Authentication Code (MAC)</p>
-<p>Note: this has no relation with MAC Address which stands for Media Access Control Address.</p>
 <h3>Symmetric Algorithms</h3>
 <p>Symmetric algorithms (aka private key cryptography) are algorithms where you pass in your data and a key (which is generated, akin to the “password”), and it will encrypt the data as output.
 To decrypt, pass in the cyphertext as well as the same key, and it will generate the original plaintext data.</p>
@@ -85,8 +87,8 @@ To decrypt, pass in the cyphertext as well as the same key, and it will generate
 <h5>Mode of Operation</h5>
 <p>Since block cyphers are only able to encrypt one block of fixed number of bits (e.g. 256 bits), there is a need to determine how to actually repeat this one block operation on the entire plaintext data. This is known as the block cypher’s <em>mode of operation</em>.</p>
 <p>Some common modes of operation include:</p>
-<ul><li>CBC (Cipher Block Chaining)</li>
-<li>CFB (Cipher FeedBack)</li>
+<ul><li>CBC (Cypher Block Chaining)</li>
+<li>CFB (Cypher FeedBack)</li>
 <li>OFB (Output FeedBack)</li>
 <li>ECB (Electronic CodeBook)</li>
 <li>CTR (Counter)</li></ul>
@@ -95,8 +97,17 @@ To decrypt, pass in the cyphertext as well as the same key, and it will generate
 <li>CCM (Counter with CBC-MAC)</li>
 <li>SIV (Synthetic Initialisation Vector)</li></ul>
 <h4>Stream Cyphers</h4>
-<p>RC4/ARCFOUR/ARC4 (older versions of SSL/TLS, but not recommended)
-ChaCha20 (used in TLS)</p>
+<p>Stream cyphers work by flipping the bits of a plaintext one bit at a time using the XOR operator against another sequence of bits (known as the keystream)
+Every bit of the plaintext is XOR-ed against the corresponding bit of the keystream.
+The keystream is generated pseudo-randomly by the algorithm, and typically is initialised with a seed value.
+The same seed value will produce the same keystream which in turn lets the receiver decrypt the cyphertext.
+This means that the seed value is the secret key, and it has to be generated randomly and should not be reused.</p>
+<p>Benefits:</p>
+<ul><li>Fast, built on XOR operations instead of complicated math algorithms</li>
+<li>Ability to decrypt any chunk instead of the whole file (e.g. for video seeking)</li></ul>
+<p>Examples of Stream Cyphers:</p>
+<ul><li>RC4/ARCFOUR/ARC4 (older versions of SSL/TLS, but not recommended)</li>
+<li>ChaCha20 (used in TLS)</li></ul>
 <h3>Asymmetric Algorithms</h3>
 <p>aka public key cryptography</p>
 <p>Asymmetric algorithms works by generating a key pair: a public key and a private key.</p>
@@ -108,9 +119,13 @@ ChaCha20 (used in TLS)</p>
 <p>Allows anyone (‘public’) with the public key (which is freely distributed) to send secret (encrypted) messages to the owner of the private key.</p>
 <p>The second property on the surface seems useless, since theres not point in encrypting something that the public can decrypt.
 However, this property actually enables digital signatures.</p>
-<p>RSA?</p>
+<p>Examples of asymmetric algorithms:</p>
+<ul><li>RSA (Rivest-Shamir-Adleman)</li>
+<li>ECC (Eliptic Curve Cryptography)</li></ul>
 <h3>Hybrid Systems</h3>
-<p>TLS (SSL), SSH</p>
+<p>Hybrid systems are just implementations that makes use of multiple types of cryptography.
+For example, TLS (SSL) uses both Asymmetric and Symmetric algorithm for communicate between server and clients.
+This allows systems to leverage the speed of Symmetric algorithms while still gaining the utilities of Asymmetric algorithms.</p>
 <h3>Strength of Algorithm</h3>
 <h2>Private / Public Keys</h2>
 <h2>AEAD</h2>
@@ -125,13 +140,23 @@ However, this property actually enables digital signatures.</p>
 <li>Recipient hashes message from Sender</li>
 <li>Recipient uses Sender’s public key to decrypt the Signature to obtain Sender’s Hash</li>
 <li>Recipient compares Recipient’s hash and Sender’s hash, if they are the same, then Recipient knows that the message has not been tempered with and that the Sender indeed sent that message, not anyone else</li></ol>
+<h2>Message Integrity Code (MIC)</h2>
+<p>aka Message Authentication Code (MAC)</p>
+<p>Like Digital Signatures, MIC helps to prove that the information sent between parties has not been tampered with in any way.
+However, the difference is that MIC uses the same secret key to generate and verify the MIC, whereas digital signatures are generated with private key and verified with public key.</p>
+<ol><li>Sender and Receiver agrees on secret key</li>
+<li>Sender inputs message + secret key into MIC Algorithm to obtain the MIC</li>
+<li>Sender sends recipient the message and MIC</li>
+<li>Recipient inputs message + secret key into MIC Algorithm to obtain his own MIC</li>
+<li>Recipient compares Recipient’s MIC and Sender’s MIC, if they are the same, then Recipient knows that the message has not been tempered with and that the Sender indeed sent that message, not anyone else</li></ol>
+<p><em>Note: this has no relation with MAC Address which stands for Media Access Control Address.</em></p>
 <h2>Public Key Certificates</h2>
 <p>At a high level, a Certificate helps to (mostly) guarantee that a person is not an impostor.</p>
-<p><a href="https://crypto.stackexchange.com/questions/102565/how-do-certificates-help" rel="nofollow">https://crypto.stackexchange.com/questions/102565/how-do-certificates-help</a></p>
 <p>Certificate includes information about:</p>
-<ul><li>key</li>
+<ul><li>public key</li>
 <li>subject, aka identity of the key’s owner</li>
-<li>issuer, aka entity that verified the certificate’s contents</li></ul>
+<li>issuer, aka entity that verified the certificate’s contents</li>
+<li>signature, aka the issuer will hash the ceritifcate contents and encrypt the hash with its own private key</li></ul>
 <p>Helps to address this issue: “How do I know the subject I am communicating with is who they say they are?“.
 More concretely, “How do I know if this particular server that will be serving me web pages to <a href="http://www.abcxyz.com" rel="nofollow">www.abcxyz.com</a> is actually the server of <a href="http://www.abcxyz.com" rel="nofollow">www.abcxyz.com</a> and not just some other random server?”</p>
 <p>Other names:</p>
@@ -139,9 +164,18 @@ More concretely, “How do I know if this particular server that will be serving
 <li>Identity Certificates</li>
 <li>Certificates</li></ul>
 <h3>Certificate Authority</h3>
-<h2>PKCS#</h2>
+<p>A Certificate Authority (CA) is an entity that signs and issues digital certificates.
+They act as a third party to assert that digital certificates used by servers have been verified by them.
+Users that visit servers with certificates can verify the certificate’s authenticity by decrypting the signature with CA’s public key, and matching the result with the hash of the certificate’s contents.
+If they match, then users can be relatively assured that the server is who they say they are.</p>
+<h2>PKCS</h2>
+<p>PKCS stands for Public Key Cryptography Standards, which includes a number of standards that are adopted in cryptographic systems to ensure that everyone is on the same page.</p>
+<p>Usually, people will reference specific PKCS standards such as PKCS#7, PKCS#8, PKCS#11, etc.</p>
 <h2>S/MIME</h2>
 <h2>Fingerprint</h2>
+<p>Fingerprints are similar to hash functions, in that they take an arbitrarily large input and produces a relatively small output that uniquely identifies the input.
+However, the difference is that fingerprints have no constraints whether the output can be reverse engineered to get the input.
+In other words, all hash functions are fingerprints, but not all fingerprints are hash functions.</p>
 <h2>pkcs .cer .pfx pem</h2>
 <h2>X.509</h2>
 <h1>Links</h1>
@@ -150,8 +184,8 @@ More concretely, “How do I know if this particular server that will be serving
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="13kemyn">
-		import { start } from "/github-blog/_app/immutable/start-3add02d6.js";
+		<script type="module" data-sveltekit-hydrate="abp5du">
+		import { start } from "/github-blog/_app/immutable/start-0f16d2ec.js";
 
 		start({
 			env: {},
@@ -165,7 +199,7 @@ More concretely, “How do I know if this particular server that will be serving
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="13kemyn"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="abp5du"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
