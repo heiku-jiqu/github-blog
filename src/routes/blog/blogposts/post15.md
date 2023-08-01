@@ -149,10 +149,6 @@ Hybrid systems are just implementations that makes use of multiple types of cryp
 For example, TLS (SSL) uses both Asymmetric and Symmetric algorithm for communicate between server and clients.
 This allows systems to leverage the speed of Symmetric algorithms while still gaining the utilities of Asymmetric algorithms.
 
-### Strength of Algorithm
-
-## Private / Public Keys
-
 ## AEAD
 
 Authenticated Encryption with Associated Data
@@ -213,21 +209,11 @@ They act as a third party to assert that digital certificates used by servers ha
 Users that visit servers with certificates can verify the certificate's authenticity by decrypting the signature with CA's public key, and matching the result with the hash of the certificate's contents.
 If they match, then users can be relatively assured that the server is who they say they are.
 
-## PKCS
-
-PKCS stands for Public Key Cryptography Standards, which includes a number of standards that are adopted in cryptographic systems to ensure that everyone is on the same page.
-
-Usually, people will reference specific PKCS standards such as PKCS#7, PKCS#8, PKCS#11, etc.
-
-## S/MIME
-
 ## Fingerprint
 
 Fingerprints are similar to hash functions, in that they take an arbitrarily large input and produces a relatively small output that uniquely identifies the input.
 However, the difference is that fingerprints have no constraints whether the output can be reverse engineered to get the input.
 In other words, all hash functions are fingerprints, but not all fingerprints are hash functions.
-
-## pkcs .cer .pfx pem
 
 ## X.509
 
@@ -262,6 +248,28 @@ Common file extensions for PEM format include:
     - `.pem` for any type of data, best to check section delimiters to see what it stores
     - `.cer` / `.crt` for certificates
     - `.key` for private keys
+
+## PKCS
+
+PKCS stands for Public Key Cryptography Standards, which includes a number of standards that are adopted in cryptographic systems to ensure that everyone is on the same page.
+
+Usually, people will reference specific PKCS standards such as PKCS#7, PKCS#8, PKCS#11, etc.
+
+### PKCS#7 / Cryptographic Message Syntax (CMS)
+
+This standard describes how to sign, digest, authenticate, or encrypt arbitrary message contents and how to represent the resulting data.
+Defined in ASN.1 language.
+Think of PCKS#7 file as a container that can contain multiple things, such as the message hash, a certificate, a signature, etc.
+The file usually has extension `.p7`.
+
+When a PKCS#7 only has certificate and no message, it is usually stored as a `.p7b` file.
+
+PKCS#7 standard evolved to Cryptographic Message Syntax standard, however they are still used interchangeably in layman (much like SSL refers to TLS).
+
+### PKCS#12 / Personal Information Exchange (PFX)
+
+PCKS#12 is similar to PKCS#7, but it contains both private and public key, and the file itself is encrypted with a password.
+It usually comes in `.p12` or `.pfx` files.
 
 # Links
 
