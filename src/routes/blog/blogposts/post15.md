@@ -190,7 +190,7 @@ _Note: this has no relation with MAC Address which stands for Media Access Contr
 
 At a high level, a Certificate helps to (mostly) guarantee that a person is not an impostor.
 
-Certificate includes information about:
+Certificate includes information about the owner's:
 
     - public key
     - subject, aka identity of the key's owner
@@ -231,8 +231,43 @@ In other words, all hash functions are fingerprints, but not all fingerprints ar
 
 ## X.509
 
+X.509 is a standard format for public key **certificates** that was defined by the International Telecommunication Union (ITU).
+The standard is defined using Abstract Syntax Notation One (ASN.1) language.
+It defines what information should be in an X.509 certificate, such as the subject's name, public key, certificate validity period etc.
+However, the standard does not define how the information is physically stored, hence the information can be encoded in different ways (e.g. binary formats), but rather ASN.1 itself has several encoding rules that people can use to encode ASN.1 information.
+The most relevant ASN.1 encoding used in X.509 is Distinguished Encoding Rules (DER) encoding.
+
+## Privacy-Enhanced Mail (PEM)
+
+DER encoding produces binary output, and this may be troublesome for systems that only support ASCII (email), hence a further Base64 encoding on top of DER binary output was also developed: Privacy-Enhanced Mail (PEM).
+
+PEM is a very general file format that can store multiple data that is Base64 encoded, it just has to have `---- BEGIN xxx ----` and `---- END xxx ----` section delimiters:
+
+```
+----- BEGIN CERTIFICATE -----
+AWOIEJFOAIWJLKJASDF
+----- END CERTIFICATE -----
+----- BEGIN PRIVATE KEY -----
+2342J34RIJ34IJ4FI
+----- END PRIVATE KEY -----
+```
+
+Although originally developed for email, S/MIME and PGP standards made PEM obsolete, so nobody ended up using PEM for email.
+But the Base64 encoding format became widely popular and became widely supported in cryptography systems.
+
+Note that PEM files can store not just certificates, but also private key, or even multiple things in one PEM file.
+
+Common file extensions for PEM format include:
+
+    - `.pem` for any type of data, best to check section delimiters to see what it stores
+    - `.cer` / `.crt` for certificates
+    - `.key` for private keys
+
 # Links
 
 [TLS](https://www.rfc-editor.org/rfc/rfc8446)
 
 (https://crypto.stackexchange.com/questions/87078/stream-cipher-and-block-cipher-usage-in-network-data-encryption)
+
+[Encodings of PKIX, PKCS and CMS](https://www.rfc-editor.org/rfc/rfc7468)
+[ITU-T Recommendation Series](https://en.wikipedia.org/wiki/Category:ITU-T_recommendations)
