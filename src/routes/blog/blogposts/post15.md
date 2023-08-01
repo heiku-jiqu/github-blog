@@ -12,13 +12,20 @@ This post aggregates some of the common terms that I've come across related to c
 
 Before diving into many of the cryptographic terms/acronyms used, it is useful to have a general overview of cryptography.
 
-Confidentiality
-Integrity
-Authenticity
-Availability
-Non-repudiation
+Broadly, there are some goals of cryptography which are related to information security:
+
+- Confidentiality: Data that is secret is not able to be accessed/read by unauthorized users
+- Integrity: Data is not altered by unauthorized users
+- Authenticity: Data is sent/received between intended parties
+- Non-repudiation: Action(s) done by a party cannot be refuted (e.g. I should not be able to send a message and later refute that the message wasn't sent by me)
+- Availability: Data is available to authorized users in a timely manner
+
+Note that some concepts do overlap with each other, for example if a protocol provides Authenticity, it also provides Integrity since it confirms that no unauthorized users has been involved in the communication channel.
 
 ## Encryption, Decryption
+
+Encryption is the process of turning plaintext into cyphertext.
+Decryption is the other way round, turning cyphertext back into plaintext.
 
 ## Plaintext
 
@@ -28,6 +35,7 @@ This includes any type of binary data, not just textual data.
 ## Cyphertext
 
 Cyphertexts are the output of encrypting plaintext.
+The bits will be scrambled in such a way that it does not resemble its original plaintext form anymore.
 
 ## Cyphers
 
@@ -35,8 +43,8 @@ Cyphers refer to the algorithms that is used to transform plaintext into cyphert
 
 ## Types of Algorithms / Cyphers
 
-There are 3 broad categories of encryption: Hash functions, symmetric algorithms, and assymmetric algorithms.
-These 3 categories form the building blocks of cryptography in computing, and can be combined/piece together in ways to provide more novel use cases.
+There are 3 broad categories of encryption: Hash functions, Symmetric algorithms, and Asymmetric algorithms.
+These 3 categories form the building blocks of cryptography in computing, and can be combined/pieced together in ways to provide more novel use cases.
 
 ### Hash Functions
 
@@ -88,8 +96,8 @@ Since block cyphers are only able to encrypt one block of fixed number of bits (
 
 Some common modes of operation include:
 
-- CBC (Cipher Block Chaining)
-- CFB (Cipher FeedBack)
+- CBC (Cypher Block Chaining)
+- CFB (Cypher FeedBack)
 - OFB (Output FeedBack)
 - ECB (Electronic CodeBook)
 - CTR (Counter)
