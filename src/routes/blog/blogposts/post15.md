@@ -104,8 +104,21 @@ AEAD modes:
 
 #### Stream Cyphers
 
-RC4/ARCFOUR/ARC4 (older versions of SSL/TLS, but not recommended)
-ChaCha20 (used in TLS)
+Stream cyphers work by flipping the bits of a plaintext one bit at a time using the XOR operator against another sequence of bits (known as the keystream)
+Every bit of the plaintext is XOR-ed against the corresponding bit of the keystream.
+The keystream is generated pseudo-randomly by the algorithm, and typically is initialised with a seed value.
+The same seed value will produce the same keystream which in turn lets the receiver decrypt the cyphertext.
+This means that the seed value is the secret key, and it has to be generated randomly and should not be reused.
+
+Benefits:
+
+    - Fast, built on XOR operations instead of complicated math algorithms
+    - Ability to decrypt any chunk instead of the whole file (e.g. for video seeking)
+
+Examples of Stream Cyphers:
+
+    - RC4/ARCFOUR/ARC4 (older versions of SSL/TLS, but not recommended)
+    - ChaCha20 (used in TLS)
 
 ### Asymmetric Algorithms
 
@@ -125,11 +138,16 @@ Allows anyone ('public') with the public key (which is freely distributed) to se
 The second property on the surface seems useless, since theres not point in encrypting something that the public can decrypt.
 However, this property actually enables digital signatures.
 
-RSA?
+Examples of asymmetric algorithms:
+
+    - RSA (Rivest-Shamir-Adleman)
+    - ECC (Eliptic Curve Cryptography)
 
 ### Hybrid Systems
 
-TLS (SSL), SSH
+Hybrid systems are just implementations that makes use of multiple types of cryptography.
+For example, TLS (SSL) uses both Asymmetric and Symmetric algorithm for communicate between server and clients.
+This allows systems to leverage the speed of Symmetric algorithms while still gaining the utilities of Asymmetric algorithms.
 
 ### Strength of Algorithm
 
