@@ -190,13 +190,12 @@ _Note: this has no relation with MAC Address which stands for Media Access Contr
 
 At a high level, a Certificate helps to (mostly) guarantee that a person is not an impostor.
 
-https://crypto.stackexchange.com/questions/102565/how-do-certificates-help
-
 Certificate includes information about:
 
-    - key
+    - public key
     - subject, aka identity of the key's owner
     - issuer, aka entity that verified the certificate's contents
+    - signature, aka the issuer will hash the ceritifcate contents and encrypt the hash with its own private key
 
 Helps to address this issue: "How do I know the subject I am communicating with is who they say they are?".
 More concretely, "How do I know if this particular server that will be serving me web pages to www.abcxyz.com is actually the server of www.abcxyz.com and not just some other random server?"
@@ -208,6 +207,11 @@ Other names:
     - Certificates
 
 ### Certificate Authority
+
+A Certificate Authority (CA) is an entity that signs and issues digital certificates.
+They act as a third party to assert that digital certificates used by servers have been verified by them.
+Users that visit servers with certificates can verify the certificate's authenticity by decrypting the signature with CA's public key, and matching the result with the hash of the certificate's contents.
+If they match, then users can be relatively assured that the server is who they say they are.
 
 ## PKCS#
 
