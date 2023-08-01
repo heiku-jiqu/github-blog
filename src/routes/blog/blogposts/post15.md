@@ -67,12 +67,6 @@ Variants have naming conventions of "SHA-<size of output>" for SHA-2 and "SHA**3
 For example, "SHA-256" refers to SHA-2 variant that generates 256bit length output, and "SHA**3**-256" refers to SHA-**3** variant that generates 256bit length output.
 _Note that there are no variants for SHA-0 and SHA-1_.
 
-#### Message Integrity Code (MIC)
-
-aka Message Authentication Code (MAC)
-
-Note: this has no relation with MAC Address which stands for Media Access Control Address.
-
 ### Symmetric Algorithms
 
 Symmetric algorithms (aka private key cryptography) are algorithms where you pass in your data and a key (which is generated, akin to the "password"), and it will encrypt the data as output.
@@ -158,6 +152,21 @@ Digital Signatures work by:
     1. Recipient hashes message from Sender
     1. Recipient uses Sender's public key to decrypt the Signature to obtain Sender's Hash
     1. Recipient compares Recipient's hash and Sender's hash, if they are the same, then Recipient knows that the message has not been tempered with and that the Sender indeed sent that message, not anyone else
+
+## Message Integrity Code (MIC)
+
+aka Message Authentication Code (MAC)
+
+Like Digital Signatures, MIC helps to prove that the information sent between parties has not been tampered with in any way.
+However, the difference is that MIC uses the same secret key to generate and verify the MIC, whereas digital signatures are generated with private key and verified with public key.
+
+    1. Sender and Receiver agrees on secret key
+    1. Sender inputs message + secret key into MIC Algorithm to obtain the MIC
+    1. Sender sends recipient the message and MIC
+    1. Recipient inputs message + secret key into MIC Algorithm to obtain his own MIC
+    1. Recipient compares Recipient's MIC and Sender's MIC, if they are the same, then Recipient knows that the message has not been tempered with and that the Sender indeed sent that message, not anyone else
+
+_Note: this has no relation with MAC Address which stands for Media Access Control Address._
 
 ## Public Key Certificates
 
