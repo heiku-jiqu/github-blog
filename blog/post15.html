@@ -9,18 +9,18 @@
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-0f16d2ec.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-1f941444.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-c3858ecd.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-e2b0a724.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-cae61425.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-2e077d8d.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-220ac413.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-2e840b59.js">
 	</head>
 	<body>
 		<div>
@@ -126,10 +126,6 @@ However, this property actually enables digital signatures.</p>
 <p>Hybrid systems are just implementations that makes use of multiple types of cryptography.
 For example, TLS (SSL) uses both Asymmetric and Symmetric algorithm for communicate between server and clients.
 This allows systems to leverage the speed of Symmetric algorithms while still gaining the utilities of Asymmetric algorithms.</p>
-<h3>Strength of Algorithm</h3>
-<h2>Private / Public Keys</h2>
-<h2>AEAD</h2>
-<p>Authenticated Encryption with Associated Data</p>
 <h2>Digital Signatures</h2>
 <p>Digital Signatures help to prove that the information sent to the recipient has not been tampered with in any way.</p>
 <p>Digital Signatures work by:</p>
@@ -150,9 +146,12 @@ However, the difference is that MIC uses the same secret key to generate and ver
 <li>Recipient inputs message + secret key into MIC Algorithm to obtain his own MIC</li>
 <li>Recipient compares Recipient’s MIC and Sender’s MIC, if they are the same, then Recipient knows that the message has not been tempered with and that the Sender indeed sent that message, not anyone else</li></ol>
 <p><em>Note: this has no relation with MAC Address which stands for Media Access Control Address.</em></p>
+<h2>AEAD</h2>
+<p>Authenticated Encryption (AE) is when an encryption/decryption method assures both confidentiality and data integrity, i.e. the receiver knows when the cyphertext has been tampered with. This can be done by sending the MIC along with the ciphertext.</p>
+<p>Authenticated Encryption with Associated Data (AEAD) is just an extension, where there instead of generating the MIC from just the message ciphertext, you obtain the MIC from message ciphertext + any associated data. This sort of encryption method allows you to send ciphertext + (unencrypted) associated data, all while ensuring confidentiality and data integrity.</p>
 <h2>Public Key Certificates</h2>
 <p>At a high level, a Certificate helps to (mostly) guarantee that a person is not an impostor.</p>
-<p>Certificate includes information about:</p>
+<p>Certificate includes information about the owner’s:</p>
 <ul><li>public key</li>
 <li>subject, aka identity of the key’s owner</li>
 <li>issuer, aka entity that verified the certificate’s contents</li>
@@ -168,24 +167,55 @@ More concretely, “How do I know if this particular server that will be serving
 They act as a third party to assert that digital certificates used by servers have been verified by them.
 Users that visit servers with certificates can verify the certificate’s authenticity by decrypting the signature with CA’s public key, and matching the result with the hash of the certificate’s contents.
 If they match, then users can be relatively assured that the server is who they say they are.</p>
-<h2>PKCS</h2>
-<p>PKCS stands for Public Key Cryptography Standards, which includes a number of standards that are adopted in cryptographic systems to ensure that everyone is on the same page.</p>
-<p>Usually, people will reference specific PKCS standards such as PKCS#7, PKCS#8, PKCS#11, etc.</p>
-<h2>S/MIME</h2>
 <h2>Fingerprint</h2>
 <p>Fingerprints are similar to hash functions, in that they take an arbitrarily large input and produces a relatively small output that uniquely identifies the input.
 However, the difference is that fingerprints have no constraints whether the output can be reverse engineered to get the input.
 In other words, all hash functions are fingerprints, but not all fingerprints are hash functions.</p>
-<h2>pkcs .cer .pfx pem</h2>
 <h2>X.509</h2>
+<p>X.509 is a standard format for public key <strong>certificates</strong> that was defined by the International Telecommunication Union (ITU).
+The standard is defined using Abstract Syntax Notation One (ASN.1) language.
+It defines what information should be in an X.509 certificate, such as the subject’s name, public key, certificate validity period etc.
+However, the standard does not define how the information is physically stored, hence the information can be encoded in different ways (e.g. binary formats), but rather ASN.1 itself has several encoding rules that people can use to encode ASN.1 information.
+The most relevant ASN.1 encoding used in X.509 is Distinguished Encoding Rules (DER) encoding.</p>
+<h2>Privacy-Enhanced Mail (PEM)</h2>
+<p>DER encoding produces binary output, and this may be troublesome for systems that only support ASCII (email), hence a further Base64 encoding on top of DER binary output was also developed: Privacy-Enhanced Mail (PEM).</p>
+<p>PEM is a very general file format that can store multiple data that is Base64 encoded, it just has to have <code>---- BEGIN xxx ----</code> and <code>---- END xxx ----</code> section delimiters:</p>
+<pre class="language-undefined"><!-- HTML_TAG_START --><code class="language-undefined">----- BEGIN CERTIFICATE -----
+AWOIEJFOAIWJLKJASDF
+----- END CERTIFICATE -----
+----- BEGIN PRIVATE KEY -----
+2342J34RIJ34IJ4FI
+----- END PRIVATE KEY -----</code><!-- HTML_TAG_END --></pre>
+<p>Although originally developed for email, S/MIME and PGP standards made PEM obsolete, so nobody ended up using PEM for email.
+But the Base64 encoding format became widely popular and became widely supported in cryptography systems.</p>
+<p>Note that PEM files can store not just certificates, but also private key, or even multiple things in one PEM file.</p>
+<p>Common file extensions for PEM format include:</p>
+<ul><li><code>.pem</code> for any type of data, best to check section delimiters to see what it stores</li>
+<li><code>.cer</code> / <code>.crt</code> for certificates</li>
+<li><code>.key</code> for private keys</li></ul>
+<h2>PKCS</h2>
+<p>PKCS stands for Public Key Cryptography Standards, which includes a number of standards that are adopted in cryptographic systems to ensure that everyone is on the same page.</p>
+<p>Usually, people will reference specific PKCS standards such as PKCS#7, PKCS#8, PKCS#11, etc.</p>
+<h3>PKCS#7 / Cryptographic Message Syntax (CMS)</h3>
+<p>This standard describes how to sign, digest, authenticate, or encrypt arbitrary message contents and how to represent the resulting data.
+Defined in ASN.1 language.
+Think of PCKS#7 file as a container that can contain multiple things, such as the message hash, a certificate, a signature, etc.
+The file usually has extension <code>.p7</code>.</p>
+<p>When a PKCS#7 only has certificate and no message, it is usually stored as a <code>.p7b</code> file.</p>
+<p>PKCS#7 standard evolved to Cryptographic Message Syntax standard, however they are still used interchangeably in layman (much like SSL refers to TLS).</p>
+<h3>PKCS#12 / Personal Information Exchange (PFX)</h3>
+<p>PCKS#12 is similar to PKCS#7, but it contains both private and public key, and the file itself is encrypted with a password.
+It usually comes in <code>.p12</code> or <code>.pfx</code> files.</p>
 <h1>Links</h1>
 <p><a href="https://www.rfc-editor.org/rfc/rfc8446" rel="nofollow">TLS</a></p>
-<p>(<a href="https://crypto.stackexchange.com/questions/87078/stream-cipher-and-block-cipher-usage-in-network-data-encryption" rel="nofollow">https://crypto.stackexchange.com/questions/87078/stream-cipher-and-block-cipher-usage-in-network-data-encryption</a>)</p></div>
+<p>(<a href="https://crypto.stackexchange.com/questions/87078/stream-cipher-and-block-cipher-usage-in-network-data-encryption" rel="nofollow">https://crypto.stackexchange.com/questions/87078/stream-cipher-and-block-cipher-usage-in-network-data-encryption</a>)</p>
+<p><a href="https://www.rfc-editor.org/rfc/rfc7468" rel="nofollow">Encodings of PKIX, PKCS and CMS</a>
+<a href="https://en.wikipedia.org/wiki/Category:ITU-T_recommendations" rel="nofollow">ITU-T Recommendation Series</a></p></div>
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="abp5du">
-		import { start } from "/github-blog/_app/immutable/start-0f16d2ec.js";
+		<script type="module" data-sveltekit-hydrate="slx4s6">
+		import { start } from "/github-blog/_app/immutable/start-1f941444.js";
 
 		start({
 			env: {},
@@ -199,7 +229,7 @@ In other words, all hash functions are fingerprints, but not all fingerprints ar
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="abp5du"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="slx4s6"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
