@@ -219,6 +219,10 @@ If they match, then users can be relatively assured that the server is who they 
 
 ## Fingerprint
 
+Fingerprints are similar to hash functions, in that they take an arbitrarily large input and produces a relatively small output that uniquely identifies the input.
+However, the difference is that fingerprints have no constraints whether the output can be reverse engineered to get the input.
+In other words, all hash functions are fingerprints, but not all fingerprints are hash functions.
+
 ## pkcs .cer .pfx pem
 
 ## X.509
