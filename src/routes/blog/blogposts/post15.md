@@ -82,7 +82,10 @@ There are two broad categories of symmetric algorithms: block cyphers and stream
 
 Block cyphers, as the name suggests, operate by encrypting the plaintext in fixed-length blocks, and the leftover bits will be padded to the size of the blocks.
 
-Common examples include: AES, DES.
+Common examples include:
+
+- AES (Advanced Encryption Standard)
+- DES (Data Encryption Standard)
 
 ##### Mode of Operation
 
@@ -104,7 +107,7 @@ AEAD modes:
 
 #### Stream Cyphers
 
-Stream cyphers work by flipping the bits of a plaintext one bit at a time using the XOR operator against another sequence of bits (known as the keystream)
+Stream cyphers work by flipping the bits of a plaintext one bit at a time using the XOR operator against another sequence of bits (known as the keystream).
 Every bit of the plaintext is XOR-ed against the corresponding bit of the keystream.
 The keystream is generated pseudo-randomly by the algorithm, and typically is initialised with a seed value.
 The same seed value will produce the same keystream which in turn lets the receiver decrypt the cyphertext.
@@ -135,7 +138,7 @@ The two keys in the key pair are mathematically linked, such that it allows uniq
 
 Allows anyone ('public') with the public key (which is freely distributed) to send secret (encrypted) messages to the owner of the private key.
 
-The second property on the surface seems useless, since theres not point in encrypting something that the public can decrypt.
+The second property on the surface seems useless, since there's no point in encrypting something that the public can decrypt.
 However, this property actually enables digital signatures.
 
 Examples of asymmetric algorithms:
