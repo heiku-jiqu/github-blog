@@ -1,55 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" href="/github-blog/favicon.png" />
-		<meta name="viewport" content="width=device-width" />
-		<meta http-equiv="content-security-policy" content=""><link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-gruvbox-light.min.css" rel="stylesheet" data-svelte="svelte-uyunbu">
-	<link href="/github-blog/_app/immutable/assets/_layout-ff0af52f.css" rel="stylesheet">
-	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
-	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
-	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-9e7dcf56.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-39c5cc75.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-aa411906.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-b22782fb.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4a62d802.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-40896f16.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-5012f721.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-b4238b40.js">
-	</head>
-	<body>
-		<div>
-
-
-
-
-<header class="svelte-qm05bo"><a href="/github-blog/" class="svelte-qm05bo">Home</a>
-
-	<nav><ul class="svelte-qm05bo"><li><a href="/github-blog/blog" class="svelte-qm05bo">Blog</a></li>
-			<li><a href="/github-blog/about" class="svelte-qm05bo">About</a></li></ul></nav>
-</header>
-<div><div class="grid-container svelte-14l03dd"><div class="sides"></div>
-		<div class="article svelte-14l03dd"><h1>unittest-ing with Python</h1>
-<p>Tests are important to prove the logic you have written down works as expected,
-and to squash bugs forever.
-On top of this, practicing Test Driven Development (TDD), which is the act of writing tests
-BEFORE implementation, helps you improve software design.
-TDD forces you to think about how to test your implementation,
-and through this, you are more likely to come up with
-simpler APIs/methods/functions that do only one thing.</p>
-<p>Python comes with <code>unittest</code> module in standard library that helps you write tests.</p>
-<p>The basic flow of writing tests in <code>unittest</code> can be summarised as:</p>
-<ol><li>import <code>unittest</code></li>
-<li>create a test class that inherits from <code>unittest.TestCase</code></li>
-<li>create methods in this test class that tests a functionality through <code>unittest.TestCase.assert*</code> methods</li>
-<li>run your tests through <code>python -m unittest &lt;module_or_filepath&gt;</code></li></ol>
-<h2>Example Code:</h2>
-<pre class="language-py"><!-- HTML_TAG_START --><code class="language-py"><span class="token keyword">from</span> unittest <span class="token keyword">import</span> TestCase
+import{S as Es,i as Cs,s as Ts,k as o,q as a,a as r,l as p,m as l,r as e,h as t,c as k,n as Ds,b as u,B as n,A as us}from"./index-39c5cc75.js";function xs(_s){let m,V,g,_,F,I,f,U,T,j,z,L,h,G,D,J,K,B,i,v,N,x,Q,W,b,X,q,Y,Z,y,$,O,ss,ns,ts,E,as,P,es,M,C,os,A,w,vs=`<code class="language-py"><span class="token keyword">from</span> unittest <span class="token keyword">import</span> TestCase
 <span class="token keyword">from</span> math <span class="token keyword">import</span> sqrt
 
 <span class="token comment"># implementation that you want to test</span>
@@ -94,29 +43,16 @@ simpler APIs/methods/functions that do only one thing.</p>
 	<span class="token keyword">def</span> <span class="token function">tearDown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
 		<span class="token comment"># tear down test fixtures</span>
 		<span class="token comment"># useful to reverse any side effects (e.g. temp files, temp db)</span>
-		<span class="token keyword">pass</span></code><!-- HTML_TAG_END --></pre></div>
-		<div class="sides"></div></div></div>
-
-
-		<script type="module" data-sveltekit-hydrate="1alcy58">
-		import { start } from "/github-blog/_app/immutable/start-9e7dcf56.js";
-
-		start({
-			env: {},
-			hydrate: {
-				status: 200,
-				error: null,
-				node_ids: [0, 5],
-				params: {blogpost:"post9"},
-				routeId: "blog/[blogpost]",
-				data: (function(a){return [a,a]}(null)),
-				form: null
-			},
-			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="1alcy58"]').parentNode,
-			trailing_slash: "never"
-		});
-	</script>
-	</div>
-	</body>
-</html>
+		<span class="token keyword">pass</span></code>`;return{c(){m=o("h1"),V=a(ws),g=r(),_=o("p"),F=a(`Tests are important to prove the logic you have written down works as expected,
+and to squash bugs forever.
+On top of this, practicing Test Driven Development (TDD), which is the act of writing tests
+BEFORE implementation, helps you improve software design.
+TDD forces you to think about how to test your implementation,
+and through this, you are more likely to come up with
+simpler APIs/methods/functions that do only one thing.`),I=r(),f=o("p"),U=a("Python comes with "),T=o("code"),j=a("unittest"),z=a(" module in standard library that helps you write tests."),L=r(),h=o("p"),G=a("The basic flow of writing tests in "),D=o("code"),J=a("unittest"),K=a(" can be summarised as:"),B=r(),i=o("ol"),v=o("li"),N=a("import "),x=o("code"),Q=a("unittest"),W=r(),b=o("li"),X=a("create a test class that inherits from "),q=o("code"),Y=a("unittest.TestCase"),Z=r(),y=o("li"),$=a("create methods in this test class that tests a functionality through "),O=o("code"),ss=a("unittest.TestCase.assert*"),ns=a(" methods"),ts=r(),E=o("li"),as=a("run your tests through "),P=o("code"),es=a("python -m unittest <module_or_filepath>"),M=r(),C=o("h2"),os=a("Example Code:"),A=r(),w=o("pre"),this.h()},l(s){m=p(s,"H1",{});var c=l(m);V=e(c,ws),c.forEach(t),g=k(s),_=p(s,"P",{});var is=l(_);F=e(is,`Tests are important to prove the logic you have written down works as expected,
+and to squash bugs forever.
+On top of this, practicing Test Driven Development (TDD), which is the act of writing tests
+BEFORE implementation, helps you improve software design.
+TDD forces you to think about how to test your implementation,
+and through this, you are more likely to come up with
+simpler APIs/methods/functions that do only one thing.`),is.forEach(t),I=k(s),f=p(s,"P",{});var H=l(f);U=e(H,"Python comes with "),T=p(H,"CODE",{});var rs=l(T);j=e(rs,"unittest"),rs.forEach(t),z=e(H," module in standard library that helps you write tests."),H.forEach(t),L=k(s),h=p(s,"P",{});var R=l(h);G=e(R,"The basic flow of writing tests in "),D=p(R,"CODE",{});var ks=l(D);J=e(ks,"unittest"),ks.forEach(t),K=e(R," can be summarised as:"),R.forEach(t),B=k(s),i=p(s,"OL",{});var d=l(i);v=p(d,"LI",{});var ps=l(v);N=e(ps,"import "),x=p(ps,"CODE",{});var ms=l(x);Q=e(ms,"unittest"),ms.forEach(t),ps.forEach(t),W=k(d),b=p(d,"LI",{});var ls=l(b);X=e(ls,"create a test class that inherits from "),q=p(ls,"CODE",{});var fs=l(q);Y=e(fs,"unittest.TestCase"),fs.forEach(t),ls.forEach(t),Z=k(d),y=p(d,"LI",{});var S=l(y);$=e(S,"create methods in this test class that tests a functionality through "),O=p(S,"CODE",{});var hs=l(O);ss=e(hs,"unittest.TestCase.assert*"),hs.forEach(t),ns=e(S," methods"),S.forEach(t),ts=k(d),E=p(d,"LI",{});var cs=l(E);as=e(cs,"run your tests through "),P=p(cs,"CODE",{});var ds=l(P);es=e(ds,"python -m unittest <module_or_filepath>"),ds.forEach(t),cs.forEach(t),d.forEach(t),M=k(s),C=p(s,"H2",{});var ys=l(C);os=e(ys,"Example Code:"),ys.forEach(t),A=k(s),w=p(s,"PRE",{class:!0});var bs=l(w);bs.forEach(t),this.h()},h(){Ds(w,"class","language-py")},m(s,c){u(s,m,c),n(m,V),u(s,g,c),u(s,_,c),n(_,F),u(s,I,c),u(s,f,c),n(f,U),n(f,T),n(T,j),n(f,z),u(s,L,c),u(s,h,c),n(h,G),n(h,D),n(D,J),n(h,K),u(s,B,c),u(s,i,c),n(i,v),n(v,N),n(v,x),n(x,Q),n(i,W),n(i,b),n(b,X),n(b,q),n(q,Y),n(i,Z),n(i,y),n(y,$),n(y,O),n(O,ss),n(y,ns),n(i,ts),n(i,E),n(E,as),n(E,P),n(P,es),u(s,M,c),u(s,C,c),n(C,os),u(s,A,c),u(s,w,c),w.innerHTML=vs},p:us,i:us,o:us,d(s){s&&t(m),s&&t(g),s&&t(_),s&&t(I),s&&t(f),s&&t(L),s&&t(h),s&&t(B),s&&t(i),s&&t(M),s&&t(C),s&&t(A),s&&t(w)}}}const qs={title:"unittest-ing with Python",date:"2023-02-22"},{title:ws,date:Ps}=qs;class gs extends Es{constructor(m){super(),Cs(this,m,null,xs,Ts,{})}}export{gs as default,qs as metadata};

@@ -9,18 +9,18 @@
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-10851b03.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-9e7dcf56.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-bd722860.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-39c5cc75.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-aa411906.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-b22782fb.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4a62d802.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-5598c8c4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-39ff3cad.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-40896f16.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-5012f721.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-b4238b40.js">
 	</head>
 	<body>
 		<div>
@@ -36,22 +36,47 @@
 <div><div class="grid-container svelte-14l03dd"><div class="sides"></div>
 		<div class="article svelte-14l03dd"><h1>Terminal, Console, Shell</h1>
 <h2>Background</h2>
-<p>After extensively using Neovim, and going down this bottomless rabbit hole of customizations (Telescope, Treesitter, LSPs, Formatters, Themes), and how they all integrate with the terminal and shell,
-I found out that these two things are actually <em>different</em> things, although most of the time they are used interchangeably.
+<p>After extensively using Neovim, and going down the bottomless rabbit hole of customizations (Telescope, Treesitter, LSPs, Formatters, Themes, Fonts), I sometimes find myself scratching my head how they all integrate with the terminal and shell.
+Eventually, it dawned on me that these are actually two <em>different</em> things, although most of the time they are used interchangeably.
 This post will explain what the differences are, and introduce some backstory on how they came to be, which will hopefully make more sense after reading through the post.</p>
-<p>I think it is important to understand that most terms are actually already in use at the beginning of computer industry, i.e. when computers are room-sized, used punch cards, and displays weren’t even a thing!</p>
+<h2>Preface</h2>
+<p>I think it is important to first understand that most of these terms are actually already in use in the beginning of the computer industry, i.e. when computers are the size of a house, used punch cards, and displays weren’t even a thing!</p>
 <h2>Terminal</h2>
-<p>In the beginning, terminals are physical text input/output instruments (relatively smaller in size) that can be attached to computers (which are still huge) for humans to interact with the computers.
-The terminal receives physical keystrokes by the humans, “translates” these keystrokes into signals and sends them to the computer. The computer can then return any output to the terminal who will display it.</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/DEC_VT100_terminal_transparent.png/592px-DEC_VT100_terminal_transparent.png" alt="Computer Terminal from Wiki" title="A terminal"></p>
+<p>In the beginning, terminals are physical text input/output instruments (relatively smaller) that can be attached to computers (which are still huge) for humans to interact with the computers.
+The terminal receives physical keystrokes by the humans, “translates” these keystrokes into text/signals and sends them to the computer.
+The computer can then return any output to the terminal which will display it.
+The terminal is not limited to computers in the same premise as it can also connect to computers that are remote.</p>
 <h2>Console</h2>
-<p>Consoles are a subset of terminal where it is directly attached to a computer system.
-A hardware console
-Code:</p></div>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Supercomputer_NSA-IBM360_85.jpg/592px-Supercomputer_NSA-IBM360_85.jpg" alt="IBM360 Model 85 Console from Wiki" title="A console"></p>
+<p>Consoles are a subset of terminal where it is directly attached to a computer system, used to control the computer it is attached to.
+Even so, a hardware console in the old days can also contain knobs/switches, not just text terminals.</p>
+<h2>Terminal Emulators</h2>
+<p>A terminal emulator, like its name suggests, <em>emulates</em> the functions of a physical terminal in modern computers.
+It is a <em>software application</em> that receives text inputs and displays text outputs, and connects to a computer (which is usually the computer running the terminal, but it can also connect remotely through <code>ssh</code>).
+Physical keystrokes on your keyboards sends signals (through OS and device drivers) to the terminal, where it processes and gets interpreted into to their corresponding graphic characters or control characters (e.g. Enter key).
+Some examples include <code>Windows Terminal</code>, <code>WezTerm</code> and <code>Alacritty</code>.</p>
+<p>So now that we have a bunch of characters, where do they go when we want to issue a command to the computer?</p>
+<h2>Shell</h2>
+<p>A shell is a type of application whose purpose is to run other applications (hence the name “shell”).
+It also usually interacts with the operating system by issuing syscalls on your behalf (e.g. creating a new process).
+By default, a terminal (emulator) will start a command line shell on startup/login.
+When you type a bunch of characters and press enter, shells are the applications that interpret those commands and then runs the program.
+It will then output to the terminal who will then display the text.</p>
+<p>There are different types of shell provided by the major operating systems, <code>bash</code> for Unix and <code>cmd</code>/<code>powershell</code> for Windows, though there are also more customised versions like <code>zsh</code>/<code>fish</code>.
+Shells are interactive, where you can type commands and get back results.
+They also come with their own flavour of full-fledged language for scripting purposes.</p>
+<p>Note that shells are not confined to just text based programs, there are also graphical shells that run GUI applications within them.</p>
+<h2>Conclusion</h2>
+<p>Terminals and Shells are not the same thing.
+Terminals handle input/output of text, displaying text and connection to computers.
+Shells are applications that run other applications (yes that also means you can run a shell in another shell in another shell in another shell…).
+Shells and Terminals work hand in hand for humans to interact with computers through text interfaces.</p></div>
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="tsa0ib">
-		import { start } from "/github-blog/_app/immutable/start-10851b03.js";
+		<script type="module" data-sveltekit-hydrate="1brhg3l">
+		import { start } from "/github-blog/_app/immutable/start-9e7dcf56.js";
 
 		start({
 			env: {},
@@ -65,7 +90,7 @@ Code:</p></div>
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="tsa0ib"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="1brhg3l"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
