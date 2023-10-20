@@ -9,18 +9,18 @@
 	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
 	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/start-1f941444.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-10851b03.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4cbca6b4.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-e2b0a724.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-bd722860.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-a0552754.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-6d9ae0b7.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
 	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-58e879a6.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-220ac413.js">
-	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-2e840b59.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-5598c8c4.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-39ff3cad.js">
 	</head>
 	<body>
 		<div>
@@ -83,7 +83,9 @@ To decrypt, pass in the cyphertext as well as the same key, and it will generate
 <p>There are two broad categories of symmetric algorithms: block cyphers and stream cyphers.</p>
 <h4>Block Cyphers</h4>
 <p>Block cyphers, as the name suggests, operate by encrypting the plaintext in fixed-length blocks, and the leftover bits will be padded to the size of the blocks.</p>
-<p>Common examples include: AES, DES.</p>
+<p>Common examples include:</p>
+<ul><li>AES (Advanced Encryption Standard)</li>
+<li>DES (Data Encryption Standard)</li></ul>
 <h5>Mode of Operation</h5>
 <p>Since block cyphers are only able to encrypt one block of fixed number of bits (e.g. 256 bits), there is a need to determine how to actually repeat this one block operation on the entire plaintext data. This is known as the block cypher’s <em>mode of operation</em>.</p>
 <p>Some common modes of operation include:</p>
@@ -97,7 +99,7 @@ To decrypt, pass in the cyphertext as well as the same key, and it will generate
 <li>CCM (Counter with CBC-MAC)</li>
 <li>SIV (Synthetic Initialisation Vector)</li></ul>
 <h4>Stream Cyphers</h4>
-<p>Stream cyphers work by flipping the bits of a plaintext one bit at a time using the XOR operator against another sequence of bits (known as the keystream)
+<p>Stream cyphers work by flipping the bits of a plaintext one bit at a time using the XOR operator against another sequence of bits (known as the keystream).
 Every bit of the plaintext is XOR-ed against the corresponding bit of the keystream.
 The keystream is generated pseudo-randomly by the algorithm, and typically is initialised with a seed value.
 The same seed value will produce the same keystream which in turn lets the receiver decrypt the cyphertext.
@@ -117,7 +119,7 @@ This means that the seed value is the secret key, and it has to be generated ran
 <li>Note: Cyphertext using private key != Cyphertext using public key</li>
 <li>It is practically impossible to reverse engineer the private key from the public key</li></ul>
 <p>Allows anyone (‘public’) with the public key (which is freely distributed) to send secret (encrypted) messages to the owner of the private key.</p>
-<p>The second property on the surface seems useless, since theres not point in encrypting something that the public can decrypt.
+<p>The second property on the surface seems useless, since there’s no point in encrypting something that the public can decrypt.
 However, this property actually enables digital signatures.</p>
 <p>Examples of asymmetric algorithms:</p>
 <ul><li>RSA (Rivest-Shamir-Adleman)</li>
@@ -208,14 +210,14 @@ The file usually has extension <code>.p7</code>.</p>
 It usually comes in <code>.p12</code> or <code>.pfx</code> files.</p>
 <h1>Links</h1>
 <p><a href="https://www.rfc-editor.org/rfc/rfc8446" rel="nofollow">TLS</a></p>
-<p>(<a href="https://crypto.stackexchange.com/questions/87078/stream-cipher-and-block-cipher-usage-in-network-data-encryption" rel="nofollow">https://crypto.stackexchange.com/questions/87078/stream-cipher-and-block-cipher-usage-in-network-data-encryption</a>)</p>
-<p><a href="https://www.rfc-editor.org/rfc/rfc7468" rel="nofollow">Encodings of PKIX, PKCS and CMS</a>
-<a href="https://en.wikipedia.org/wiki/Category:ITU-T_recommendations" rel="nofollow">ITU-T Recommendation Series</a></p></div>
+<p><a href="https://crypto.stackexchange.com/questions/87078/stream-cipher-and-block-cipher-usage-in-network-data-encryption" rel="nofollow">Stream and Block Cyphers</a></p>
+<p><a href="https://www.rfc-editor.org/rfc/rfc7468" rel="nofollow">Encodings of PKIX, PKCS and CMS</a></p>
+<p><a href="https://en.wikipedia.org/wiki/Category:ITU-T_recommendations" rel="nofollow">ITU-T Recommendation Series</a></p></div>
 		<div class="sides"></div></div></div>
 
 
-		<script type="module" data-sveltekit-hydrate="slx4s6">
-		import { start } from "/github-blog/_app/immutable/start-1f941444.js";
+		<script type="module" data-sveltekit-hydrate="17s7cqc">
+		import { start } from "/github-blog/_app/immutable/start-10851b03.js";
 
 		start({
 			env: {},
@@ -229,7 +231,7 @@ It usually comes in <code>.p12</code> or <code>.pfx</code> files.</p>
 				form: null
 			},
 			paths: {"base":"/github-blog","assets":"/github-blog"},
-			target: document.querySelector('[data-sveltekit-hydrate="slx4s6"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="17s7cqc"]').parentNode,
 			trailing_slash: "never"
 		});
 	</script>
