@@ -5,16 +5,37 @@ date: '2023-10-29'
 
 # {title}
 
+## Introduction
+
+Recently wondered whether a single docker container is able to run multiple executables, hence went to dig deeper into how Linux background processes work.
+
+TL;DR: Yes, you can do so by appending `&` to your commands (except the last command) in `CMD` or `ENTRYPOINT` or `.sh` scripts.
+
+_note: the concepts are only for Linux like OSes, Windows will have its own alternatives that are different_
+
 ## Concepts
 
-Every command ran in `bash` is a process.
+### Processes
+
+Every running program in Linux is a process.
 Every process has an associated `PID`.
-A job is the group of processes that runs when you run a command (can be 1 process, can be multiple processes if you run complex commands).
+
+### Jobs
+
+A job is the group of processes that runs when you run a command in the shell
+(can be 1 process, can be multiple processes if you run complex commands).
 Every job has an associated `JOBSPEC`.
 
-## Signals
+### Signals
 
-Command signals:
+Every running process can receive "signals" that is sent from another process, through the OS and to the running process.
+
+These signals can be caught by the running program and handled accordingly (handlers can be written by programmers).
+
+Whenever the OS sends a signal to the running process, the OS will interrupt the running process' flow of execution and ask it to handle the signal.
+Imagine the OS is executing the running process' code line by line, and at a certain line the OS suddenly "drops" the execution and ask the process' code to handle the signal.
+
+Common signals:
 
     - SIGKILL
     - SIGTERM
@@ -33,6 +54,7 @@ Command signals:
 `ps`: List all processes
 `bg`: Continues a job in the background
 `fg`: Continues a job in the foreground
+`wait`: Wait for all jobs to finish (i.e. blocks until all jobs are finished)
 `disown`
 `nohup`
 `&`: Runs preceding command in the background
