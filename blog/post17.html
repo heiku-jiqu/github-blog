@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="/github-blog/favicon.png" />
+		<meta name="viewport" content="width=device-width" />
+		<meta http-equiv="content-security-policy" content=""><link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-gruvbox-light.min.css" rel="stylesheet" data-svelte="svelte-uyunbu">
+	<link href="/github-blog/_app/immutable/assets/_layout-ff0af52f.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-1d7a96ad.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-39c5cc75.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-540c0c63.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-b22782fb.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4a62d802.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-40896f16.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-45c66182.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-b686678f.js">
+	</head>
+	<body>
+		<div>
+
+
+
+
+<header class="svelte-qm05bo"><a href="/github-blog/" class="svelte-qm05bo">Home</a>
+
+	<nav><ul class="svelte-qm05bo"><li><a href="/github-blog/blog" class="svelte-qm05bo">Blog</a></li>
+			<li><a href="/github-blog/about" class="svelte-qm05bo">About</a></li></ul></nav>
+</header>
+<div><div class="grid-container svelte-14l03dd"><div class="sides"></div>
+		<div class="article svelte-14l03dd"><h1>Managing Processes in Linux CLI</h1>
+<h2>Introduction</h2>
+<p>Recently wondered whether a single docker container is able to run multiple executables, hence went to dig deeper into how Linux background processes work.</p>
+<p>TL;DR: Yes, you can do so by appending <code>&amp;</code> to your commands (except the last command) in <code>CMD</code> or <code>ENTRYPOINT</code> or <code>.sh</code> scripts.</p>
+<p><em>note: the concepts are only for Linux, Windows will have its own alternatives that are different</em></p>
+<h2>Concepts</h2>
+<h3>Processes</h3>
+<p>Every running program in Linux is a process.
+Every process has an associated <code>PID</code>.</p>
+<h3>Jobs</h3>
+<p>A job is the group of processes that runs when you run a command in the shell
+(can be 1 process, can be multiple processes if you run complex commands).
+Every job has an associated <code>JOBSPEC</code>.</p>
+<h3>Signals</h3>
+<p>Every running process can receive “signals” that is sent from another process, through the OS and to the running process.</p>
+<p>These signals can be caught by the running program and handled accordingly (handlers can be written by programmers).</p>
+<p>Whenever the OS sends a signal to the running process, the OS will interrupt the running process’ flow of execution and ask it to handle the signal.
+Imagine the OS is executing the running process’ code line by line, and at a certain line the OS suddenly “drops” the execution and ask the process’ code to handle the signal.</p>
+<p>Common signals:</p>
+<ul><li><p>SIGKILL Forcefully stops the process (cannot be caught by process)</p></li>
+<li><p>SIGTERM (Default signal used by <code>kill</code> command) Terminates the process and runs any handlers, usually sent from <code>kill</code></p></li>
+<li><p>SIGINT (<code>Ctrl+C</code>) Terminates the process and runs any handlers, usually sent from keyboard</p></li>
+<li><p>SIGQUIT (<code>Ctrl+\</code>) Same as SIGINT, but with additional error dump.</p></li>
+<li><p>SIGHUP Indicates that terminal is disconnected, usually sent automatically when terminal emulator is closed</p></li>
+<li><p>SIGSTOP Stop the process, the process is <em>paused</em> and can be resumed, and this signal cannot be caught by process</p></li>
+<li><p>SIGTSTP (<code>Ctrl+Z</code>) Stop the process (i.e. paused) from the terminal, can be caught by the process to run handlers</p></li>
+<li><p>SIGCONT Resumes the stopped process</p></li></ul>
+<h2>Running multiple commands</h2>
+<p>To run multiple commands, append commands using <code>&amp;</code>, for example: <code>sleep 5 &amp; echo hello</code>.
+<code>&amp;</code> sends the preceding command into the background as a job, and also print out the JOBSPEC (aka job number) and PID (aka process ID) in the form <code>[JOBSPEC] PID</code>.
+To see the list of running jobs, use <code>jobs</code> command, which will show the JOBSPEC and the corresponding command.</p>
+<p>Note that you can send all commands to the background: <code>sleep 5 &amp; sleep 6 &amp;</code>, which will unblock your terminal immediately.
+To wait for all jobs to finish (e.g. when using in scripts), just execute <code>wait</code>, and it will block until all jobs are finished.</p>
+<p>If there is a long running job that you want to terminate, send SIGTERM signal with <code>kill %n</code> where <code>n</code> is the JOBSPEC.</p>
+<pre class="language-bash"><!-- HTML_TAG_START --><code class="language-bash"><span class="token function">sleep</span> <span class="token number">5</span> <span class="token operator">&amp;</span> <span class="token function">sleep</span> <span class="token number">6</span> <span class="token operator">&amp;</span>
+<span class="token function">kill</span> %2 <span class="token comment"># terminate JOBSPEC 2 which is 'sleep 6'</span>
+<span class="token function">jobs</span>
+<span class="token comment"># shows sleep 5 is running and sleep 6 is terminated</span></code><!-- HTML_TAG_END --></pre>
+<p>If there is a long running job that you want to pause, send the SIGTSTP signal, which will pause the process.
+To resume, send SIGCONT to the stopped job.</p>
+<pre class="language-bash"><!-- HTML_TAG_START --><code class="language-bash"><span class="token function">sleep</span> <span class="token number">5</span> <span class="token operator">&amp;</span> <span class="token function">sleep</span> <span class="token number">6</span> <span class="token operator">&amp;</span>
+<span class="token function">kill</span> <span class="token parameter variable">-SIGSTOP</span> %1 <span class="token comment"># send SIGSTOP to JOBSPEC 1</span>
+<span class="token function">jobs</span> <span class="token comment"># sleep 5 is stopped, sleep 6 is still running</span>
+<span class="token function">kill</span> <span class="token parameter variable">-SIGCONT</span> %1
+<span class="token function">jobs</span> <span class="token comment"># sleep 5 continues running</span></code><!-- HTML_TAG_END --></pre>
+<p>In the case where you’ve already ran a program and it is blocking, it is possible to stop it by using <code>Ctrl+Z</code> which sends SIGTSTP. Then you can either continue running the program in the foreground using <code>fg JOBSPEC</code> or in the background using <code>bg JOBSPEC</code>.</p>
+<p>One final note about using these in Docker. Docker containers will exit when there are no more foreground processes that are running (i.e. not blocked).
+So if you run all commands/jobs/processes in the background using <code>&amp;</code>, the container will just exit immediately.
+To resolve this, either use <code>wait</code> to block until all jobs are completed, or don’t <code>&amp;</code> the last command, depending on your use case.</p>
+<h2>Redirection</h2>
+<p>Small detour on redirecting stdin/out/err, so that instead of stdout printing to terminal, you can redirect to print into a file, or stdin reading in from terminal, you can read in from a file.</p>
+<p>When linux system does any reading or writing, it needs a <em>file descriptor</em> to identify where it is reading/writing from, which are basically just non negative integers.</p>
+<p>There are 3 standard file descriptors:</p>
+<ul><li>0 for stdin</li>
+<li>1 for stdout</li>
+<li>2 for stderr</li></ul>
+<p>If there are readable/writable files opened, more file descriptors will be added sequentially (<code>ls -l /proc/$$/fd</code> to see list of file descriptors)</p>
+<p>To redirect, we use the three operators below:</p>
+<ul><li><code>&lt;</code>: redirect input</li>
+<li><code>&gt;</code>: redirect output, default LHS file descriptor is 1</li>
+<li><code>&gt;&gt;</code>: redirect and append, default LHS file descriptor is 1</li></ul>
+<p>Use <code>file_descriptor&gt;filename</code> to redirect to a file, e.g. <code>1&gt;log.txt</code> (same as <code>&gt;log.txt</code>) to redirect stdout to log.txt.</p>
+<p>Use <code>file_descriptor&gt;&amp;file_descriptor</code> to redirect to another file descriptor from LHS to RHS (note the <code>&amp;</code> in RHS) e.g. <code>2&gt;&amp;1</code> redirects file descriptor <code>2</code> which is stderr to stdout.</p>
+<p>Use <code>sort &lt; file_to_sort.txt</code> to redirect <code>file_to_sort.txt</code> into <code>sort</code>’s stdin.</p>
+<h2>Commands Summary</h2>
+<ul><li><code>&amp;</code>: Runs preceding command in the background</li>
+<li><code>kill</code>: Sends specified signal to specified job/process, defaults to SIGTERM</li>
+<li><code>jobs</code>: List all jobs</li>
+<li><code>ps</code>: List all processes</li>
+<li><code>bg</code>: Continues a job in the background</li>
+<li><code>fg</code>: Continues a job in the foreground</li>
+<li><code>wait</code>: Wait for all jobs to finish (i.e. blocks until all jobs are finished)</li>
+<li><code>disown</code>: Remove job(s) from the jobs list, process still connected to terminal</li>
+<li><code>nohup</code>: Separates the process from the terminal by closing stdin, redirecting stdin and stdout into a file <code>nohup.out</code>, prevents SIGHUP from reaching process, but job is still under job list</li>
+<li><code>&amp;&amp;</code>: Runs RHS command only if LHS succeeds</li>
+<li><code>||</code>: Runs RHS command only if LHS fails</li>
+<li><code>;</code>: Runs RHS command after LHS, regardless whether it succeeds or fails</li></ul>
+<h2>Useful idioms</h2>
+<p>Send a signal to all jobs: <code>kill $(jobs -p)</code> or <code>jobs -p | xargs kill</code></p>
+<h2>References</h2>
+<ul><li><a href="https://www.gnu.org/software/libc/manual/html_node/Standard-Signals.html" rel="nofollow">glibc docs describing signals</a></li>
+<li><a href="https://man7.org/linux/man-pages/man7/signal.7.html" rel="nofollow">man 7 pages on signals</a></li>
+<li><a href="https://stackoverflow.com/questions/4042201/how-does-sigint-relate-to-the-other-termination-signals-such-as-sigterm-sigquit" rel="nofollow">SO question on SIGTERM and SIGQUIT</a></li>
+<li><a href="https://unix.stackexchange.com/questions/3886/difference-between-nohup-disown-and" rel="nofollow">SO question on disown and nohup</a></li></ul></div>
+		<div class="sides"></div></div></div>
+
+
+		<script type="module" data-sveltekit-hydrate="1j888mi">
+		import { start } from "/github-blog/_app/immutable/start-1d7a96ad.js";
+
+		start({
+			env: {},
+			hydrate: {
+				status: 200,
+				error: null,
+				node_ids: [0, 5],
+				params: {blogpost:"post17"},
+				routeId: "blog/[blogpost]",
+				data: (function(a){return [a,a]}(null)),
+				form: null
+			},
+			paths: {"base":"/github-blog","assets":"/github-blog"},
+			target: document.querySelector('[data-sveltekit-hydrate="1j888mi"]').parentNode,
+			trailing_slash: "never"
+		});
+	</script>
+	</div>
+	</body>
+</html>
