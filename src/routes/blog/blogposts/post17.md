@@ -1,5 +1,5 @@
 ---
-title: Managing Processes in Bash
+title: Managing Processes in Linux CLI
 date: '2023-10-29'
 ---
 
@@ -11,7 +11,7 @@ Recently wondered whether a single docker container is able to run multiple exec
 
 TL;DR: Yes, you can do so by appending `&` to your commands (except the last command) in `CMD` or `ENTRYPOINT` or `.sh` scripts.
 
-_note: the concepts are only for Linux like OSes, Windows will have its own alternatives that are different_
+_note: the concepts are only for Linux, Windows will have its own alternatives that are different_
 
 ## Concepts
 
@@ -79,6 +79,36 @@ jobs # sleep 5 continues running
 
 In the case where you've already ran a program and it is blocking, it is possible to stop it by using `Ctrl+Z` which sends SIGTSTP. Then you can either continue running the program in the foreground using `fg JOBSPEC` or in the background using `bg JOBSPEC`.
 
+One final note about using these in Docker. Docker containers will exit when there are no more foreground processes that are running (i.e. not blocked).
+So if you run all commands/jobs/processes in the background using `&`, the container will just exit immediately.
+To resolve this, either use `wait` to block until all jobs are completed, or don't `&` the last command, depending on your use case.
+
+## Redirection
+
+Small detour on redirecting stdin/out/err, so that instead of stdout printing to terminal, you can redirect to print into a file, or stdin reading in from terminal, you can read in from a file.
+
+When linux system does any reading or writing, it needs a _file descriptor_ to identify where it is reading/writing from, which are basically just non negative integers.
+
+There are 3 standard file descriptors:
+
+- 0 for stdin
+- 1 for stdout
+- 2 for stderr
+
+If there are readable/writable files opened, more file descriptors will be added sequentially (`ls -l /proc/$$/fd` to see list of file descriptors)
+
+To redirect, we use the three operators below:
+
+- `<`: redirect input
+- `>`: redirect output, default LHS file descriptor is 1
+- `>>`: redirect and append, default LHS file descriptor is 1
+
+Use `file_descriptor>filename` to redirect to a file, e.g. `1>log.txt` (same as `>log.txt`) to redirect stdout to log.txt.
+
+Use `file_descriptor>&file_descriptor` to redirect to another file descriptor from LHS to RHS (note the `&` in RHS) e.g. `2>&1` redirects file descriptor `2` which is stderr to stdout.
+
+Use `sort < file_to_sort.txt` to redirect `file_to_sort.txt` into `sort`'s stdin.
+
 ## Commands Summary
 
 - `&`: Runs preceding command in the background
@@ -88,36 +118,19 @@ In the case where you've already ran a program and it is blocking, it is possibl
 - `bg`: Continues a job in the background
 - `fg`: Continues a job in the foreground
 - `wait`: Wait for all jobs to finish (i.e. blocks until all jobs are finished)
-- `disown`
-- `nohup`
+- `disown`: Remove job(s) from the jobs list, process still connected to terminal
+- `nohup`: Separates the process from the terminal by closing stdin, redirecting stdin and stdout into a file `nohup.out`, prevents SIGHUP from reaching process, but job is still under job list
 - `&&`: Runs RHS command only if LHS succeeds
 - `||`: Runs RHS command only if LHS fails
 - `;`: Runs RHS command after LHS, regardless whether it succeeds or fails
-
-### Redirection
-
-File descriptors are:
-0 for stdin
-1 for stdout
-2 for stderr
-3 to 9 are spares
-
-`file_descriptor>filename`
-`file_descriptor>&file_descriptor`
-`<`: redirect input
-`>`: redirect output
-`>>`: redirect and append
-
-Reference job spec with `%n` where `n` is the `JOBSPEC` number from `jobs` command.
 
 ## Useful idioms
 
 Send a signal to all jobs: `kill $(jobs -p)` or `jobs -p | xargs kill`
 
-Run in background, and continue running even when you exit the shell/terminal:
-
 ## References
 
 - [glibc docs describing signals](https://www.gnu.org/software/libc/manual/html_node/Standard-Signals.html)
 - [man 7 pages on signals](https://man7.org/linux/man-pages/man7/signal.7.html)
-- [SO question](https://stackoverflow.com/questions/4042201/how-does-sigint-relate-to-the-other-termination-signals-such-as-sigterm-sigquit)
+- [SO question on SIGTERM and SIGQUIT](https://stackoverflow.com/questions/4042201/how-does-sigint-relate-to-the-other-termination-signals-such-as-sigterm-sigquit)
+- [SO question on disown and nohup](https://unix.stackexchange.com/questions/3886/difference-between-nohup-disown-and)
