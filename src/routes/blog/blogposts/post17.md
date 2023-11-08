@@ -37,30 +37,62 @@ Imagine the OS is executing the running process' code line by line, and at a cer
 
 Common signals:
 
-    - SIGKILL
-    - SIGTERM
-    - SIGQUIT (`Ctrl+\`)
+- SIGKILL Forcefully stops the process (cannot be caught by process)
+- SIGTERM (Default signal used by `kill` command) Terminates the process and runs any handlers, usually sent from `kill`
+- SIGINT (`Ctrl+C`) Terminates the process and runs any handlers, usually sent from keyboard
+- SIGQUIT (`Ctrl+\`) Same as SIGINT, but with additional error dump.
 
-    - SIGINT (Interrupt, `Ctrl+C`)
-    - SIGHUP
-    - SIGTSTP (Terminal Stop, `Ctrl+Z`)
-    - SIGSTOP
-    - SIGCONT
+- SIGHUP Indicates that terminal is disconnected, usually sent automatically when terminal emulator is closed
 
-## Commands
+- SIGSTOP Stop the process, the process is _paused_ and can be resumed, and this signal cannot be caught by process
+- SIGTSTP (`Ctrl+Z`) Stop the process (i.e. paused) from the terminal, can be caught by the process to run handlers
+- SIGCONT Resumes the stopped process
 
-`kill`: Sends specified signal to specified job/process
-`jobs`: List all jobs
-`ps`: List all processes
-`bg`: Continues a job in the background
-`fg`: Continues a job in the foreground
-`wait`: Wait for all jobs to finish (i.e. blocks until all jobs are finished)
-`disown`
-`nohup`
-`&`: Runs preceding command in the background
-`&&`: Runs RHS command only if LHS succeeds
-`||`: Runs RHS command only if LHS fails
-`;`: Runs RHS command after LHS, regardless whether it succeeds or fails
+## Running multiple commands
+
+To run multiple commands, append commands using `&`, for example: `sleep 5 & echo hello`.
+`&` sends the preceding command into the background as a job, and also print out the JOBSPEC (aka job number) and PID (aka process ID) in the form `[JOBSPEC] PID`.
+To see the list of running jobs, use `jobs` command, which will show the JOBSPEC and the corresponding command.
+
+Note that you can send all commands to the background: `sleep 5 & sleep 6 &`, which will unblock your terminal immediately.
+To wait for all jobs to finish (e.g. when using in scripts), just execute `wait`, and it will block until all jobs are finished.
+
+If there is a long running job that you want to terminate, send SIGTERM signal with `kill %n` where `n` is the JOBSPEC.
+
+```bash
+sleep 5 & sleep 6 &
+kill %2 # terminate JOBSPEC 2 which is 'sleep 6'
+jobs
+# shows sleep 5 is running and sleep 6 is terminated
+```
+
+If there is a long running job that you want to pause, send the SIGTSTP signal, which will pause the process.
+To resume, send SIGCONT to the stopped job.
+
+```bash
+sleep 5 & sleep 6 &
+kill -SIGSTOP %1 # send SIGSTOP to JOBSPEC 1
+jobs # sleep 5 is stopped, sleep 6 is still running
+kill -SIGCONT %1
+jobs # sleep 5 continues running
+```
+
+In the case where you've already ran a program and it is blocking, it is possible to stop it by using `Ctrl+Z` which sends SIGTSTP. Then you can either continue running the program in the foreground using `fg JOBSPEC` or in the background using `bg JOBSPEC`.
+
+## Commands Summary
+
+- `&`: Runs preceding command in the background
+- `kill`: Sends specified signal to specified job/process, defaults to SIGTERM
+- `jobs`: List all jobs
+- `ps`: List all processes
+- `bg`: Continues a job in the background
+- `fg`: Continues a job in the foreground
+- `wait`: Wait for all jobs to finish (i.e. blocks until all jobs are finished)
+- `disown`
+- `nohup`
+- `&&`: Runs RHS command only if LHS succeeds
+- `||`: Runs RHS command only if LHS fails
+- `;`: Runs RHS command after LHS, regardless whether it succeeds or fails
 
 ### Redirection
 
@@ -83,3 +115,9 @@ Reference job spec with `%n` where `n` is the `JOBSPEC` number from `jobs` comma
 Send a signal to all jobs: `kill $(jobs -p)` or `jobs -p | xargs kill`
 
 Run in background, and continue running even when you exit the shell/terminal:
+
+## References
+
+- [glibc docs describing signals](https://www.gnu.org/software/libc/manual/html_node/Standard-Signals.html)
+- [man 7 pages on signals](https://man7.org/linux/man-pages/man7/signal.7.html)
+- [SO question](https://stackoverflow.com/questions/4042201/how-does-sigint-relate-to-the-other-termination-signals-such-as-sigterm-sigquit)
