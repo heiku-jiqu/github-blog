@@ -11,8 +11,10 @@ This article summarises some basic considerations on how to choose the number of
 
 TL;DR:
 Usually bottlenecked by Consumer processing time.
-Throughput: ((processing time for one message in seconds x number of msgs per second) / num of partitions) << 1
-Latency: number of partitions < 100 x replication factor
+
+Throughput: ((processing time for one message in seconds x number of msgs per second) / num of partitions) &amp;lt;&amp;lt; 1
+
+Latency: number of partitions &amp;lt; 100 x replication factor
 
 ## Partition Number
 
