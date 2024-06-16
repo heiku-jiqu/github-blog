@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="/github-blog/favicon.png" />
+		<meta name="viewport" content="width=device-width" />
+		<meta http-equiv="content-security-policy" content=""><link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-gruvbox-light.min.css" rel="stylesheet" data-svelte="svelte-uyunbu">
+	<link href="/github-blog/_app/immutable/assets/_layout-ff0af52f.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-8339860a.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-39c5cc75.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-6a9f1aaf.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-b22782fb.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4a62d802.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-40896f16.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-e2b04d55.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-bc28244c.js">
+	</head>
+	<body>
+		<div>
+
+
+
+
+<header class="svelte-qm05bo"><a href="/github-blog/" class="svelte-qm05bo">Home</a>
+
+	<nav><ul class="svelte-qm05bo"><li><a href="/github-blog/blog" class="svelte-qm05bo">Blog</a></li>
+			<li><a href="/github-blog/about" class="svelte-qm05bo">About</a></li></ul></nav>
+</header>
+<div><div class="grid-container svelte-14l03dd"><div class="sides"></div>
+		<div class="article svelte-14l03dd"><h1>Choosing Kafka Partition Number and Replication Factor</h1>
+<h2>Introduction</h2>
+<p>This article summarises some basic considerations on how to choose the number of partitions in a Kafka Topic and the replication factor of the Topic.</p>
+<p>TL;DR:
+Usually bottlenecked by Consumer processing time.</p>
+<p>Throughput: ((processing time for one message in seconds x number of msgs per second) / num of partitions) &lt;&lt; 1</p>
+<p>Latency: number of partitions &lt; 100 x replication factor</p>
+<h2>Partition Number</h2>
+<h3>Concepts</h3>
+<p>Number of partitions also improves write through put in producer and broker side, because writes can be done in parallel.
+But writes are already very high throughput, so usually it is not a problem.</p>
+<p>Number of partitions determine the maximum number of parallel consumers that can consume the topic.
+If topic only has 2 partitions, then only maximum of 2 consumers within a consumer group can read the partition (the rest will stay idle).</p>
+<p>High concentration of partitions to brokers ratio will increase latency, because replication by follower is done on single thread, and consumers can only see messages when it has been commited (replicated &gt; min in sync replicas).
+Replicating 1000 partitions from one broker to another can add about 20 ms latency, which implies that the end-to-end latency is <em>at least</em> 20 ms.
+But increasing</p>
+<h2>Replication Factor</h2>
+<h3>Concepts</h3>
+<p>Partitions within a topic are replicated to other broker nodes. Each partition will have a partition leader, and the rest are partition followers.
+Replication Factor determines how many broker nodes have a copy of the partition.
+For example, a Replication Factor of 3 means that there will be 1 broker who is assigned the partition leader, and there will be 2 other brokers who are following the writes of the partition leader.</p>
+<h2>Min in sync replicas</h2>
+<p>A write to a Kafka partition is not considered committed until all in-sync replicas have received the write.</p>
+<p>Consumers receive only committed messages (i.e. only receive messages that has been successfully received by all in-sync replicas), and will never see a message that could be lost.</p>
+<p>Since Consumers can only see messages after all in-sync replicas have received, it means added in sync replicas worsens latency (and availability because writes will fail if not enough online ISRs), but improves durability.</p>
+<h2>Resources</h2>
+<p><a href="https://www.conduktor.io/kafka/kafka-topics-choosing-the-replication-factor-and-partitions-count/" rel="nofollow">Conduktor Guide on Partition Count and Replication Factor</a>
+<a href="https://www.confluent.io/blog/how-choose-number-topics-partitions-kafka-cluster/" rel="nofollow">Confluent Guide on Partition Count</a>
+<a href="https://stackoverflow.com/questions/50271677/how-to-choose-the-no-of-partitions-for-a-kafka-topic" rel="nofollow">Stackoverflow Question on Partition Count</a>
+<a href="https://engineering.linkedin.com/kafka/benchmarking-apache-kafka-2-million-writes-second-three-cheap-machines" rel="nofollow">LinkedIn Engineering on Kafka Benchmark</a>
+<a href="https://developer.confluent.io/learn/kafka-performance/" rel="nofollow">Confluent Kafka Performance</a>
+<a href="https://docs.confluent.io/kafka/design/replication.html" rel="nofollow">Confluent Replication Committed Message Guarantees</a></p></div>
+		<div class="sides"></div></div></div>
+
+
+		<script type="module" data-sveltekit-hydrate="bc47a8">
+		import { start } from "/github-blog/_app/immutable/start-8339860a.js";
+
+		start({
+			env: {},
+			hydrate: {
+				status: 200,
+				error: null,
+				node_ids: [0, 5],
+				params: {blogpost:"post18"},
+				routeId: "blog/[blogpost]",
+				data: (function(a){return [a,a]}(null)),
+				form: null
+			},
+			paths: {"base":"/github-blog","assets":"/github-blog"},
+			target: document.querySelector('[data-sveltekit-hydrate="bc47a8"]').parentNode,
+			trailing_slash: "never"
+		});
+	</script>
+	</div>
+	</body>
+</html>

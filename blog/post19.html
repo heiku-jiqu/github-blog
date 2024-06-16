@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="/github-blog/favicon.png" />
+		<meta name="viewport" content="width=device-width" />
+		<meta http-equiv="content-security-policy" content=""><link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-gruvbox-light.min.css" rel="stylesheet" data-svelte="svelte-uyunbu">
+	<link href="/github-blog/_app/immutable/assets/_layout-ff0af52f.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/_page-5446419d.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/post2-596b4ea1.css" rel="stylesheet">
+	<link href="/github-blog/_app/immutable/assets/post7-2631a1d6.css" rel="stylesheet">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/start-8339860a.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/preload-helper-aa6bc0ce.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-39c5cc75.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/singletons-6a9f1aaf.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/paths-6cd3a76e.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/_layout.svelte-b22782fb.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/index-4a62d802.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/_layout.js-edc6bf67.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_layout-a4fc2e89.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/components/pages/blog/_blogpost_/_page.svelte-40896f16.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/modules/pages/blog/_blogpost_/_page.js-e2b04d55.js">
+	<link rel="modulepreload" href="/github-blog/_app/immutable/chunks/_page-bc28244c.js">
+	</head>
+	<body>
+		<div>
+
+
+
+
+<header class="svelte-qm05bo"><a href="/github-blog/" class="svelte-qm05bo">Home</a>
+
+	<nav><ul class="svelte-qm05bo"><li><a href="/github-blog/blog" class="svelte-qm05bo">Blog</a></li>
+			<li><a href="/github-blog/about" class="svelte-qm05bo">About</a></li></ul></nav>
+</header>
+<div><div class="grid-container svelte-14l03dd"><div class="sides"></div>
+		<div class="article svelte-14l03dd"><h1>Finite State Machine (State Design Pattern)</h1>
+<h2>Background</h2>
+<p>This post walks through how to go about implementing Finite State Machine.</p>
+<h2>What is Finite State Machine</h2>
+<p>Finite State Machine (aka State Machine, aka State Design Pattern) is useful pattern in programming to translate/model real world in your program where the <em>thing</em> you’re trying to model goes through state transitions and behaves differently in its state.
+As the name would suggest, the <em>thing</em> has a finite number of states that it can exist in.
+The state is also <em>internal</em> to the <em>thing</em>, i.e. not visible to clients/users interacting with the <em>thing</em>.</p>
+<p>We come across this type of scenario a lot in the real world.
+Most control interface (e.g. remote control, media player controls, vending machine controls) can be thought of in Finite State Machine manner.</p>
+<ul><li>For remote control, pressing the “up” button could mean changing channel, or it could mean navigating the settings menu, depending on what <em>state</em> the TV is in.</li>
+<li>For media player, pressing the “play/pause” button could mean starting playback if no music is playing, or pausing if music is already playing.</li>
+<li>For vending machine, pressing the dispense drink no. 1 button could dispense drink no. 1 if there is enough credits, or do nothing if there is not enough credits.</li></ul>
+<h2>State Design Pattern</h2>
+<p>Usually it is quite intuitive to know when you need to program a state machine.
+The key characteristics of a state machine problem are the following:</p>
+<ul><li>There are a number of states that the <em>thing</em> can exist in</li>
+<li>The <em>thing</em> behaves differently based on what state it is in</li>
+<li>The different states may/may not transition to each other depending on what state it is currently in, and the different rules that apply for different states.</li>
+<li>Interactions with different states are mostly similar<ul><li>In remote control example, no matter what state the TV is in, we always interact with up/down/left/right buttons etc.</li></ul></li></ul>
+<p>In addition, let’s say you are not designing from the ground up, but refactoring.
+Then below are the code smells that indicate a state design pattern might be good:</p>
+<ul><li>There are a lot of conditionals to change behaviour based on the object’s current values.</li>
+<li>When the conditionals/behaviour of each state changes frequently.</li></ul>
+<h2>How to implement</h2>
+<ol><li>Map out the state transition diagram<ol><li>Draw all the states that your thing can exist in as nodes</li>
+<li>For each node, draw and label all the transitions that can happen from this state to another state; these are the outgoing edges.</li></ol></li>
+<li>Sanity check: are the edge labels (state transition names) similar across all nodes?<ul><li>If each node has a unique set of transition names and don’t overlap with other node’s transition names, maybe this pattern is not suited, or you’re thinking in the wrong abstraction!</li>
+<li><strong>Think of edge labels as how a user/client would interact with your thing, not how the internal state will change.</strong></li></ul></li>
+<li>Create a <code>State</code> interface that has methods for all the unique state transitions.</li>
+<li>Create a <code>Context</code> object that has a field pointing to a concrete state, and a method called <code>changeState(newState)</code> that changes <code>Context</code>’s internal concrete state to <code>newState</code> when called. This <code>Context</code> object also implements <code>State</code> interface, but all the methods will be forwarded/delegated to the internal concrete state.<ul><li>This object is what users/clients will interact with.</li>
+<li>The state of this object changes by changing the internal concrete state field.</li></ul></li>
+<li>For each node in your state diagram, create a concrete class/type that implements the <code>State</code> interface, and also has a field pointing to the <code>Context</code> object.<ul><li>Each concrete state’s implementation of the <code>State</code> interface can then have its own isolated business logic and behaviour and do <code>Context.changeState(newState)</code> when appropriate.</li>
+<li>This means concrete states are aware of each other.</li>
+<li>Not all methods in all states need to initiate state transition, or even do anything. For example, in vending machine no credit state, pressing the “dispense drink” button should do nothing!</li></ul></li>
+<li>To use, create a <code>Context</code> object that initialises with an initial concrete state. Then call the <code>State</code> interface methods as needed.</li></ol></div>
+		<div class="sides"></div></div></div>
+
+
+		<script type="module" data-sveltekit-hydrate="85gf0">
+		import { start } from "/github-blog/_app/immutable/start-8339860a.js";
+
+		start({
+			env: {},
+			hydrate: {
+				status: 200,
+				error: null,
+				node_ids: [0, 5],
+				params: {blogpost:"post19"},
+				routeId: "blog/[blogpost]",
+				data: (function(a){return [a,a]}(null)),
+				form: null
+			},
+			paths: {"base":"/github-blog","assets":"/github-blog"},
+			target: document.querySelector('[data-sveltekit-hydrate="85gf0"]').parentNode,
+			trailing_slash: "never"
+		});
+	</script>
+	</div>
+	</body>
+</html>
