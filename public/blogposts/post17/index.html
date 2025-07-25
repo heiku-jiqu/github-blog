@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Managing Processes in Linux CLI | heiku-jiqu</title>
+<meta name="keywords" content="">
+<meta name="description" content="{title}
+Introduction
+Recently wondered whether a single docker container is able to run multiple executables, hence went to dig deeper into how Linux background processes work.
+TL;DR: Yes, you can do so by appending &amp; to your commands (except the last command) in CMD or ENTRYPOINT or .sh scripts.
+note: the concepts are only for Linux, Windows will have its own alternatives that are different
+Concepts
+Processes
+Every running program in Linux is a process.
+Every process has an associated PID.">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/blogposts/post17/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.36819bea596090d8b48cf10d9831382996197aa7e4fc86f792f7c08c9ca4d23b.css" integrity="sha256-NoGb6llgkNi0jPENmDE4KZYZeqfk/Ib3kvfAjJyk0js=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/blogposts/post17/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="heiku-jiqu (Alt + H)">heiku-jiqu</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Managing Processes in Linux CLI
+    </h1>
+    <div class="post-meta"><span title='2023-10-29 00:00:00 +0000 UTC'>October 29, 2023</span>
+
+</div>
+  </header> 
+  <div class="post-content"><h1 id="title">{title}<a hidden class="anchor" aria-hidden="true" href="#title">#</a></h1>
+<h2 id="introduction">Introduction<a hidden class="anchor" aria-hidden="true" href="#introduction">#</a></h2>
+<p>Recently wondered whether a single docker container is able to run multiple executables, hence went to dig deeper into how Linux background processes work.</p>
+<p>TL;DR: Yes, you can do so by appending <code>&amp;</code> to your commands (except the last command) in <code>CMD</code> or <code>ENTRYPOINT</code> or <code>.sh</code> scripts.</p>
+<p><em>note: the concepts are only for Linux, Windows will have its own alternatives that are different</em></p>
+<h2 id="concepts">Concepts<a hidden class="anchor" aria-hidden="true" href="#concepts">#</a></h2>
+<h3 id="processes">Processes<a hidden class="anchor" aria-hidden="true" href="#processes">#</a></h3>
+<p>Every running program in Linux is a process.
+Every process has an associated <code>PID</code>.</p>
+<h3 id="jobs">Jobs<a hidden class="anchor" aria-hidden="true" href="#jobs">#</a></h3>
+<p>A job is the group of processes that runs when you run a command in the shell
+(can be 1 process, can be multiple processes if you run complex commands).
+Every job has an associated <code>JOBSPEC</code>.</p>
+<h3 id="signals">Signals<a hidden class="anchor" aria-hidden="true" href="#signals">#</a></h3>
+<p>Every running process can receive &ldquo;signals&rdquo; that is sent from another process, through the OS and to the running process.</p>
+<p>These signals can be caught by the running program and handled accordingly (handlers can be written by programmers).</p>
+<p>Whenever the OS sends a signal to the running process, the OS will interrupt the running process&rsquo; flow of execution and ask it to handle the signal.
+Imagine the OS is executing the running process&rsquo; code line by line, and at a certain line the OS suddenly &ldquo;drops&rdquo; the execution and ask the process&rsquo; code to handle the signal.</p>
+<p>Common signals:</p>
+<ul>
+<li>
+<p>SIGKILL Forcefully stops the process (cannot be caught by process)</p>
+</li>
+<li>
+<p>SIGTERM (Default signal used by <code>kill</code> command) Terminates the process and runs any handlers, usually sent from <code>kill</code></p>
+</li>
+<li>
+<p>SIGINT (<code>Ctrl+C</code>) Terminates the process and runs any handlers, usually sent from keyboard</p>
+</li>
+<li>
+<p>SIGQUIT (<code>Ctrl+\</code>) Same as SIGINT, but with additional error dump.</p>
+</li>
+<li>
+<p>SIGHUP Indicates that terminal is disconnected, usually sent automatically when terminal emulator is closed</p>
+</li>
+<li>
+<p>SIGSTOP Stop the process, the process is <em>paused</em> and can be resumed, and this signal cannot be caught by process</p>
+</li>
+<li>
+<p>SIGTSTP (<code>Ctrl+Z</code>) Stop the process (i.e. paused) from the terminal, can be caught by the process to run handlers</p>
+</li>
+<li>
+<p>SIGCONT Resumes the stopped process</p>
+</li>
+</ul>
+<h2 id="running-multiple-commands">Running multiple commands<a hidden class="anchor" aria-hidden="true" href="#running-multiple-commands">#</a></h2>
+<p>To run multiple commands, append commands using <code>&amp;</code>, for example: <code>sleep 5 &amp; echo hello</code>.
+<code>&amp;</code> sends the preceding command into the background as a job, and also print out the JOBSPEC (aka job number) and PID (aka process ID) in the form <code>[JOBSPEC] PID</code>.
+To see the list of running jobs, use <code>jobs</code> command, which will show the JOBSPEC and the corresponding command.</p>
+<p>Note that you can send all commands to the background: <code>sleep 5 &amp; sleep 6 &amp;</code>, which will unblock your terminal immediately.
+To wait for all jobs to finish (e.g. when using in scripts), just execute <code>wait</code>, and it will block until all jobs are finished.</p>
+<p>If there is a long running job that you want to terminate, send SIGTERM signal with <code>kill %n</code> where <code>n</code> is the JOBSPEC.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sleep <span style="color:#ae81ff">5</span> &amp; sleep <span style="color:#ae81ff">6</span> &amp;
+</span></span><span style="display:flex;"><span>kill %2 <span style="color:#75715e"># terminate JOBSPEC 2 which is &#39;sleep 6&#39;</span>
+</span></span><span style="display:flex;"><span>jobs
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># shows sleep 5 is running and sleep 6 is terminated</span>
+</span></span></code></pre></div><p>If there is a long running job that you want to pause, send the SIGTSTP signal, which will pause the process.
+To resume, send SIGCONT to the stopped job.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sleep <span style="color:#ae81ff">5</span> &amp; sleep <span style="color:#ae81ff">6</span> &amp;
+</span></span><span style="display:flex;"><span>kill -SIGSTOP %1 <span style="color:#75715e"># send SIGSTOP to JOBSPEC 1</span>
+</span></span><span style="display:flex;"><span>jobs <span style="color:#75715e"># sleep 5 is stopped, sleep 6 is still running</span>
+</span></span><span style="display:flex;"><span>kill -SIGCONT %1
+</span></span><span style="display:flex;"><span>jobs <span style="color:#75715e"># sleep 5 continues running</span>
+</span></span></code></pre></div><p>In the case where you&rsquo;ve already ran a program and it is blocking, it is possible to stop it by using <code>Ctrl+Z</code> which sends SIGTSTP. Then you can either continue running the program in the foreground using <code>fg JOBSPEC</code> or in the background using <code>bg JOBSPEC</code>.</p>
+<p>One final note about using these in Docker. Docker containers will exit when there are no more foreground processes that are running (i.e. not blocked).
+So if you run all commands/jobs/processes in the background using <code>&amp;</code>, the container will just exit immediately.
+To resolve this, either use <code>wait</code> to block until all jobs are completed, or don&rsquo;t <code>&amp;</code> the last command, depending on your use case.</p>
+<h2 id="redirection">Redirection<a hidden class="anchor" aria-hidden="true" href="#redirection">#</a></h2>
+<p>Small detour on redirecting stdin/out/err, so that instead of stdout printing to terminal, you can redirect to print into a file, or stdin reading in from terminal, you can read in from a file.</p>
+<p>When linux system does any reading or writing, it needs a <em>file descriptor</em> to identify where it is reading/writing from, which are basically just non negative integers.</p>
+<p>There are 3 standard file descriptors:</p>
+<ul>
+<li>0 for stdin</li>
+<li>1 for stdout</li>
+<li>2 for stderr</li>
+</ul>
+<p>If there are readable/writable files opened, more file descriptors will be added sequentially (<code>ls -l /proc/$$/fd</code> to see list of file descriptors)</p>
+<p>To redirect, we use the three operators below:</p>
+<ul>
+<li><code>&lt;</code>: redirect input</li>
+<li><code>&gt;</code>: redirect output, default LHS file descriptor is 1</li>
+<li><code>&gt;&gt;</code>: redirect and append, default LHS file descriptor is 1</li>
+</ul>
+<p>Use <code>file_descriptor&gt;filename</code> to redirect to a file, e.g. <code>1&gt;log.txt</code> (same as <code>&gt;log.txt</code>) to redirect stdout to log.txt.</p>
+<p>Use <code>file_descriptor&gt;&amp;file_descriptor</code> to redirect to another file descriptor from LHS to RHS (note the <code>&amp;</code> in RHS) e.g. <code>2&gt;&amp;1</code> redirects file descriptor <code>2</code> which is stderr to stdout.</p>
+<p>Use <code>sort &lt; file_to_sort.txt</code> to redirect <code>file_to_sort.txt</code> into <code>sort</code>&rsquo;s stdin.</p>
+<h2 id="commands-summary">Commands Summary<a hidden class="anchor" aria-hidden="true" href="#commands-summary">#</a></h2>
+<ul>
+<li><code>&amp;</code>: Runs preceding command in the background</li>
+<li><code>kill</code>: Sends specified signal to specified job/process, defaults to SIGTERM</li>
+<li><code>jobs</code>: List all jobs</li>
+<li><code>ps</code>: List all processes</li>
+<li><code>bg</code>: Continues a job in the background</li>
+<li><code>fg</code>: Continues a job in the foreground</li>
+<li><code>wait</code>: Wait for all jobs to finish (i.e. blocks until all jobs are finished)</li>
+<li><code>disown</code>: Remove job(s) from the jobs list, process still connected to terminal</li>
+<li><code>nohup</code>: Separates the process from the terminal by closing stdin, redirecting stdin and stdout into a file <code>nohup.out</code>, prevents SIGHUP from reaching process, but job is still under job list</li>
+<li><code>&amp;&amp;</code>: Runs RHS command only if LHS succeeds</li>
+<li><code>||</code>: Runs RHS command only if LHS fails</li>
+<li><code>;</code>: Runs RHS command after LHS, regardless whether it succeeds or fails</li>
+</ul>
+<h2 id="useful-idioms">Useful idioms<a hidden class="anchor" aria-hidden="true" href="#useful-idioms">#</a></h2>
+<p>Send a signal to all jobs: <code>kill $(jobs -p)</code> or <code>jobs -p | xargs kill</code></p>
+<h2 id="references">References<a hidden class="anchor" aria-hidden="true" href="#references">#</a></h2>
+<ul>
+<li><a href="https://www.gnu.org/software/libc/manual/html_node/Standard-Signals.html">glibc docs describing signals</a></li>
+<li><a href="https://man7.org/linux/man-pages/man7/signal.7.html">man 7 pages on signals</a></li>
+<li><a href="https://stackoverflow.com/questions/4042201/how-does-sigint-relate-to-the-other-termination-signals-such-as-sigterm-sigquit">SO question on SIGTERM and SIGQUIT</a></li>
+<li><a href="https://unix.stackexchange.com/questions/3886/difference-between-nohup-disown-and">SO question on disown and nohup</a></li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="http://localhost:1313/">heiku-jiqu</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
