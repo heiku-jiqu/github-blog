@@ -10,7 +10,7 @@
 <meta name="description" content="Blogposts - heiku-jiqu">
 <meta name="author" content="">
 <link rel="canonical" href="http://localhost:1313/blogposts/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.36819bea596090d8b48cf10d9831382996197aa7e4fc86f792f7c08c9ca4d23b.css" integrity="sha256-NoGb6llgkNi0jPENmDE4KZYZeqfk/Ib3kvfAjJyk0js=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.1181cd8b0bb73a402543b6572f364e3d58b49565c15381eff97163ecf3da1e60.css" integrity="sha256-EYHNiwu3OkAlQ7ZXLzZOPVi0lWXBU4Hv&#43;XFj7PPaHmA=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
@@ -28,44 +28,12 @@
         }
 
     </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --code-block-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
 </noscript>
 </head>
 
 <body class="list" id="top">
 <script>
     if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
         document.body.classList.add('dark');
     }
 
@@ -99,11 +67,26 @@
             </div>
         </div>
         <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/archive/" title="archive">
+                    <span>archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="tags">
+                    <span>tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="search (Alt &#43; /)" accesskey=/>
+                    <span>search</span>
+                </a>
+            </li>
         </ul>
     </nav>
 </header>
 <main class="main"> 
-<header class="page-header">
+<header class="page-header"><div class="breadcrumbs"><a href="http://localhost:1313/">Home</a></div>
   <h1>
     Blogposts
   </h1>
@@ -119,7 +102,7 @@
 What is Finite State Machine Finite State Machine (aka State Machine, aka State Design Pattern) is useful pattern in programming to translate/model real world in your program where the thing you’re trying to model goes through state transitions and behaves differently in its state. As the name would suggest, the thing has a finite number of states that it can exist in. The state is also internal to the thing, i.e. not visible to clients/users interacting with the thing.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2024-06-16 00:00:00 +0000 UTC'>June 16, 2024</span></footer>
+  <footer class="entry-footer"><span title='2024-06-16 00:00:00 +0000 UTC'>June 16, 2024</span>&nbsp;·&nbsp;4 min</footer>
   <a class="entry-link" aria-label="post link to Finite State Machine (State Design Pattern)" href="http://localhost:1313/blogposts/post19/"></a>
 </article>
 
@@ -136,7 +119,7 @@ Latency: number of partitions &amp;lt; 100 x replication factor
 Partition Number Concepts Number of partitions also improves write through put in producer and broker side, because writes can be done in parallel. But writes are already very high throughput, so usually it is not a problem.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2023-11-16 00:00:00 +0000 UTC'>November 16, 2023</span></footer>
+  <footer class="entry-footer"><span title='2023-11-16 00:00:00 +0000 UTC'>November 16, 2023</span>&nbsp;·&nbsp;2 min</footer>
   <a class="entry-link" aria-label="post link to Choosing Kafka Partition Number and Replication Factor" href="http://localhost:1313/blogposts/post18/"></a>
 </article>
 
@@ -152,7 +135,7 @@ note: the concepts are only for Linux, Windows will have its own alternatives th
 Concepts Processes Every running program in Linux is a process. Every process has an associated PID.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2023-10-29 00:00:00 +0000 UTC'>October 29, 2023</span></footer>
+  <footer class="entry-footer"><span title='2023-10-29 00:00:00 +0000 UTC'>October 29, 2023</span>&nbsp;·&nbsp;5 min</footer>
   <a class="entry-link" aria-label="post link to Managing Processes in Linux CLI" href="http://localhost:1313/blogposts/post17/"></a>
 </article>
 
@@ -165,7 +148,7 @@ Concepts Processes Every running program in Linux is a process. Every process ha
     <p>{title} Background After extensively using Neovim, and going down the bottomless rabbit hole of customizations (Telescope, Treesitter, LSPs, Formatters, Themes, Fonts), I sometimes find myself scratching my head how they all integrate with the terminal and shell. Eventually, it dawned on me that these are actually two different things, although most of the time they are used interchangeably. This post will explain what the differences are, and introduce some backstory on how they came to be, which will hopefully make more sense after reading through the post.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2023-10-20 00:00:00 +0000 UTC'>October 20, 2023</span></footer>
+  <footer class="entry-footer"><span title='2023-10-20 00:00:00 +0000 UTC'>October 20, 2023</span>&nbsp;·&nbsp;3 min</footer>
   <a class="entry-link" aria-label="post link to Terminal, Console, Shell" href="http://localhost:1313/blogposts/post16/"></a>
 </article>
 
@@ -179,7 +162,7 @@ Concepts Processes Every running program in Linux is a process. Every process ha
 Goals of Cryptography Before diving into many of the cryptographic terms/acronyms used, it is useful to have a general overview of cryptography.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2023-06-23 00:00:00 +0000 UTC'>June 23, 2023</span></footer>
+  <footer class="entry-footer"><span title='2023-06-23 00:00:00 +0000 UTC'>June 23, 2023</span>&nbsp;·&nbsp;11 min</footer>
   <a class="entry-link" aria-label="post link to Cryptic Cryptography Codex" href="http://localhost:1313/blogposts/post15/"></a>
 </article>
 
@@ -194,7 +177,7 @@ The Three Powers of Indexing B-Tree Traversal Data Clustering Pipelined Sorting 
 An index is (usually) a separate data structure maintained by the database. In other words, it is redundant data that is stored/managed on top of the actual data that is stored/managed in your table. An index is powered by two key data structures: Doubly Linked List and B-Tree. One node corresponds to one database block.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2023-06-07 00:00:00 +0000 UTC'>June 7, 2023</span></footer>
+  <footer class="entry-footer"><span title='2023-06-07 00:00:00 +0000 UTC'>June 7, 2023</span>&nbsp;·&nbsp;13 min</footer>
   <a class="entry-link" aria-label="post link to Database Indexes and Query Optimization" href="http://localhost:1313/blogposts/post14/"></a>
 </article>
 
@@ -210,7 +193,7 @@ ArrayBuffer The most basic type is the ArrayBuffer.
 What is an ArrayBuffer? It is a reference to a fixed-length, contiguous (array of) memory area.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2023-05-09 00:00:00 +0000 UTC'>May 9, 2023</span></footer>
+  <footer class="entry-footer"><span title='2023-05-09 00:00:00 +0000 UTC'>May 9, 2023</span>&nbsp;·&nbsp;5 min</footer>
   <a class="entry-link" aria-label="post link to Javascript ArrayBuffer, TypedArray, DataView, TextDecoder, Blob, File" href="http://localhost:1313/blogposts/post13/"></a>
 </article>
 
@@ -224,7 +207,7 @@ What is an ArrayBuffer? It is a reference to a fixed-length, contiguous (array o
 Background When creating data pipelines, at the end you will usually want to write the processed data into a sink. Normally, the sink will be a file system, and supplying a path-like string to the API will suffice (e.g. pandas.DataFrame.to_csv(&#39;/path/to/file.csv&#39;)). However, when you instead want to send this data through a HTTP POST method, it doesn’t make sense to write the data to file system, then read back the data from file system and attach the data into your request.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2023-04-02 00:00:00 +0000 UTC'>April 2, 2023</span></footer>
+  <footer class="entry-footer"><span title='2023-04-02 00:00:00 +0000 UTC'>April 2, 2023</span>&nbsp;·&nbsp;2 min</footer>
   <a class="entry-link" aria-label="post link to Writing File to In-Memory Buffer in Python" href="http://localhost:1313/blogposts/post12/"></a>
 </article>
 
@@ -239,7 +222,7 @@ Overview This client module has a few main classes that make up the bulk of its 
 Producer: To produce events to the Kafka cluster Consumer: To read events from the Kafka cluster SchemaRegistryClient: To get metadata/schemas about the Kafka cluster/topics when you have a Kafka Schema Registry server Serializer / Deserializer: To serialize and deserialize messages sent/received from Kafka into/from formats like JSON, Protobuf, Avro, etc. AdminClient: To manage the Kafka cluster (e.g. creating topics, partitions, etc.) Producer The Producer class is used to send events to Kafka. It is responsible for:
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2023-03-15 00:00:00 +0000 UTC'>March 15, 2023</span></footer>
+  <footer class="entry-footer"><span title='2023-03-15 00:00:00 +0000 UTC'>March 15, 2023</span>&nbsp;·&nbsp;3 min</footer>
   <a class="entry-link" aria-label="post link to Kafka and Python" href="http://localhost:1313/blogposts/post11/"></a>
 </article>
 
@@ -253,7 +236,7 @@ Producer: To produce events to the Kafka cluster Consumer: To read events from t
 motivation After using R’s dplyr (and the entire tidyverse ecosystem) to manipulate dataframes for awhile, Panda’s API feels clunky in comparison. The main issue seems to be difficulty in chaining and composing operations. This tends to cause Pandas code to go against good software design principles, because it is difficult to break down larger chain of operations and also difficult to stitch smaller operations together. This has an added effect of making tests hard to write, as user written Pandas functions are often doing a lot of things at once.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2023-03-03 00:00:00 +0000 UTC'>March 3, 2023</span></footer>
+  <footer class="entry-footer"><span title='2023-03-03 00:00:00 +0000 UTC'>March 3, 2023</span>&nbsp;·&nbsp;5 min</footer>
   <a class="entry-link" aria-label="post link to Composable Pandas" href="http://localhost:1313/blogposts/post10/"></a>
 </article>
 <footer class="page-footer">

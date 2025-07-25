@@ -15,7 +15,7 @@ For example, if you were building an app that requires a specific OS and/or exte
 This allows different people/environments to run the app (container) with just Docker as its dependency, instead of having to deal with having the correct OS, correct external dependencies, etc.">
 <meta name="author" content="">
 <link rel="canonical" href="http://localhost:1313/blogposts/post8/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.36819bea596090d8b48cf10d9831382996197aa7e4fc86f792f7c08c9ca4d23b.css" integrity="sha256-NoGb6llgkNi0jPENmDE4KZYZeqfk/Ib3kvfAjJyk0js=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.1181cd8b0bb73a402543b6572f364e3d58b49565c15381eff97163ecf3da1e60.css" integrity="sha256-EYHNiwu3OkAlQ7ZXLzZOPVi0lWXBU4Hv&#43;XFj7PPaHmA=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
@@ -32,44 +32,12 @@ This allows different people/environments to run the app (container) with just D
         }
 
     </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --code-block-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
 </noscript>
 </head>
 
 <body class="" id="top">
 <script>
     if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
         document.body.classList.add('dark');
     }
 
@@ -103,6 +71,21 @@ This allows different people/environments to run the app (container) with just D
             </div>
         </div>
         <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/archive/" title="archive">
+                    <span>archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="tags">
+                    <span>tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="search (Alt &#43; /)" accesskey=/>
+                    <span>search</span>
+                </a>
+            </li>
         </ul>
     </nav>
 </header>
@@ -110,14 +93,129 @@ This allows different people/environments to run the app (container) with just D
 
 <article class="post-single">
   <header class="post-header">
-    
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/blogposts/">Blogposts</a></div>
     <h1 class="post-title entry-hint-parent">
       Docker Intro
     </h1>
-    <div class="post-meta"><span title='2022-12-01 00:00:00 +0000 UTC'>December 1, 2022</span>
+    <div class="post-meta"><span title='2022-12-01 00:00:00 +0000 UTC'>December 1, 2022</span>&nbsp;·&nbsp;14 min
 
 </div>
-  </header> 
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#title" aria-label="{title}">{title}</a><ul>
+                        
+                <li>
+                    <a href="#key-concepts" aria-label="key concepts">key concepts</a><ul>
+                        
+                <li>
+                    <a href="#docker-images" aria-label="Docker images">Docker images</a><ul>
+                        
+                <li>
+                    <a href="#dockerfile" aria-label="Dockerfile">Dockerfile</a></li></ul>
+                </li>
+                <li>
+                    <a href="#docker-containers" aria-label="Docker containers">Docker containers</a></li>
+                <li>
+                    <a href="#docker-registries" aria-label="Docker registries">Docker registries</a></li>
+                <li>
+                    <a href="#docker-daemon" aria-label="Docker daemon">Docker daemon</a></li>
+                <li>
+                    <a href="#docker-client" aria-label="Docker client">Docker client</a></li>
+                <li>
+                    <a href="#docker-compose" aria-label="Docker compose">Docker compose</a><ul>
+                        
+                <li>
+                    <a href="#difference-between-kubernetes" aria-label="Difference between Kubernetes">Difference between Kubernetes</a></li></ul>
+                </li></ul>
+                </li>
+                <li>
+                    <a href="#dockerfile-1" aria-label="Dockerfile">Dockerfile</a><ul>
+                        
+                <li>
+                    <a href="#commands" aria-label="Commands">Commands</a><ul>
+                        
+                <li>
+                    <a href="#from" aria-label="FROM">FROM</a></li>
+                <li>
+                    <a href="#run" aria-label="RUN">RUN</a></li>
+                <li>
+                    <a href="#cmd" aria-label="CMD">CMD</a></li>
+                <li>
+                    <a href="#entrypoint" aria-label="ENTRYPOINT">ENTRYPOINT</a></li>
+                <li>
+                    <a href="#copy" aria-label="COPY">COPY</a></li>
+                <li>
+                    <a href="#add" aria-label="ADD">ADD</a></li>
+                <li>
+                    <a href="#env" aria-label="ENV">ENV</a></li>
+                <li>
+                    <a href="#expose" aria-label="EXPOSE">EXPOSE</a></li>
+                <li>
+                    <a href="#volume" aria-label="VOLUME">VOLUME</a></li>
+                <li>
+                    <a href="#workdir" aria-label="WORKDIR">WORKDIR</a></li>
+                <li>
+                    <a href="#arg" aria-label="ARG">ARG</a></li>
+                <li>
+                    <a href="#onbuild" aria-label="ONBUILD">ONBUILD</a></li>
+                <li>
+                    <a href="#stopsignal" aria-label="STOPSIGNAL">STOPSIGNAL</a></li>
+                <li>
+                    <a href="#healthcheck" aria-label="HEALTHCHECK">HEALTHCHECK</a></li>
+                <li>
+                    <a href="#shell" aria-label="SHELL">SHELL</a></li>
+                <li>
+                    <a href="#user" aria-label="USER">USER</a></li>
+                <li>
+                    <a href="#label" aria-label="LABEL">LABEL</a></li></ul>
+                </li>
+                <li>
+                    <a href="#environment-replacement" aria-label="Environment Replacement">Environment Replacement</a></li>
+                <li>
+                    <a href="#dockerignore" aria-label=".dockerignore">.dockerignore</a></li></ul>
+                </li>
+                <li>
+                    <a href="#useful-docker-cli-commands" aria-label="useful docker CLI commands">useful docker CLI commands</a><ul>
+                        
+                <li>
+                    <a href="#docker-run" aria-label="docker run">docker run</a></li>
+                <li>
+                    <a href="#docker-build" aria-label="docker build">docker build</a></li>
+                <li>
+                    <a href="#docker-image" aria-label="docker image">docker image</a></li>
+                <li>
+                    <a href="#docker-container" aria-label="docker container">docker container</a></li>
+                <li>
+                    <a href="#docker-network" aria-label="docker network">docker network</a></li>
+                <li>
+                    <a href="#docker-volume" aria-label="docker volume">docker volume</a></li>
+                <li>
+                    <a href="#docker-logs" aria-label="docker logs">docker logs</a></li>
+                <li>
+                    <a href="#docker-inspect" aria-label="docker inspect">docker inspect</a></li>
+                <li>
+                    <a href="#docker-ps" aria-label="docker ps">docker ps</a></li>
+                <li>
+                    <a href="#docker-stats" aria-label="docker stats">docker stats</a></li></ul>
+                </li>
+                <li>
+                    <a href="#networking" aria-label="networking">networking</a></li>
+                <li>
+                    <a href="#storage" aria-label="storage">storage</a>
+                </li>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
   <div class="post-content"><h1 id="title">{title}<a hidden class="anchor" aria-hidden="true" href="#title">#</a></h1>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
@@ -458,6 +556,19 @@ Defaults to only showing running containers.</p>
   <footer class="post-footer">
     <ul class="post-tags">
     </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/blogposts/post9/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>unittest-ing with Python</span>
+  </a>
+  <a class="next" href="http://localhost:1313/blogposts/post7/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Drawing a Line Chart</span>
+  </a>
+</nav>
+
   </footer>
 </article>
     </main>

@@ -10,7 +10,7 @@
 <meta name="description" content="Blogposts - heiku-jiqu">
 <meta name="author" content="">
 <link rel="canonical" href="http://localhost:1313/blogposts/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.36819bea596090d8b48cf10d9831382996197aa7e4fc86f792f7c08c9ca4d23b.css" integrity="sha256-NoGb6llgkNi0jPENmDE4KZYZeqfk/Ib3kvfAjJyk0js=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.1181cd8b0bb73a402543b6572f364e3d58b49565c15381eff97163ecf3da1e60.css" integrity="sha256-EYHNiwu3OkAlQ7ZXLzZOPVi0lWXBU4Hv&#43;XFj7PPaHmA=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
@@ -28,44 +28,12 @@
         }
 
     </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --code-block-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
 </noscript>
 </head>
 
 <body class="list" id="top">
 <script>
     if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
         document.body.classList.add('dark');
     }
 
@@ -99,11 +67,26 @@
             </div>
         </div>
         <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/archive/" title="archive">
+                    <span>archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="tags">
+                    <span>tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="search (Alt &#43; /)" accesskey=/>
+                    <span>search</span>
+                </a>
+            </li>
         </ul>
     </nav>
 </header>
 <main class="main"> 
-<header class="page-header">
+<header class="page-header"><div class="breadcrumbs"><a href="http://localhost:1313/">Home</a></div>
   <h1>
     Blogposts
   </h1>
@@ -118,7 +101,7 @@
     <p>{title} Tests are important to prove the logic you have written down works as expected, and to squash bugs forever. On top of this, practicing Test Driven Development (TDD), which is the act of writing tests BEFORE implementation, helps you improve software design. TDD forces you to think about how to test your implementation, and through this, you are more likely to come up with simpler APIs/methods/functions that do only one thing.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2023-02-22 00:00:00 +0000 UTC'>February 22, 2023</span></footer>
+  <footer class="entry-footer"><span title='2023-02-22 00:00:00 +0000 UTC'>February 22, 2023</span>&nbsp;·&nbsp;2 min</footer>
   <a class="entry-link" aria-label="post link to unittest-ing with Python" href="http://localhost:1313/blogposts/post9/"></a>
 </article>
 
@@ -132,7 +115,7 @@
 For example, if you were building an app that requires a specific OS and/or external dependencies that are required to run your app (e.g. PostgreSQL, nginx, etc.), you can bundle it all up into a container. This allows different people/environments to run the app (container) with just Docker as its dependency, instead of having to deal with having the correct OS, correct external dependencies, etc.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2022-12-01 00:00:00 +0000 UTC'>December 1, 2022</span></footer>
+  <footer class="entry-footer"><span title='2022-12-01 00:00:00 +0000 UTC'>December 1, 2022</span>&nbsp;·&nbsp;14 min</footer>
   <a class="entry-link" aria-label="post link to Docker Intro" href="http://localhost:1313/blogposts/post8/"></a>
 </article>
 
@@ -146,7 +129,7 @@ For example, if you were building an app that requires a specific OS and/or exte
 Note: input data has to be sorted as the line is connects points sequentially in the order of the data points.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2022-11-16 00:00:00 +0000 UTC'>November 16, 2022</span></footer>
+  <footer class="entry-footer"><span title='2022-11-16 00:00:00 +0000 UTC'>November 16, 2022</span>&nbsp;·&nbsp;2 min</footer>
   <a class="entry-link" aria-label="post link to Drawing a Line Chart" href="http://localhost:1313/blogposts/post7/"></a>
 </article>
 
@@ -161,7 +144,7 @@ If you are drawing SVGs and need to position SVG elements in on the mouse pointe
 Solution You will need 3 things: - The clientX and clientY properties from the MouseEvent - A DOMPoint object created using DOMPoint(), or SVGPoint object - Reference to the &lt;svg&gt; node
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2022-11-11 00:00:00 +0000 UTC'>November 11, 2022</span></footer>
+  <footer class="entry-footer"><span title='2022-11-11 00:00:00 +0000 UTC'>November 11, 2022</span>&nbsp;·&nbsp;1 min</footer>
   <a class="entry-link" aria-label="post link to Converting Coordinates to Different Coordinate System" href="http://localhost:1313/blogposts/post6/"></a>
 </article>
 
@@ -174,7 +157,7 @@ Solution You will need 3 things: - The clientX and clientY properties from the M
     <p> {title} Spaced Practice Interleaving Retrieval Elaboration Examples Dual Coding Sources Weinstein Y, Madan CR, Sumeracki MA. Teaching the science of learning. Cogn Res Princ Implic. 2018;3(1):2. doi: 10.1186/s41235-017-0087-y. Epub 2018 Jan 24. PMID: 29399621; PMCID: PMC5780548.
 </p>
   </div>
-  <footer class="entry-footer"><span title='2022-11-01 00:00:00 +0000 UTC'>November 1, 2022</span></footer>
+  <footer class="entry-footer"><span title='2022-11-01 00:00:00 +0000 UTC'>November 1, 2022</span>&nbsp;·&nbsp;1 min</footer>
   <a class="entry-link" aria-label="post link to Scientifically Backed Learning Strategies" href="http://localhost:1313/blogposts/post5/"></a>
 </article>
 
@@ -190,7 +173,7 @@ SVG is actually an XML language, and therefore:
 - elements and attributes are case sensitive- attribute values must be inside quotes even if they are numbers.SVG coordinate system The origin(0,0) starts at the top left
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2022-10-19 00:00:00 +0000 UTC'>October 19, 2022</span></footer>
+  <footer class="entry-footer"><span title='2022-10-19 00:00:00 +0000 UTC'>October 19, 2022</span>&nbsp;·&nbsp;4 min</footer>
   <a class="entry-link" aria-label="post link to Drawing a Bar Chart" href="http://localhost:1313/blogposts/post4/"></a>
 </article>
 
@@ -205,7 +188,7 @@ Sometimes code has to wait for non-CPU intensive tasks (e.g. calling API), and w
 This is where asynchronous programming comes in to help us run things is parallel.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2022-10-13 00:00:00 +0000 UTC'>October 13, 2022</span></footer>
+  <footer class="entry-footer"><span title='2022-10-13 00:00:00 +0000 UTC'>October 13, 2022</span>&nbsp;·&nbsp;3 min</footer>
   <a class="entry-link" aria-label="post link to Javascript Async" href="http://localhost:1313/blogposts/post3/"></a>
 </article>
 
@@ -220,7 +203,7 @@ Example component: Horizontal grid arrangement First, set grid-auto-flow: column
 Then set grid-auto-columns: 27% to set the width of each grid column. Choosing an odd number is good as it gives visual cue that there are more items to scroll.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2022-09-19 00:00:00 +0000 UTC'>September 19, 2022</span></footer>
+  <footer class="entry-footer"><span title='2022-09-19 00:00:00 +0000 UTC'>September 19, 2022</span>&nbsp;·&nbsp;2 min</footer>
   <a class="entry-link" aria-label="post link to CSS Horizontal Scrolling Items With Grid" href="http://localhost:1313/blogposts/post2/"></a>
 </article>
 
@@ -234,7 +217,7 @@ Then set grid-auto-columns: 27% to set the width of each grid column. Choosing a
 This post describes how to achieve a responsive layout that will automatically populate components into a parent component such that the number of columns is dynamic. For example, when viewed on larger screens, there will be 5 columns, but when viewed on narrower screens, it will shrink to one column.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2022-09-14 00:00:00 +0000 UTC'>September 14, 2022</span></footer>
+  <footer class="entry-footer"><span title='2022-09-14 00:00:00 +0000 UTC'>September 14, 2022</span>&nbsp;·&nbsp;2 min</footer>
   <a class="entry-link" aria-label="post link to CSS Responsive Grid Layout" href="http://localhost:1313/blogposts/post1/"></a>
 </article>
 <footer class="page-footer">

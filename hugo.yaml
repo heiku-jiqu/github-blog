@@ -1,0 +1,31 @@
+baseURL: https://example.org/
+languageCode: en-us
+title: heiku-jiqu
+theme: PaperMod
+params:
+  defaultTheme: light
+  showReadingTime: true
+  showToc: true
+  showBreadCrumbs: true
+  showPostNavLinks: true
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
+menu:
+  main:
+    - identifier: archive
+      name: archive
+      url: /archive/
+      weight: 10
+    - identifier: tags
+      name: tags
+      url: /tags/
+      weight: 10
+    - identifier: search 
+      name: search
+      url: /search/
+      weight: 11
