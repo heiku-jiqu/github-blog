@@ -7,7 +7,6 @@ date: '2022-10-13'
     import GovtBalance from './components/GovtBalance.svelte'
 </script>
 
-# {title}
 
 # async
 

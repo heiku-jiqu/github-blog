@@ -3,7 +3,6 @@ title: Javascript ArrayBuffer, TypedArray, DataView, TextDecoder, Blob, File
 date: '2023-05-09'
 ---
 
-# {title}
 
 When working with binary data in Javascript, there's a lot of classes that can be potentially used, and they all seem to do the same thing: deal with binary data.
 

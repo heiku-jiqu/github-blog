@@ -3,7 +3,6 @@ title: Terminal, Console, Shell
 date: '2023-10-20'
 ---
 
-# {title}
 
 ## Background
 

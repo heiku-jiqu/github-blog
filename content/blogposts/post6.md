@@ -3,8 +3,6 @@ title: Converting Coordinates to Different Coordinate System
 date: '2022-11-11'
 ---
 
-# {title}
-
 ## Motivation
 
 Javascript DOM events lets you capture mouse position relative to top left corner of your viewport through `clientX`/`clientY` event properties.

@@ -3,7 +3,6 @@ title: Kafka and Python
 date: '2023-03-15'
 ---
 
-# {title}
 
 Python has multiple client implementations to interact with a Kafka cluster.
 This post will walk through the `confluent-kafka-python` client, which is the official Python client implementation by Confluent Inc.

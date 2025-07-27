@@ -3,7 +3,6 @@ title: Choosing Kafka Partition Number and Replication Factor
 date: '2023-11-16'
 ---
 
-# {title}
 
 ## Introduction
 

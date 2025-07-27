@@ -3,7 +3,6 @@ title: Writing File to In-Memory Buffer in Python
 date: '2023-04-02'
 ---
 
-# {title}
 
 # tl;dr
 

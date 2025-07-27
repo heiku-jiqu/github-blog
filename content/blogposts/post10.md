@@ -3,7 +3,6 @@ title: Composable Pandas
 date: '2023-03-03'
 ---
 
-# {title}
 
 In this post, I explore possible ways to write Pandas code in hopes of makign Pandas code more readable, composable, reusable, and testable.
 

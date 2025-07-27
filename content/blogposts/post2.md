@@ -7,7 +7,6 @@ date: '2022-09-19'
     import Carousell from "./components/Carousell.svelte";
 </script>
 
-# {title}
 
 There are times when we want to arrange items that scroll horizontally.
 We can achieve this using `grid-auto-flow` and `overflow-x` CSS property in the parent component.

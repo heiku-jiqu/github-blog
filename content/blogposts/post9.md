@@ -3,8 +3,6 @@ title: unittest-ing with Python
 date: '2023-02-22'
 ---
 
-# {title}
-
 Tests are important to prove the logic you have written down works as expected,
 and to squash bugs forever.
 On top of this, practicing Test Driven Development (TDD), which is the act of writing tests

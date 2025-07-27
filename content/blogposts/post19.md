@@ -3,7 +3,6 @@ title: Finite State Machine (State Design Pattern)
 date: '2024-06-16'
 ---
 
-# {title}
 
 ## Background
 

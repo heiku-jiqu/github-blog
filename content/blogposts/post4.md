@@ -7,7 +7,6 @@ date: '2022-10-19'
     import GovtBalanceChart from './components/GovtBalanceChart.svelte';
 </script>
 
-# {title}
 
 ## SVG fundamentals
 

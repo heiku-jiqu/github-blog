@@ -3,11 +3,6 @@ title: Docker Intro
 date: '2022-12-01'
 ---
 
-# {title}
-
-<script>
-</script>
-
 Docker is a platform that containerizes applications, and runs those containers. This allows developers to decouple applications from infrastructure.
 
 For example, if you were building an app that requires a specific OS and/or external dependencies that are required to run your app (e.g. PostgreSQL, nginx, etc.), you can bundle it all up into a container.

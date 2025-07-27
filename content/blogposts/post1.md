@@ -3,7 +3,6 @@ title: CSS Responsive Grid Layout
 date: '2022-09-14'
 ---
 
-# {title}
 
 There are two main ways to customise the layout of HTML elements / components:
 `display: grid` and `display: flex`.

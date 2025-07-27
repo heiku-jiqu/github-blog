@@ -3,7 +3,6 @@ title: Managing Processes in Linux CLI
 date: '2023-10-29'
 ---
 
-# {title}
 
 ## Introduction
 

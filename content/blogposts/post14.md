@@ -3,7 +3,6 @@ title: Database Indexes and Query Optimization
 date: '2023-06-07'
 ---
 
-# {title}
 
 Recently read an extremely informative e-book on database indexing over at [use-the-index-luke](https://use-the-index-luke.com/).
 This post is to synthesise and summarise the main learnings that I took away from the ~200 page e-book.

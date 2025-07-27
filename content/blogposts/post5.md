@@ -3,10 +3,6 @@ title: Scientifically Backed Learning Strategies
 date: '2022-11-01'
 ---
 
-<script>
-</script>
-
-# {title}
 
 ## Spaced Practice
 
