@@ -1,3 +1,23 @@
 @view-transition {
   navigation: auto;
 }
+
+:root {
+  --hover-color: blue;
+}
+
+header:has(~ a:hover) h2 {
+  color: var(--hover-color);
+}
+
+h3:has(~ a:hover) {
+  color: var(--hover-color);
+}
+
+a:hover span {
+  color: var(--hover-color);
+}
+
+:is(.next, .prev):hover {
+  background-color: var(--hover-color);
+}
