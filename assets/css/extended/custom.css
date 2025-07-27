@@ -4,6 +4,7 @@
 
 :root {
   --hover-color: oklch(from currentColor l c h / 0.5);
+  --transition-time: 0.2s;
 }
 
 header:has(~ a:hover) h2 {
@@ -20,4 +21,24 @@ a:hover span {
 
 :is(.next, .prev):hover {
   background-color: var(--hover-color);
+}
+
+details {
+  overflow: hidden;
+  /* to transition between block-size */
+  interpolate-size: allow-keywords;
+
+  &[open]::details-content {
+    block-size: auto;
+    transition: block-size var(--transition-time);
+  }
+
+  &::details-content {
+    block-size: 0;
+    /*content-visibility and transition-behavior to animate closed state whereshadow dom puts content-visibility:hidden*/
+    transition:
+      block-size var(--transition-time),
+      content-visibility var(--transition-time);
+    transition-behavior: allow-discrete;
+  }
 }
