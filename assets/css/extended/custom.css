@@ -3,7 +3,7 @@
 }
 
 :root {
-  --hover-color: blue;
+  --hover-color: oklch(from currentColor l c h / 0.5);
 }
 
 header:has(~ a:hover) h2 {
