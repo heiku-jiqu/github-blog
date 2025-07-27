@@ -8,6 +8,14 @@ params:
   showToc: true
   showBreadCrumbs: true
   showPostNavLinks: true
+  homeInfoParams:
+    Title: Writing
+    Content: _For clarity and understanding_
+  # socialIcons: # optional
+  #   - name: "<platform>"
+  #     url: "<link>"
+  #   - name: "<platform 2>"
+  #     url: "<link2>"
 
 outputs:
   home:
