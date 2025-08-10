@@ -1,7 +1,11 @@
 +++
 date = '2025-08-10T11:16:50+08:00'
 draft = false
-title = 'Performance and Ballpark Numbers'
+title = 'Mind the Performance'
+description = 'Coding hygiene to prevent introducing incremental performance degradation'
+summary = 'Coding hygiene to prevent introducing incremental performance degradation'
+tags = ["performance"]
+categories = ["performance"]
 +++
 
 # Introduction
