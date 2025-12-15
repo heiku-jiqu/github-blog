@@ -1,9 +1,9 @@
 +++
 date = '2025-11-30T13:17:08+08:00'
-draft = true
+draft = false
 title = "Untangling Python's Asyncio"
-summary = ''
-tags = ["python"]
+summary = 'Piecing Together Asyncio Primitives'
+tags = ["python", "concurrency", "asyncio"]
 +++
 
 # Introduction
