@@ -1,44 +1,54 @@
 @view-transition {
-  navigation: auto;
+    navigation: auto;
 }
 
 :root {
-  --hover-color: oklch(from currentColor l c h / 0.5);
-  --transition-time: 0.2s;
+    --hover-color: oklch(from currentColor l c h / 0.5);
+    --transition-time: 0.2s;
 }
 
 header:has(~ a:hover) h2 {
-  color: var(--hover-color);
+    color: var(--hover-color);
 }
 
 h3:has(~ a:hover) {
-  color: var(--hover-color);
+    color: var(--hover-color);
 }
 
 a:hover span {
-  color: var(--hover-color);
+    color: var(--hover-color);
 }
 
 :is(.next, .prev):hover {
-  background-color: var(--hover-color);
+    background-color: var(--hover-color);
 }
 
 details {
-  overflow: hidden;
-  /* to transition between block-size */
-  interpolate-size: allow-keywords;
+    overflow: hidden;
+    /* to transition between block-size */
+    interpolate-size: allow-keywords;
 
-  &[open]::details-content {
-    block-size: auto;
-    transition: block-size var(--transition-time);
-  }
+    &[open]::details-content {
+        block-size: auto;
+        transition: block-size var(--transition-time);
+    }
 
-  &::details-content {
-    block-size: 0;
-    /*content-visibility and transition-behavior to animate closed state whereshadow dom puts content-visibility:hidden*/
-    transition:
-      block-size var(--transition-time),
-      content-visibility var(--transition-time);
-    transition-behavior: allow-discrete;
-  }
+    &::details-content {
+        block-size: 0;
+        /*content-visibility and transition-behavior to animate closed state whereshadow dom puts content-visibility:hidden*/
+        transition:
+            block-size var(--transition-time),
+            content-visibility var(--transition-time);
+        transition-behavior: allow-discrete;
+    }
+}
+
+.prev,
+.next {
+    padding-block: 1rem;
+}
+
+.pagination a {
+    color: var(--primary);
+    background: var(--entry);
 }
