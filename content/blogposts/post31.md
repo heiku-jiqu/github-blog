@@ -121,7 +121,7 @@ compute_expr(prev_prec, prev_assoc):
     # return node early:
     if prev_assoc is left and prec <= prev_prec:
       break 
-    if prev_assoc is not left and prec < prev_rec:
+    if prev_assoc is not left and prec < prev_prec:
       break
 
     # capture more RHS:
@@ -134,3 +134,52 @@ compute_expr(prev_prec, prev_assoc):
 ```
 
 Surprisingly, after writing this version and then going back to later parts of his blogpost, this version looked similar to his actual implementation of `compute_expr`.
+
+## Associativity
+
+Loop produces Left associativity by default, 
+builds tree by adding new tokens to the top
+```
+1 + 2 + 3
+(1 + 2) + 3
+    +
+   / \
+  +   3
+ / \
+1   2   
+LEFT(LEFT(1,2) 3)
+```
+Recursive Descent produces Right associativity by default, 
+builds tree by adding new tokens to the bottom
+```
+1 ^ 2 ^ 3
+1 ^ (2 ^ 3)
+  ^
+ / \
+1   ^   
+   / \
+  2   3   
+RIGHT(1, RIGHT(2, 3))
+```
+
+Dynamically add to both:
+```
+def parse_exp(tokenizer, prev_is_left):
+  curr = tokenizer.consume()
+
+  while True:
+    if tokenizer.peek() is not operator or is EOF or prev_is_left: # base case for both loop + recursion
+      break
+    operator = tokenizer.consume()
+    rhs = parse_exp(tokenizer, operator.is_left)
+    curr = operator(curr, rhs)
+    
+  return curr
+```
+
+## Every step you know LHS
+
+every step you know LHS, you are trying to place the next token.
+the token can be placed above current tree or below current tree
+
+## Associativity as a special case of precedence?
