@@ -149,6 +149,7 @@ builds tree by adding new tokens to the top
 1   2   
 LEFT(LEFT(1,2) 3)
 ```
+
 Recursive Descent produces Right associativity by default, 
 builds tree by adding new tokens to the bottom
 ```
@@ -162,17 +163,22 @@ builds tree by adding new tokens to the bottom
 RIGHT(1, RIGHT(2, 3))
 ```
 
-Dynamically add to both:
+Combine loop and recursion to Dynamically switch between both:
 ```
 def parse_exp(tokenizer, prev_is_left):
-  curr = tokenizer.consume()
+  curr = tokenizer.consume() # base case output
 
-  while True:
-    if tokenizer.peek() is not operator or is EOF or prev_is_left: # base case for both loop + recursion
-      break
-    operator = tokenizer.consume()
-    rhs = parse_exp(tokenizer, operator.is_left)
-    curr = operator(curr, rhs)
+  while True: # Loop: handles left-assoc
+    next_token = tokenizer.consume()
+    if (
+      # check if we are in base case (applies to both loop & recursion)
+      next_token is not operator or 
+      prev_is_left
+    ): 
+      break # we are in base case, so don't do anything
+    operator = next_token # rename to operator for clarity
+    rhs = parse_exp(tokenizer, operator.is_left) # Recursion: handles right-assoc; parse_exp early returns next token when operator.is_left
+    curr = operator(curr, rhs) # build the AST segment
     
   return curr
 ```
