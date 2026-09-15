@@ -40,20 +40,20 @@ func (s *state) Progress() string {
   } 
 }
 
-func transitionX(s *state)->transitionFn {
+func transitionX(s *state) transitionFn {
   if s.a == 1 {
     return transitionY 
   }
   return transitionZ
 }
-func transitionY(s *state)->transitionFn {
+func transitionY(s *state) transitionFn {
   if s.b == 2 {
     s.Result = "y end"
     return nil
   }
   return transitionZ
 }
-func transitionZ(s *state)->transitionFn {
+func transitionZ(s *state) transitionFn {
   s.Result = "z end"
   return nil
 }
